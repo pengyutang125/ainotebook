@@ -40,24 +40,23 @@
  */
 package org.bresearch.neural.encog.test;
 
-import org.encog.examples.nonlinear.tsp.City;
 import org.encog.examples.nonlinear.tsp.genetic.TSPGeneticAlgorithm;
 
 public class SolverProducer {
 
-    public City createCity(final TSPSettings settings) {
+    public TestCity createCity(final TSPSettings settings) {
         
-        final City city;
+        final TestCity city;
         int xPos = (int) (Math.random() * settings.getMapSize());
         int yPos = (int) (Math.random() * settings.getMapSize());
-        city = new City(xPos, yPos);
+        city = new TestCity(xPos, yPos);
         return city;
         
     }
     
-    public City [] buildCities(final TSPSettings settings) {
+    public TestCity [] buildCities(final TSPSettings settings) {
         
-        final City [] cities = new City[settings.getCities()];
+        final TestCity [] cities = new TestCity[settings.getCities()];
         for (int i = 0; i < cities.length; i++) {
             cities[i] = this.createCity(settings);
         } // End of the For //
@@ -68,8 +67,8 @@ public class SolverProducer {
     public ISolver createTSP() {
                 
         final TSPSettings settings = new TSPSettings();
-        final City [] cities = this.buildCities(settings);       
-        final TSPGeneticAlgorithm genetic = new TSPGeneticAlgorithm(
+        final TestCity [] cities = this.buildCities(settings);       
+        final TestTSPGeneticAlgorithm genetic = new TestTSPGeneticAlgorithm(
                 cities,
                 settings.getPopulationSize(),
                 settings.getMutationPercent(),

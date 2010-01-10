@@ -55,9 +55,9 @@ public class SolveHelper {
     private int iteration = 1;
     private double lastSolution = Double.MAX_VALUE;
         
-    private final TSPGeneticAlgorithm genetic;
+    private final TestTSPGeneticAlgorithm genetic;
     
-    public SolveHelper(final TSPGeneticAlgorithm genetic) {
+    public SolveHelper(final TestTSPGeneticAlgorithm genetic) {
         this.genetic = genetic;
     }
     
