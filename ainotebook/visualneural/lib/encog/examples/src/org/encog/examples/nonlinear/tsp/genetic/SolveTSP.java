@@ -67,6 +67,7 @@ public class SolveTSP {
 	 * Create an initial path of cities.
 	 */
 	private void initPath() {
+	    
 		final boolean taken[] = new boolean[this.cities.length];
 		final Integer path[] = new Integer[this.cities.length];
 
@@ -74,10 +75,12 @@ public class SolveTSP {
 			taken[i] = false;
 		}
 		for (int i = 0; i < path.length - 1; i++) {
+		    
 			int icandidate;
 			do {
 				icandidate = (int) (Math.random() * path.length);
 			} while (taken[icandidate]);
+			
 			path[i] = icandidate;
 			taken[icandidate] = true;
 			if (i == path.length - 2) {
@@ -124,7 +127,7 @@ public class SolveTSP {
 		
 		
 
-		initPath();
+		//initPath();
 
 		int sameSolutionCount = 0;
 		int iteration = 1;
