@@ -40,16 +40,13 @@
  */
 package org.bresearch.neural.encog.test;
 
-import org.encog.examples.nonlinear.tsp.City;
-import org.encog.examples.nonlinear.tsp.genetic.TSPGeneticAlgorithm;
-
 public class SolveTravelingSalesman implements ISolver {
     
     private final TSPSettings settings;
-    private final TSPGeneticAlgorithm genetic;
-    private final City cities [];
+    private final TestTSPGeneticAlgorithm genetic;
+    private final TestCity cities [];
 
-    public SolveTravelingSalesman(final TSPGeneticAlgorithm genetic, final City [] cities, final TSPSettings settings) {
+    public SolveTravelingSalesman(final TestTSPGeneticAlgorithm genetic, final TestCity [] cities, final TSPSettings settings) {
         this.genetic = genetic;
         this.cities = cities;
         this.settings = settings;
