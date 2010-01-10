@@ -40,6 +40,7 @@ public class TSPGeneticAlgorithm extends GeneticAlgorithm<Integer> {
 			final double mutationPercent, final double percentToMate,
 			final double matingPopulationPercent, final int cutLength)
 			throws NeuralNetworkError {
+	    
 		setMutationPercent(mutationPercent);
 		setMatingPopulation(matingPopulationPercent);
 		setPopulationSize(populationSize);
