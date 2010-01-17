@@ -56,6 +56,10 @@ public class TestCity {
 		this.xpos = x;
 		this.ypos = y;
 	}
+	
+	public String toString() {
+	    return "{x:" + xpos + " - y: " +  ypos + "}";
+	}
 
 	/**
 	 * Return's the city's x position.

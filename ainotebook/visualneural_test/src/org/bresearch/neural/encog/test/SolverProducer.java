@@ -40,7 +40,6 @@
  */
 package org.bresearch.neural.encog.test;
 
-import org.encog.examples.nonlinear.tsp.genetic.TSPGeneticAlgorithm;
 
 public class SolverProducer {
 
