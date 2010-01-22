@@ -45,6 +45,8 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.bresearch.websec.utils.botlist.text.WordProcessor;
+
 
 public class WordFrequencyTest extends TestCase {
     
@@ -64,6 +66,11 @@ public class WordFrequencyTest extends TestCase {
         final String res2 = res.trim();
         assertEquals("hello my name is a person    hello how are you doing   hello  this is great   what do you think", res2);
     }   
+    
+    public void test2() {
+        String res2 = (new WordProcessor()).filterOnlyAlphaNumeric("   Hello my name is a person.   Hello how are you doing.  hello, this is great.  What do you think?   ");
+        assertEquals("hello my name is a person    hello how are you doing   hello  this is great   what do you think", res2);
+    }
     
     public static void main(String args[]) {
 
