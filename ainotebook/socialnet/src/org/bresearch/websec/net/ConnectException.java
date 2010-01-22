@@ -1,5 +1,4 @@
 /**
- *
  * Copyright (c) 2006-2007 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
  *
  * http://www.opensource.org/licenses/bsd-license.php
