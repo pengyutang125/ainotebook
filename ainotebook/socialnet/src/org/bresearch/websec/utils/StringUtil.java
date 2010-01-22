@@ -1,6 +1,5 @@
 /**
- *
- * Copyright (c) 2006-2007 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
+ * Copyright (c) 2006-2010 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
  *
  * http://www.opensource.org/licenses/bsd-license.php
 
@@ -30,8 +29,8 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Date: 12/15/2009 
- *   
+ * Date: 1/23/2010 
+ * Description: Social Networking Site Document Analysis
  * Home Page: http://botnode.com/
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
