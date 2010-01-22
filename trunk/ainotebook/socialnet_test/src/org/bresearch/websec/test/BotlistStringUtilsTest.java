@@ -45,20 +45,21 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.bresearch.websec.utils.botlist.BotlistStringUtils;
+import org.bresearch.websec.utils.botlist.text.WordProcessor;
 
 public class BotlistStringUtilsTest extends TestCase {
 
     
     public void test1() throws Exception {
       
-        final String data2 = " !!!   Hello my name is a person.   Hello how are you doing.  hello, this is great.  What do you think?   ";
-        final String trim2 = data2.trim().toLowerCase();
-        
+        final String data2 = (new WordProcessor()).filterOnlyAlphaNumeric(" !!!   Hello my name is a person.   Hello how are you doing.  hello, this is great.  What do you think?   ");
+               
         final BotlistStringUtils utils = new BotlistStringUtils();
-        final List<String> a = utils.buildWordList(trim2);
-        assertEquals(26, a.size());
-        
-        System.out.println(utils.mapReduce(a, 999));
+        final List<String> a = utils.buildWordList(data2);
+        assertEquals(27, a.size());
+                        
+        assertEquals("[hello=3, you=2, is=2, this=1, doing=1, person=1, are=1, think=1, how=1, great=1, my=1, name=1, do=1, what=1, a=1]",
+            "" + utils.mapReduce(a, -1));
     }
     
     public static void main(String args[]) {
