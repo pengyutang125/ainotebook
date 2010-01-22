@@ -1,6 +1,39 @@
-/* 
- * BotListGenericUtils.java
- * Nov 16, 2007
+/**
+ * Copyright (c) 2006-2010 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
+ *
+ * http://www.opensource.org/licenses/bsd-license.php
+
+ * All rights reserved.
+
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+
+ * * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * * Neither the name of the Botnode.com (Berlin Brown) nor
+ * the names of its contributors may be used to endorse or promote
+ * products derived from this software without specific prior written permission.
+
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Date: 1/23/2010 
+ * Description: Social Networking Site Document Analysis
+ * Home Page: http://botnode.com/
+ * 
+ * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
 package org.bresearch.websec.utils.botlist;
 
@@ -58,57 +91,38 @@ Example Test Case for map reduce usage:
 		"the",
 		"in",
 		"of",
-		"am",
-		"add",
+		"am",		
 		"is",
 		"for",
 		"a",
 		"on",
-		"by",
-		"for",
-		"us",
-		"we",
+		"by",			
 		"be",
-		"going",
-		"way",
 		"from",
-		"cool",
-		"sometimes",
-		"too",
-		"man",
-		"bad",
-		"and",
-		"new",
+		"too",		
+		"and",		
 		"i",
 		"with",
 		"it",
-		"all",
-		"up",
-		"at",
-		"over",
-		"says",
-		"more",
-		"2007",
-		"your",
-		"no",
-		"call",
-		"race"
+		"all",		
+		"at",						
+		"no"		
 	};
-	public static final Map STOP_WORDS_MAP;
+	public static final Map<String, String> STOP_WORDS_MAP;
 	static {
-		STOP_WORDS_MAP = new HashMap();
+		STOP_WORDS_MAP = new HashMap<String, String>();
 		for (int ix = 0; ix < STOP_WORDS.length; ix++) {
 			STOP_WORDS_MAP.put(STOP_WORDS[ix], "0");
 		}
-	}
+	} // End of Static Block //
 	
 	/** 
 	 * inner class to sort map. 
 	 */
-	private static class ValueComparator implements Comparator {
+	private static class ValueComparator implements Comparator<Object> {
 	    
-		private Map data = null;
-		public ValueComparator(Map _data) {
+		private Map<String, Integer> data = null;
+		public ValueComparator(Map<String, Integer> _data) {
 			super();
 			this.data = _data;
 		}
@@ -122,12 +136,13 @@ Example Test Case for map reduce usage:
 		}
 	}
 	
-	public Map sortMapByValue(Map inputMap) {
+	public Map<String, Integer> sortMapByValue(Map inputMap) {
 		SortedMap sortedMap = new TreeMap(new BotlistStringUtils.ValueComparator(inputMap));		
 		sortedMap.putAll(inputMap);		
 		return sortedMap;
 	}
 
+	
 	public List<String> buildWordList(final String document) {
 	    
 	    if (document == null) {
@@ -148,16 +163,16 @@ Example Test Case for map reduce usage:
 	 * @param inputMap
 	 * @return
 	 */
-	public Set keyValueSet(final Map inputMap, final int maxnum) {
+	public Set<Map.Entry<String, Integer>> keyValueSet(final Map<String, Integer> inputMap, final int maxnum) {
 	    
-		Set set = inputMap.entrySet();
-		Set newset = new LinkedHashSet();		
+		Set<Map.Entry<String, Integer>> set = inputMap.entrySet();
+		Set<Map.Entry<String, Integer>> newset = new LinkedHashSet<Map.Entry<String, Integer>>();		
 		int i = 0;
-		for (Iterator it = set.iterator(); it.hasNext(); i++) {
-			newset.add(it.next());
-			if ((i >= 0) && i >= (maxnum - 1)) {
+		for (Iterator<Map.Entry<String, Integer>> it = set.iterator(); it.hasNext(); i++) {		    
+			newset.add(it.next());			
+			if ((maxnum >= 0) && (i >= (maxnum - 1))) {			    
 			    break;
-			} // End of the If //
+			} // End of the If //		
 		} // End of the for //
 		
 		return newset;
@@ -170,9 +185,9 @@ Example Test Case for map reduce usage:
 	 * @param allterms
 	 * @return
 	 */
-	public Set mapReduce(final List<String> allterms, final int maxnum) {
+	public Set<Map.Entry<String, Integer>> mapReduce(final List<String> allterms, final int maxnum) {
 	    
-		Map map = new HashMap();
+		final Map<String, Integer> map = new HashMap<String, Integer>();
 		for (Iterator<String> x2it = allterms.iterator(); x2it.hasNext();) {
 		    
 			final String term = (String) x2it.next();
@@ -186,10 +201,50 @@ Example Test Case for map reduce usage:
 				map.put(term, new Integer(ct.intValue() + 1));
 			} // End of if - else
 			
-		} // End of the for
-		
-		Map sortedMap = this.sortMapByValue(map);	
+		} // End of the for		
+		final Map<String, Integer> sortedMap = this.sortMapByValue(map);	
 		return this.keyValueSet(sortedMap, maxnum);
 	}
 	
+	/**
+     * Simple Map Reduce; given a list of keywords, map the terms to a count of how
+     * many times the term occurs in the list.
+     *  
+     * @param allterms
+     * @return
+     */
+    public Double [] mapReduceCount(final List<String> allterms, final int maxnum) {
+        
+        final List<Double> resList = new ArrayList<Double>();  
+        final Set<Map.Entry<String, Integer>> set = mapReduce(allterms, maxnum);
+        
+        // Iterate through the values and convert the values into
+        // a set of doubles.        
+        for (Map.Entry<String, Integer> entry : set) {
+            resList.add(entry.getValue().doubleValue());
+        }               
+        return resList.toArray(new Double[resList.size()]); 
+    }
+
+    /**
+     * Get the word length
+     * 
+     * @param allterms
+     * @param maxnum
+     * @return
+     */
+    public Double [] mapReduceWordSize(final List<String> allterms, final int maxnum) {
+        
+        final List<Double> resList = new ArrayList<Double>();  
+        final Set<Map.Entry<String, Integer>> set = mapReduce(allterms, maxnum);
+        
+        // Iterate through the values and convert the values into
+        // a set of doubles.        
+        for (Map.Entry<String, Integer> entry : set) {
+            double l = (double) entry.getKey().toString().length();
+            resList.add(l);
+        }               
+        return resList.toArray(new Double[resList.size()]); 
+    }
+    
 } // End of the Class //
