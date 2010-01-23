@@ -39,6 +39,10 @@ package org.bresearch.websec.test.nontest;
 
 public class ConstDoc {
 
+    public static final String CONST_SM = new StringBuffer()
+    .append("We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.")
+    .toString();  
+    
     public static final String CONST = new StringBuffer()
     .append("We the People of the United States, in Order to form a more perfect Union, establish Justice, insure domestic Tranquility, provide for the common defence, promote the general Welfare, and secure the Blessings of Liberty to ourselves and our Posterity, do ordain and establish this Constitution for the United States of America.")
     .append("Section 1 - The Legislature")
