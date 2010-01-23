@@ -119,10 +119,24 @@ public class CommonsMathTest extends TestCase {
         final DocumentWordStats docStats = new DocumentWordStats(ConstDoc.CONST);
         final DescriptiveStatistics stats = docStats.mapReduceStats();
         
+        /*
         System.out.println("" + stats.getMean());
         System.out.println("" + stats.getN());
         System.out.println("" + stats.getGeometricMean());        
         System.out.println("" + stats.getMax());
+        */
+    }
+    
+    public void test5() {
+        final DocumentWordStats docStats = new DocumentWordStats(ConstDoc.CONST_SM);
+        final DescriptiveStatistics stats = docStats.mapReduceStats();
+                
+        System.out.println("" + stats.getSum());
+        System.out.println("" + stats.getMean());
+        System.out.println("" + stats.getN());
+        System.out.println("" + stats.getGeometricMean());        
+        System.out.println("" + stats.getMax());
+        
     }
     
     public static void main(String args[]) {
