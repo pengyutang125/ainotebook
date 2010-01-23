@@ -44,7 +44,9 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
+import org.bresearch.websec.test.nontest.ConstDoc;
 import org.bresearch.websec.utils.botlist.BotlistStringUtils;
+import org.bresearch.websec.utils.botlist.stats.DocumentWordStats;
 import org.bresearch.websec.utils.botlist.text.WordProcessor;
 
 public class CommonsMathTest extends TestCase {
@@ -111,6 +113,16 @@ public class CommonsMathTest extends TestCase {
         // Compute some statistics        
         assertEquals("3.6", "" + stats.getMean());
         assertEquals("54.0", "" + stats.getSum()); 
+    }
+    
+    public void test4() {
+        final DocumentWordStats docStats = new DocumentWordStats(ConstDoc.CONST);
+        final DescriptiveStatistics stats = docStats.mapReduceStats();
+        
+        System.out.println("" + stats.getMean());
+        System.out.println("" + stats.getN());
+        System.out.println("" + stats.getGeometricMean());        
+        System.out.println("" + stats.getMax());
     }
     
     public static void main(String args[]) {
