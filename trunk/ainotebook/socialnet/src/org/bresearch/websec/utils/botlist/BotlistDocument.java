@@ -35,59 +35,27 @@
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.bresearch.websec.utils.botlist.stats;
+package org.bresearch.websec.utils.botlist;
 
-import java.util.List;
-
-import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
-import org.bresearch.websec.utils.botlist.BotlistStringUtils;
 import org.bresearch.websec.utils.botlist.text.WordProcessor;
 
-public class DocumentWordStats {
+/**
+ * Simple document to keep track of string data is formatted
+ * or not formatted.
+ * 
+ * @author BerlinBrown
+ *
+ */
+public class BotlistDocument {
 
-    private final String document;
+    private final String inputRawDocument;
     
-    public DocumentWordStats(final String doc) {
-        this.document = doc;
+    public BotlistDocument(final String inputRawDocument) {
+        this.inputRawDocument = inputRawDocument;
+    }
+
+    public String formatDocument() {
+        return (new WordProcessor()).filterOnlyAlphaNumeric(this.inputRawDocument);
     }
     
-    public DescriptiveStatistics mapReduceStats() {
-        
-        final DescriptiveStatistics stats = new DescriptiveStatistics();
-        
-        final String data = (new WordProcessor()).filterOnlyAlphaNumeric(this.document);
-        final BotlistStringUtils utils = new BotlistStringUtils();
-        final List<String> wordList = utils.buildWordList(data);
-        
-        // Map Reduce Count //
-        final Double [] arr = utils.mapReduceCount(wordList, -1);
-        for (int i = 0; i < arr.length; i++) {
-            stats.addValue(arr[i]);                
-        } // End of the For //
-        return stats;
-    }
-    
-    public DescriptiveStatistics mapReduceWordSizeStats() {
-        
-        final DescriptiveStatistics stats = new DescriptiveStatistics();
-        
-        final String data = (new WordProcessor()).filterOnlyAlphaNumeric(this.document);
-        final BotlistStringUtils utils = new BotlistStringUtils();
-        final List<String> wordList = utils.buildWordList(data);
-        
-        final Double [] arr = utils.mapReduceWordSize(wordList, -1);
-        for (int i = 0; i < arr.length; i++) {
-            stats.addValue(arr[i]);                
-        } // End of the For //
-        return stats;
-    }
-    
-    public DescriptiveStatistics stats(final Double [] arr) {
-        final DescriptiveStatistics stats = new DescriptiveStatistics();
-        for (int i = 0; i < arr.length; i++) {
-            stats.addValue(arr[i]);                
-        } // End of the For //
-        return stats;
-    }
-    
-} // End of the Class ///
+} // End of the Class //
