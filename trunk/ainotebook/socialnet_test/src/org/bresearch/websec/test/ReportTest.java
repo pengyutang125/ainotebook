@@ -38,62 +38,58 @@
  */
 package org.bresearch.websec.test;
 
-import java.util.List;
-
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 import org.bresearch.websec.test.nontest.ConstDoc;
-import org.bresearch.websec.utils.botlist.BotlistStringUtils;
-import org.bresearch.websec.utils.botlist.text.WordProcessor;
+import org.bresearch.websec.test.nontest.ConstJavaDoc;
+import org.bresearch.websec.utils.botlist.BotlistDocument;
+import org.bresearch.websec.utils.botlist.report.IReport;
+import org.bresearch.websec.utils.botlist.report.ReportDocument;
 
-public class BotlistStringUtilsTest extends TestCase {
+public class ReportTest extends TestCase {
+    
+    public void test1() {
+        
+        BotlistDocument doc = new BotlistDocument(ConstDoc.CONST);
+        
+        IReport report = new ReportDocument(doc, true);
+        System.out.println();
+        System.out.println(report.toReport());
+    }
+
+    public void test1b() {
+        
+        BotlistDocument doc = new BotlistDocument("My name is bob jones bob bob bob");        
+        ReportDocument report = new ReportDocument(doc, true);
+        
+        System.out.println();
+        System.out.println(report.toReport());
+    }
 
     
-    public void test1() throws Exception {
-      
-        final String data2 = (new WordProcessor()).filterOnlyAlphaNumeric(" !!!   Hello my name is a person.   Hello how are you doing.  hello, this is great.  What do you think?   ");
+    public void test2() {
                
-        final BotlistStringUtils utils = new BotlistStringUtils();
-        final List<String> a = utils.buildWordList(data2);
-        assertEquals(27, a.size());                                
-        assertEquals("[hello=3, you=2, is=2, this=1, do=1, doing=1, name=1, what=1, great=1, are=1, my=1, a=1, how=1, person=1, think=1]",                      
-            "" + utils.mapReduce(a, -1));      
+        BotlistDocument doc = new BotlistDocument("My name is bob jones");        
+        ReportDocument report = new ReportDocument(doc, false);
+        
+        System.out.println();
+        System.out.println(report.toReport());
     }
     
-    public void test2() throws Exception {
+    public void test3() {
         
-        final String data2 = (new WordProcessor()).filterOnlyAlphaNumeric(ConstDoc.CONST);       
-        final BotlistStringUtils utils = new BotlistStringUtils();
-        final List<String> a = utils.buildWordList(data2);
-        assertEquals(1717, a.size());
-
-        assertEquals("[the=133, of=88, shall=77", ("" + utils.mapReduce(a, -1)).substring(0, 25));
-    }
-    
-    public void test3() throws Exception {
-        
-        final String data2 = (new WordProcessor()).filterOnlyAlphaNumeric(" !!!   Hello my name is a person.   Hello how are you doing.  hello, this is great.  What do you think?   ");
-               
-        final BotlistStringUtils utils = new BotlistStringUtils();
-        final List<String> a = utils.buildWordList(data2);        
-                        
-        assertEquals("[hello=3, doing=1, name=1, great=1, person=1, think=1]", "" + utils.mapReduceWithStopWords(a, -1));
-    }
-    
-    public void test4() throws Exception {
-        
-        final String data2 = (new WordProcessor()).filterOnlyAlphaNumeric(ConstDoc.CONST);       
-        final BotlistStringUtils utils = new BotlistStringUtils();
-        final List<String> a = utils.buildWordList(data2);
-        System.out.println(utils.mapReduceWithStopWords(a, -1));
+        BotlistDocument doc = new BotlistDocument(ConstJavaDoc.JAVA);        
+        IReport report = new ReportDocument(doc, true);
+        System.out.println();
+        System.out.println(report.toReport());
     }
     
     public static void main(String args[]) {
         
         TestSuite suite = new TestSuite();
-        suite.addTestSuite(BotlistStringUtilsTest.class);        
+        suite.addTestSuite(ReportTest.class);        
         TestRunner.run(suite);
         return;
     }
