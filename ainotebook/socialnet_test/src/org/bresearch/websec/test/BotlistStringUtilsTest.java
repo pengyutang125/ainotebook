@@ -44,6 +44,7 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
+import org.bresearch.websec.test.nontest.ConstDoc;
 import org.bresearch.websec.utils.botlist.BotlistStringUtils;
 import org.bresearch.websec.utils.botlist.text.WordProcessor;
 
@@ -60,6 +61,16 @@ public class BotlistStringUtilsTest extends TestCase {
                         
         assertEquals("[hello=3, you=2, is=2, this=1, doing=1, person=1, are=1, think=1, how=1, great=1, my=1, name=1, do=1, what=1, a=1]",
             "" + utils.mapReduce(a, -1));
+    }
+    
+    public void test2() throws Exception {
+        
+        final String data2 = (new WordProcessor()).filterOnlyAlphaNumeric(ConstDoc.CONST);       
+        final BotlistStringUtils utils = new BotlistStringUtils();
+        final List<String> a = utils.buildWordList(data2);
+        assertEquals(1717, a.size());
+
+        assertEquals("[the=133, of=88, shall=77", ("" + utils.mapReduce(a, -1)).substring(0, 25));
     }
     
     public static void main(String args[]) {
