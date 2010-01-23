@@ -55,7 +55,7 @@ public class BotlistStringUtils {
 
     /*
 **************     
-Example Test Case for map reduce usage:
+Example Test Case for map reduce usage (early version):
 **************
 <pre>
    public static Set mapReduceLinkKeywords(final BotListEntityLinksDAO dao) {
@@ -82,8 +82,7 @@ Example Test Case for map reduce usage:
         
     }
 </pre>
--------------     
-     
+-------------          
      */
     
 	public static final String STOP_WORDS [] = {
@@ -106,15 +105,62 @@ Example Test Case for map reduce usage:
 		"it",
 		"all",		
 		"at",						
-		"no"		
+		"no",
+		"this",
+		"that",
+		"you",
+		"my",
+		"are",
+		"how",
+		"do",
+		"what",
+		"not",
+		"any",
+		"their",
+		"his",
+		"we",
+		"he",
+		"has",
+		"was",
+		"be",
+		"at",
+		"one",
+		"have",
+		"this",
+		"from",
+		"or",
+		"had",
+		"by",		
+		"but",
+		"some",
+		"what",
+		"there",
+		"we",
+		"can",
+		"out",
+		"other",
+		"were",
+		"all",
+		"your",
+		"when",
+		"or",
+		"our",
+		"such",
+		"which",
+		"may"
 	};
+		
+	
 	public static final Map<String, String> STOP_WORDS_MAP;
+	
 	static {
 		STOP_WORDS_MAP = new HashMap<String, String>();
 		for (int ix = 0; ix < STOP_WORDS.length; ix++) {
 			STOP_WORDS_MAP.put(STOP_WORDS[ix], "0");
 		}
 	} // End of Static Block //
+	
+	private Map<String, String> stopWords = STOP_WORDS_MAP;
 	
 	/** 
 	 * inner class to sort map. 
@@ -205,7 +251,54 @@ Example Test Case for map reduce usage:
 		final Map<String, Integer> sortedMap = this.sortMapByValue(map);	
 		return this.keyValueSet(sortedMap, maxnum);
 	}
+
+	   
+    /**
+     * Simple Map Reduce; given a list of keywords, map the terms to a count of how
+     * many times the term occurs in the list.
+     *  
+     * @param allterms
+     * @return
+     */
+    public Set<Map.Entry<String, Integer>> mapReduceWithStopWords(final List<String> allterms, final int maxnum) {
+        return mapReduceWithStopWords(allterms, maxnum, this.getStopWords());
+    }
 	
+    /**
+     * Simple Map Reduce; given a list of keywords, map the terms to a count of how
+     * many times the term occurs in the list.
+     *  
+     * @param allterms
+     * @return
+     */
+    public Set<Map.Entry<String, Integer>> mapReduceWithStopWords(final List<String> allterms, final int maxnum, final Map<String, String> stopWords) {
+        
+        final Map<String, Integer> map = new HashMap<String, Integer>();
+        for (Iterator<String> x2it = allterms.iterator(); x2it.hasNext();) {
+            
+            final String term = (String) x2it.next();
+            if (term.length() == 0) {
+                continue;
+            }
+            
+            // Check the stop word //
+            if (stopWords.get(term) != null) {
+                continue;
+            } // End of the if //
+            
+            Integer ct = (Integer) map.get(term);
+            if (ct == null) {
+                map.put(term, new Integer(1));
+            } else {
+                map.put(term, new Integer(ct.intValue() + 1));
+            } // End of if - else
+            
+        } // End of the for     
+        final Map<String, Integer> sortedMap = this.sortMapByValue(map);    
+        return this.keyValueSet(sortedMap, maxnum);
+        
+    }
+    
 	/**
      * Simple Map Reduce; given a list of keywords, map the terms to a count of how
      * many times the term occurs in the list.
@@ -214,16 +307,20 @@ Example Test Case for map reduce usage:
      * @return
      */
     public Double [] mapReduceCount(final List<String> allterms, final int maxnum) {
-        
-        final List<Double> resList = new ArrayList<Double>();  
+                 
         final Set<Map.Entry<String, Integer>> set = mapReduce(allterms, maxnum);
+        return mapReduceCount(set, maxnum);
+    }
+    
+    public Double [] mapReduceCount(final Set<Map.Entry<String, Integer>> set, final int maxnum) {
         
+        final List<Double> resList = new ArrayList<Double>();
         // Iterate through the values and convert the values into
         // a set of doubles.        
         for (Map.Entry<String, Integer> entry : set) {
             resList.add(entry.getValue().doubleValue());
         }               
-        return resList.toArray(new Double[resList.size()]); 
+        return resList.toArray(new Double[resList.size()]);
     }
 
     /**
@@ -234,17 +331,35 @@ Example Test Case for map reduce usage:
      * @return
      */
     public Double [] mapReduceWordSize(final List<String> allterms, final int maxnum) {
-        
-        final List<Double> resList = new ArrayList<Double>();  
-        final Set<Map.Entry<String, Integer>> set = mapReduce(allterms, maxnum);
-        
+                 
+        final Set<Map.Entry<String, Integer>> set = mapReduce(allterms, maxnum);        
+        return this.mapReduceWordSize(set, maxnum);
+    }
+    
+    public Double [] mapReduceWordSize(final Set<Map.Entry<String, Integer>> set, final int maxnum) {
+        final List<Double> resList = new ArrayList<Double>();
         // Iterate through the values and convert the values into
         // a set of doubles.        
         for (Map.Entry<String, Integer> entry : set) {
             double l = (double) entry.getKey().toString().length();
             resList.add(l);
         }               
-        return resList.toArray(new Double[resList.size()]); 
+        return resList.toArray(new Double[resList.size()]);
+    }
+
+    /**
+     * @return the stopWords
+     */
+    public Map<String, String> getStopWords() {
+        return stopWords;
+    }
+
+
+    /**
+     * @param stopWords the stopWords to set
+     */
+    public void setStopWords(Map<String, String> stopWords) {
+        this.stopWords = stopWords;
     }
     
 } // End of the Class //
