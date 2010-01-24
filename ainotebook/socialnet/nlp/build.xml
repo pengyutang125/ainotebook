@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;      -->
+<!-- Created on : Thu Feb 26 16:30:14 EST 2009                   -->
+<!-- Tested with : Apache Ant version 1.7.0 compiled on December 13 2006 -->
+<!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+<!-- Also see : http://ant.apache.org/manual/OptionalTasks/junit.html -->
+<project name="Build File" default="package" basedir=".">
+    <property file="build.properties" /> 
+    <property name="build.dir"            value="${basedir}/build" />
+    <property name="build.classes.dir"    value="${basedir}/build/classes" />
+    <property name="src.dir"              value="${basedir}/src" />
+    <property name="lib.dir"              value="${basedir}/../../lib" />
+
+<target name="help" description="Initialization">
+            <tstamp/>
+            <echo>
+ Additional Targets and Usage:
+ -----------------
+ Note: edit the 'compile' and 'run.junit tasks to add more 
+       additional Java classes to compile or add junit test cases.
+ -----------------
+ compile     - to compile the source, use this target.  
+               To build the complete release package, 
+               you must compile this manually.
+ run.tests   - Run a java target to invoke the junit test suite.
+ test.html   - Run a junitreport target to pretty print 
+               the test output to a HTML report.
+ run.junit   - Run a junit target to invoke the junit test suite.
+               Pretty print the output to XML output.             
+ clean       - Remove the build and build classes directory.
+ -----------------
+</echo>
+    </target>    
+    
+    <path id="classpath">
+        <pathelement location="${lib.dir}/junit-4.4.jar" />
+    	<pathelement location="${lib.dir}/twitter/commons-httpclient-3.1.jar" />
+    	<pathelement location="${lib.dir}/twitter/commons-lang-2.4.jar" />
+		<pathelement location="${lib.dir}/twitter/joda-time-1.6.jar" />
+    	<pathelement location="${lib.dir}/twitter/json-lib-2.2.3-jdk15.jar" />	
+    </path>
+
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Target: Prepare -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="prepare" depends="help">
+        <mkdir dir="${build.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+        <mkdir dir="${build.dir}/html" />
+    </target>
+
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Target: Compile -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="compile" depends="prepare">
+        <javac deprecation="true"
+                target="1.5"
+                srcdir="${src.dir}"
+                destdir="${build.classes.dir}"
+        		includes="**/*.java" >
+
+            <classpath refid="classpath"/>
+
+        </javac>
+    </target>
+
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->        
+    <!-- Target: Build -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="package" depends="compile">
+    </target>
+	
+	<target name="jar" depends="prepare">
+		<jar destfile="${build.dir}/light_bot_commons.jar">
+	    	    <fileset dir="${build.classes.dir}"
+	    	             includes="**/*.class" />
+		</jar>
+	</target>
+		
+	<target name="deploy" depends="jar">
+		<copy file="${build.dir}/light_bot_commons.jar" tofile="${basedir}/../../lib/light_bot_commons.jar"/>
+	</target>
+	
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Target: Run Tests -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="run.tests" depends="clean,compile">
+    	<java classname="org.ca.testframework.TextTestRunnerSuite">
+			<classpath refid="classpath" />
+			<classpath>
+				<pathelement location="${build.classes.dir}" />
+			</classpath>    	            
+			<arg value="--empty" />
+		</java>
+    </target>
+
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Target: Run Tests Set 2 (ant junit task) -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="run.junit" depends="compile">
+        <junit printsummary="yes" fork="yes" haltonfailure="no">
+           <formatter type="xml"/>
+           <!-- *EDIT*: Include the List of Tests Here -->
+           <test name="org.ca.testframework.Test" />
+		   <classpath refid="classpath" />
+		   <classpath>
+			 <pathelement location="${build.classes.dir}" />
+		   </classpath>    	            
+        </junit>
+    </target>
+    
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Target Test HTML -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="test.html" depends="run.junit">
+      <junitreport todir="${build.dir}/html">     
+        <fileset dir="${basedir}">
+          <include name="TEST-*.xml"/>
+        </fileset>
+        <report format="frames" todir="${build.dir}/html" />
+      </junitreport>
+    </target>
+    
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Main Clean -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="clean">
+        <delete dir="${build.dir}" />
+    </target>
+
+<!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+<!-- End of Script -->
+<!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+</project>
+
