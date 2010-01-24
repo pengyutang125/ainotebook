@@ -50,16 +50,17 @@ public class ReportStatsDocument implements IReport {
     private static final int LEN_LABEL = 35;
     private static final int LEN_VAL   = 18;   
     private static final String LABELS [] = {
-        "N distinct words",        
-        "Mean Word Count Freq",
-        "Mean Word Size",
-        "N Characters (word count)",        
-        "Word Count Standard Dev",
-        "Word Size Standard Dev",
-        "Top Words",
-        "Document Size",
-        "Sum Total Words",
-        "Percent Unique Words",
+        "N distinct words",             // 0
+        "Mean Word Count Freq",         // 1
+        "Mean Word Size",               // 2
+        "N Characters (word count)",    // 3
+        "Word Count Standard Dev",      // 4 
+        "Word Size Standard Dev",       // 5
+        "Top Words",                    // 6
+        "Document Size",                // 7
+        "Sum Total Words",              // 8
+        "Percent Unique Words",         // 9
+        "Word Freq Percentiles",        // 10
     };
         
     private final DescriptiveStatistics stats;
@@ -120,6 +121,7 @@ public class ReportStatsDocument implements IReport {
         builder.append(field("" + wordSizeStats.getMean(), 2, LEN_LABEL, LEN_VAL, ' '));
         builder.append(field("" + wordSizeStats.getSum(), 3, LEN_LABEL, LEN_VAL, ' '));
         builder.append(field("" + wordSizeStats.getStandardDeviation(), 5, LEN_LABEL, LEN_VAL, ' '));
+        builder.append(field("" + this.toPercentile(), 10, LEN_LABEL, LEN_VAL, ' '));
         
         // Add the top words:
         builder.append(spaceFill(LABELS[6] + ':', LEN_LABEL, ' '));        
@@ -158,6 +160,26 @@ public class ReportStatsDocument implements IReport {
         } // End of the if - else //
     }
     
+    /**
+     * Convert the word frequency count stats into percentile numbers.
+     * 
+     * @return
+     */
+    public String toPercentile() {
+       
+        final StringBuilder builder = new StringBuilder(40);
+        //final double [] percs = { 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 0.99 };
+        final double [] percs = { 80.0, 85.0, 90, 95, 96, 97, 98, 98.2, 98.3, 99.8 };
+        for (int i = 0; i < percs.length; i++) {
+            
+            builder.append("(" + percs[i] + ")" + ":");
+            builder.append(noStopWordsStats.getPercentile(percs[i]));
+            builder.append(' ');
+            
+            
+        } // End of the For //        
+        return builder.toString();
+    }
     
     public String field(String data, int labelId, int len, int len2, char spaceChar) {
         final StringBuilder builder = new StringBuilder(40);

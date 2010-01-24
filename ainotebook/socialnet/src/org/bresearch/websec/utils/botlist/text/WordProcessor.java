@@ -156,5 +156,32 @@ public class WordProcessor {
 		output = output.replaceAll("[^\\s_0-9a-zA-Z]", "");		
 		return output.trim().toLowerCase();
 	}
-		
-}
+	
+    /**
+     * Left justified space fill.
+     * 
+     * @param data
+     * @param len
+     * @return
+     */
+    public String spaceFill(final Object dataObj, final int len, final char spaceChar) {
+        if (dataObj == null) {
+            return "";
+        }
+        final String data = dataObj.toString();        
+        if (data.length() < len) {
+            
+            // Fill a buffer with empty spaces //
+            final StringBuilder spaces = new StringBuilder(len + 2);
+            spaces.append(data);
+            final int spacesLeft = len - data.length();
+            for (int i = 0; i < spacesLeft; i++) {
+                spaces.append(spaceChar);
+            }
+            return spaces.toString();
+        } else {
+            return data;
+        } // End of the if - else //
+    }
+	
+} // End of the Class //

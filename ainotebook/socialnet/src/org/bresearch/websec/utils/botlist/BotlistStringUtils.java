@@ -51,115 +51,10 @@ import java.util.TreeMap;
 /**
  * @author bbrown
  */
-public class BotlistStringUtils {
+public class BotlistStringUtils implements IStringUtils {
 
-    /*
-**************     
-Example Test Case for map reduce usage (early version):
-**************
-<pre>
-   public static Set mapReduceLinkKeywords(final BotListEntityLinksDAO dao) {
-   
-        List allterms = new ArrayList();
-        List list = readLinksForDay(dao);
-        for (Iterator it = list.iterator(); it.hasNext();) {
-            BotListEntityLinks link = (BotListEntityLinks) it.next();
-            final String keywords = link.getKeywords();
-            if (keywords != null) {
-                final String[] words = keywords.split(" ");
-                if (words != null) {
-                    for (int i = 0; i < words.length; i++) {                        
-                        // Also check for stop words
-                        if ((BotListGenericUtils.STOP_WORDS_MAP.get(words[i]) == null) 
-                            && (words[i].length() > 1)) {
-                            allterms.add(words[i]);
-                        } // End of if - stop word check
-                    }
-                } // End of if - words null
-            } // End of if
-        } // End of For 
-        return BotListGenericUtils.mapReduce(allterms, 8);
-        
-    }
-</pre>
--------------          
-     */
-    
-	public static final String STOP_WORDS [] = {
-		"to",
-		"the",
-		"in",
-		"of",
-		"am",		
-		"is",
-		"for",
-		"a",
-		"on",
-		"by",			
-		"be",
-		"from",
-		"too",		
-		"and",		
-		"i",
-		"with",
-		"it",
-		"all",		
-		"at",						
-		"no",
-		"this",
-		"that",
-		"you",
-		"my",
-		"are",
-		"how",
-		"do",
-		"what",
-		"not",
-		"any",
-		"their",
-		"his",
-		"we",
-		"he",
-		"has",
-		"was",
-		"be",
-		"at",
-		"one",
-		"have",
-		"this",
-		"from",
-		"or",
-		"had",
-		"by",		
-		"but",
-		"some",
-		"what",
-		"there",
-		"we",
-		"can",
-		"out",
-		"other",
-		"were",
-		"all",
-		"your",
-		"when",
-		"or",
-		"our",
-		"such",
-		"which",
-		"may"
-	};
-		
-	
 	public static final Map<String, String> STOP_WORDS_MAP;
-	
-	static {
-		STOP_WORDS_MAP = new HashMap<String, String>();
-		for (int ix = 0; ix < STOP_WORDS.length; ix++) {
-			STOP_WORDS_MAP.put(STOP_WORDS[ix], "0");
-		}
-	} // End of Static Block //
-	
+		
 	private Map<String, String> stopWords = STOP_WORDS_MAP;
 	
 	/** 
@@ -361,5 +256,84 @@ Example Test Case for map reduce usage (early version):
     public void setStopWords(Map<String, String> stopWords) {
         this.stopWords = stopWords;
     }
+    
+    public static final String STOP_WORDS [] = {
+        "to",
+        "the",
+        "in",
+        "of",
+        "am",       
+        "is",
+        "for",
+        "a",
+        "on",
+        "by",           
+        "be",
+        "from",
+        "too",      
+        "and",      
+        "i",
+        "with",
+        "it",
+        "all",      
+        "at",                       
+        "no",
+        "this",
+        "that",
+        "you",
+        "my",
+        "are",
+        "how",
+        "do",
+        "what",
+        "not",
+        "any",
+        "their",
+        "his",
+        "we",
+        "he",
+        "has",
+        "was",
+        "be",
+        "at",
+        "one",
+        "have",
+        "this",
+        "from",
+        "or",
+        "had",
+        "by",       
+        "but",
+        "some",
+        "what",
+        "there",
+        "we",
+        "can",
+        "out",
+        "other",
+        "were",
+        "all",
+        "your",
+        "when",
+        "or",
+        "our",
+        "such",
+        "which",
+        "may",
+        "an",
+        "also",
+        "us",
+        "as",
+        "so",
+        "s",
+        "me"
+    };
+        
+    static {
+        STOP_WORDS_MAP = new HashMap<String, String>();
+        for (int ix = 0; ix < STOP_WORDS.length; ix++) {
+            STOP_WORDS_MAP.put(STOP_WORDS[ix], "0");
+        }
+    } // End of Static Block //
     
 } // End of the Class //
