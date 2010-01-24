@@ -56,7 +56,7 @@ public class ReportDocument implements IReport {
     private boolean stopWords; 
     private int wordListSize = 0;
     private int documentSize = 0;    
-    private int numTopWords = 15;
+    private int numTopWords = 20;
     
     private boolean displayDocument = false;
     
