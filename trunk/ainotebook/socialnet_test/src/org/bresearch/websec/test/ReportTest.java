@@ -47,6 +47,10 @@ import org.bresearch.websec.test.nontest.ConstJavaDoc;
 import org.bresearch.websec.utils.botlist.BotlistDocument;
 import org.bresearch.websec.utils.botlist.report.IReport;
 import org.bresearch.websec.utils.botlist.report.ReportDocument;
+import org.bresearch.websec.utils.botlist.report.ReportModule;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 public class ReportTest extends TestCase {
     
@@ -59,25 +63,16 @@ public class ReportTest extends TestCase {
         System.out.println(report.toReport());
     }
 
-    public void test1b() {
-        
+    public void test2() {
+                
         BotlistDocument doc = new BotlistDocument("My name is bob jones bob bob bob");        
         ReportDocument report = new ReportDocument(doc, true);
         
         System.out.println();
+        System.out.println("My name is bob jones bob bob bob");
         System.out.println(report.toReport());
     }
 
-    
-    public void test2() {
-               
-        BotlistDocument doc = new BotlistDocument("My name is bob jones");        
-        ReportDocument report = new ReportDocument(doc, false);
-        
-        System.out.println();
-        System.out.println(report.toReport());
-    }
-    
     public void test3() {
         
         BotlistDocument doc = new BotlistDocument(ConstJavaDoc.JAVA);        
@@ -85,6 +80,15 @@ public class ReportTest extends TestCase {
         System.out.println();
         System.out.println(report.toReport());
     }
+    
+    public void test4() {
+        
+        final Injector injector = Guice.createInjector(new ReportModule(ConstJavaDoc.JAVA, true));             
+        IReport report = injector.getInstance(ReportDocument.class);
+        System.out.println();
+        System.out.println(report.toReport());
+    }
+    
     
     public static void main(String args[]) {
         
