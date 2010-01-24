@@ -37,89 +37,59 @@
  */
 package org.bresearch.websec.utils.botlist.report;
 
-import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.math.stat.descriptive.DescriptiveStatistics;
-import org.bresearch.websec.utils.botlist.BotlistDocument;
 import org.bresearch.websec.utils.botlist.BotlistStringUtils;
+import org.bresearch.websec.utils.botlist.IBotlistDocument;
 import org.bresearch.websec.utils.botlist.stats.DocumentWordStats;
 
-public class ReportDocument implements IReport {
+import com.google.inject.Inject;
 
-    public static final char NL = '\n';
+public class ReportDocument implements IReport {
     
-    private static final int LEN_LABEL = 35;
-    private static final int LEN_VAL   = 18;   
-    private static final String LABELS [] = {
-        "N distinct words",        
-        "Mean Word Count Freq",
-        "Mean Word Size",
-        "N Characters (word count)",        
-        "Word Count Standard Dev",
-        "Word Size Standard Dev",
-        "Top Words",
-        "Document Size",
-        "Sum Total Words",
-    };
-    
-    private final BotlistDocument document;
+    private final IBotlistDocument document;
     private BotlistStringUtils stringUtils = new BotlistStringUtils();
     private boolean stopWords; 
     private int wordListSize = 0;
-    private int documentSize = 0;
-    
+    private int documentSize = 0;    
     private int numTopWords = 15;
     
-    public ReportDocument(final BotlistDocument document, final boolean stopWords) {
+    private boolean displayDocument = false;
+    
+    @Inject
+    public ReportDocument(final IBotlistDocument document, final boolean stopWords) {
         this.document = document;
         this.stopWords = stopWords;
     }
     
-    public String toReport() {
-        
-        final StringBuilder builder = new StringBuilder(40);
+    public ReportStatsDocument toReportDocument() {
+                
         final DescriptiveStatistics stats = this.toReportStats(this.stringUtils);
-        final DescriptiveStatistics wordSizeStats = this.toReportStatsWordSize(this.stringUtils);
-        
+        final DescriptiveStatistics wordSizeStats = this.toReportStatsWordSize(this.stringUtils);        
         final ReportDocument noStopWordsReport = this.build(false);
         final DescriptiveStatistics noStopWordsStats = noStopWordsReport.toReportStats(this.stringUtils);
         final DescriptiveStatistics noStopWordsWordSizeStats = noStopWordsReport.toReportStatsWordSize(this.stringUtils);                
         final Set<Map.Entry<String, Integer>> topWords = this.topWords(this.getNumTopWords(), true, this.stringUtils);
+       
+        final ReportStatsDocument statsReport = new ReportStatsDocument(
+                this.getDocumentSize(),
+                this.isStopWords(),
+                stats,
+                wordSizeStats,
+                noStopWordsReport,
+                noStopWordsStats,
+                noStopWordsWordSizeStats,
+                topWords);
+        return statsReport;
         
-        ///////////////////////////////////////////////////
-        
-        builder.append("Report Document - " + (new Date()) + " - document-size=" + this.getDocumentSize());                
-        builder.append(NL);
-        
-        builder.append(field("" + this.documentSize, 7, LEN_LABEL, LEN_VAL, ' '));
-        // Next Section Includes Stop Words
-        builder.append(noStopWordsReport.isStopWords() ? "<(1) Common Stop Words Removed!>" : "<(1) No Stop Word Removal>").append(NL);
-        builder.append(field("" + noStopWordsStats.getN(), 0, LEN_LABEL, LEN_VAL, ' '));
-        builder.append(field("" + noStopWordsStats.getSum(), 8, LEN_LABEL, LEN_VAL, ' '));
-        builder.append(field("" + noStopWordsWordSizeStats.getMean(), 2, LEN_LABEL, LEN_VAL, ' '));
-        builder.append(field("" + noStopWordsWordSizeStats.getSum(), 3, LEN_LABEL, LEN_VAL, ' '));
-        
-        // Next Section Includes Stop Words
-        builder.append(this.stopWords ? "<(2) Common Stop Words Removed!>" : "<(2) No Stop Word Removal>").append(NL);
-        builder.append(field("" + stats.getN(), 0, LEN_LABEL, LEN_VAL, ' '));        
-        builder.append(field("" + stats.getSum(), 8, LEN_LABEL, LEN_VAL, ' '));
-        builder.append(field("" + stats.getMean(), 1, LEN_LABEL, LEN_VAL, ' '));
-        builder.append(field("" + stats.getStandardDeviation(), 4, LEN_LABEL, LEN_VAL, ' '));        
-        builder.append(field("" + wordSizeStats.getMean(), 2, LEN_LABEL, LEN_VAL, ' '));
-        builder.append(field("" + wordSizeStats.getSum(), 3, LEN_LABEL, LEN_VAL, ' '));
-        builder.append(field("" + wordSizeStats.getStandardDeviation(), 5, LEN_LABEL, LEN_VAL, ' '));
-        
-        // Add the top words:
-        builder.append(spaceFill(LABELS[6] + ':', LEN_LABEL, ' '));        
-        builder.append(topWords).append('\n');
-        builder.append("<End of Report>");
-        builder.append(NL);
-        return builder.toString();
-        
+    }
+    
+    public String toReport() {
+        return toReportDocument().toReport();
     }
     
     /**
@@ -181,45 +151,6 @@ public class ReportDocument implements IReport {
     }
     
     /**
-     * Left justified space fill.
-     * 
-     * @param data
-     * @param len
-     * @return
-     */
-    public String spaceFill(final Object dataObj, final int len, final char spaceChar) {
-        if (dataObj == null) {
-            return "";
-        }
-        final String data = dataObj.toString();        
-        if (data.length() < len) {
-            
-            // Fill a buffer with empty spaces //
-            final StringBuilder spaces = new StringBuilder(len + 2);
-            spaces.append(data);
-            final int spacesLeft = len - data.length();
-            for (int i = 0; i < spacesLeft; i++) {
-                spaces.append(spaceChar);
-            }
-            return spaces.toString();
-        } else {
-            return data;
-        } // End of the if - else //
-    }
-    
-    
-    public String field(String data, int labelId, int len, int len2, char spaceChar) {
-        final StringBuilder builder = new StringBuilder(40);
-        
-        builder.append(spaceFill(LABELS[labelId] + ':', len, spaceChar));
-        builder.append('[');
-        builder.append(spaceFill(data, len2, spaceChar));
-        builder.append(']');
-        builder.append(NL);
-        return builder.toString();
-    }
-    
-    /**
      * @return the stopWords
      */
     public boolean isStopWords() {
@@ -274,7 +205,12 @@ public class ReportDocument implements IReport {
     public void setNumTopWords(int numTopWords) {
         this.numTopWords = numTopWords;
     }
-    
-    
-    
+
+    /**
+     * @param displayDocument the displayDocument to set
+     */
+    public void setDisplayDocument(boolean displayDocument) {
+        this.displayDocument = displayDocument;
+    }
+            
 } // End of the Class //

@@ -37,10 +37,6 @@
  */
 package org.bresearch.websec.utils.botlist;
 
-import org.bresearch.websec.utils.botlist.text.WordProcessor;
-
-import com.google.inject.Inject;
-
 /**
  * Simple document to keep track of string data is formatted
  * or not formatted.
@@ -48,21 +44,8 @@ import com.google.inject.Inject;
  * @author BerlinBrown
  *
  */
-public class BotlistDocument implements IBotlistDocument {
+public interface IBotlistDocument {
 
-    private final String inputRawDocument;
-    
-    @Inject
-    public BotlistDocument(final String inputRawDocument) {
-        this.inputRawDocument = inputRawDocument;
-    }
-
-    public String formatDocument() {
-        return (new WordProcessor()).filterOnlyAlphaNumeric(this.inputRawDocument);
-    }
-    
-    public String toString() {
-        return this.inputRawDocument;
-    }
-    
+    public String formatDocument();
+        
 } // End of the Class //

@@ -35,34 +35,40 @@
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.bresearch.websec.utils.botlist;
+package org.bresearch.websec.utils.botlist.report;
 
-import org.bresearch.websec.utils.botlist.text.WordProcessor;
+import org.bresearch.websec.utils.botlist.BotlistDocument;
+import org.bresearch.websec.utils.botlist.IBotlistDocument;
 
-import com.google.inject.Inject;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 
-/**
- * Simple document to keep track of string data is formatted
- * or not formatted.
- * 
- * @author BerlinBrown
- *
- */
-public class BotlistDocument implements IBotlistDocument {
+public class ReportModule extends AbstractModule {
 
-    private final String inputRawDocument;
+    private final String document;
+    private final boolean initStopWords;
     
-    @Inject
-    public BotlistDocument(final String inputRawDocument) {
-        this.inputRawDocument = inputRawDocument;
-    }
-
-    public String formatDocument() {
-        return (new WordProcessor()).filterOnlyAlphaNumeric(this.inputRawDocument);
+    public ReportModule(final String docString, final boolean initStopWords) {
+        this.document = docString;
+        this.initStopWords = initStopWords;
     }
     
-    public String toString() {
-        return this.inputRawDocument;
+    @Override
+    protected void configure() {     
+        
+        /*
+         Use the default bind or the provides method: 
+         ---------------------------
+         bind(String.class).toInstance(this.document);
+         bind(IBotlistDocument.class).to(BotlistDocument.class);
+         */
+        bind(boolean.class).toInstance(this.initStopWords);
+    }
+    
+    @Provides
+    IBotlistDocument provideDocument() {
+        final IBotlistDocument doc = new BotlistDocument(this.document);        
+        return doc;
     }
     
 } // End of the Class //
