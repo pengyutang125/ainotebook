@@ -18,7 +18,7 @@ public class StatsFile {
         System.out.println("Loading file");
         
         FileUtil util = new FileUtil();
-        String data = util.readLinesRaw(new File("./misc/speech/obama2010.txt"));        
+        String data = util.readLinesRaw(new File("./misc/internet/troll1.txt"));        
         final Injector injector = Guice.createInjector(new ReportModule(data, true));             
         final IReport report = injector.getInstance(ReportDocument.class);
         
