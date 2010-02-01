@@ -87,6 +87,14 @@ public class Sentence {
         return builder.toString();
     }
     
+    public String toFullWordForm() {               
+        final StringBuilder builder = new StringBuilder(40);
+        for (NLPWord word : sentence) {            
+            builder.append(word.getTerm()).append(' ');            
+        } // End of the for //        
+        return builder.toString();
+    }
+    
     public String toDistinctFullWordForm() {               
         final StringBuilder builder = new StringBuilder(40);
         for (NLPWord word : sentence) {
