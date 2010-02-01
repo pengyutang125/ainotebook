@@ -11,6 +11,7 @@ public class NLPDocumentStore {
     
     private final List<Sentence> sentences;
     private Map<String, List<Sentence>> documentStore = new LinkedHashMap<String, List<Sentence>>();
+    private int minCommonSentReport = -1;
     
     public NLPDocumentStore(final List<Sentence> sentences) {
         this.sentences = sentences;
@@ -74,9 +75,15 @@ public class NLPDocumentStore {
     public void printStore() {
         
         System.out.println("+ <Document Store> :");
-        for (Map.Entry<String, List<Sentence>> storeEntry : this.documentStore.entrySet()) {
+        for (Map.Entry<String, List<Sentence>> storeEntry : this.documentStore.entrySet()) {            
             final String formatttedNLPSent = storeEntry.getKey();
             final List<Sentence> valSent = storeEntry.getValue();
+            
+            if (this.minCommonSentReport >= 2 && (valSent.size() < this.minCommonSentReport)) {
+                // Continue with our min common sent threshold //
+                continue;
+            }
+            
             final String flagDupl = (valSent.size() >= 2) ? "***" : "";
             System.out.println(this.cleanNLPSentence(formatttedNLPSent) + " ---> [" + valSent.size()+ flagDupl +  "]");
             for (Sentence printSent : valSent) {
@@ -85,6 +92,20 @@ public class NLPDocumentStore {
             System.out.println();
         } // End of the for //
         System.out.println("<End of Document Store>");
+    }
+
+    /**
+     * @return the minCommonSentReport
+     */
+    public int getMinCommonSentReport() {
+        return minCommonSentReport;
+    }
+
+    /**
+     * @param minCommonSentReport the minCommonSentReport to set
+     */
+    public void setMinCommonSentReport(int minCommonSentReport) {
+        this.minCommonSentReport = minCommonSentReport;
     }
     
 } // End of the Class //
