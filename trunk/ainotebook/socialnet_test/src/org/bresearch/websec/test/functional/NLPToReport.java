@@ -25,7 +25,7 @@ public class NLPToReport {
         FileUtil util = new FileUtil();
         //final String data = util.readLinesRaw(new File("./misc/oz_small.txt"));        
         //final String data = util.readLinesRaw(new File("./misc/speech/bush2009.txt"));
-        final String data = util.readLinesRaw(new File("./misc/speech/obama2010.txt"));
+        final String data = util.readLinesRaw(new File("./misc/med.txt"));
         
         final String modelPath = "../socialnet/models/tag.bin.gz";
         final String dictFile = "../socialnet/models/tagdict";
@@ -40,6 +40,7 @@ public class NLPToReport {
         
         final NLPDocumentStore store = new NLPDocumentStore(sentences);
         final String doc = store.buildDocument();
+        store.setMinCommonSentReport(2);
         store.printStore();
         return doc;
     }
@@ -62,7 +63,7 @@ public class NLPToReport {
     
     public static void main(String [] args) throws Exception {
         
-        System.out.println("Loading file");
+        System.out.println("Loading file : " + args.length);
         final String doc = buildDocument(getSentences());                
         report(doc);
     }
