@@ -99,13 +99,7 @@ public class ParseDocument implements IParseDocument {
             word.parse();
             newSent.addWord(word);
                         
-        } // End of the for //
-        
-        /*
-        System.out.println(newSent);        
-        System.out.println(newSent.toDistinctFullWordForm());
-         */
-        
+        } // End of the for //        
         return newSent;
     }
         
