@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.List;
 
 import org.bresearch.websec.parse.IParseDocument;
+import org.bresearch.websec.parse.NLPDocumentStore;
 import org.bresearch.websec.parse.ParseDocument;
 import org.bresearch.websec.parse.ParseDocumentModule;
 import org.bresearch.websec.parse.model.Sentence;
@@ -22,7 +23,9 @@ public class NLPToReport {
     public static List<Sentence> getSentences() throws Exception {        
         
         FileUtil util = new FileUtil();
-        String data = util.readLinesRaw(new File("./misc/oz_small.txt"));        
+        //final String data = util.readLinesRaw(new File("./misc/oz_small.txt"));        
+        //final String data = util.readLinesRaw(new File("./misc/speech/bush2009.txt"));
+        final String data = util.readLinesRaw(new File("./misc/speech/obama2010.txt"));
         
         final String modelPath = "../socialnet/models/tag.bin.gz";
         final String dictFile = "../socialnet/models/tagdict";
@@ -35,19 +38,12 @@ public class NLPToReport {
     
     public static String buildDocument(final List<Sentence> sentences) {
         
-        StringBuilder builder = new StringBuilder(100);
-        for (Sentence sent : sentences) {
-            
-            final boolean hasOneTerm = sent.hasOnlyOneTerm(sent.toDistinctFullWordForm());
-            if (!hasOneTerm) {
-                builder.append(sent.toDistinctFullWordForm());
-                builder.append(' ');
-            }
-        } // End of the for //
-        return builder.toString();
+        final NLPDocumentStore store = new NLPDocumentStore(sentences);
+        final String doc = store.buildDocument();
+        store.printStore();
+        return doc;
     }
-    
-    
+        
     public static void report(String doc) {
         String data = doc;        
         final Injector injector = Guice.createInjector(new ReportModule(data, true));             
