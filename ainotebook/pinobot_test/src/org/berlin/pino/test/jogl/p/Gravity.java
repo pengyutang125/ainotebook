@@ -63,7 +63,7 @@ public class Gravity implements GLEventListener, MouseListener,
         
         GLCanvas canvas = new GLCanvas();
         canvas.addGLEventListener(new Gravity());
-        canvas.setSize(800, 600);
+        canvas.setSize(900, 200);
         /*        
         final Animator animator = new Animator(canvas);
         frame.addWindowListener(new WindowAdapter() {
@@ -96,7 +96,7 @@ public class Gravity implements GLEventListener, MouseListener,
                 + drawable.getChosenGLCapabilities());
 
         gl.setSwapInterval(1);
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         gl.glShadeModel(GL.GL_FLAT); 
     }
 
@@ -163,7 +163,8 @@ public class Gravity implements GLEventListener, MouseListener,
 
         final GL gl = drawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        
         gl.glLoadIdentity();
         gl.glTranslatef(0.0f, 0.0f, -6.0f);
                 
@@ -194,9 +195,6 @@ public class Gravity implements GLEventListener, MouseListener,
         gl.glEnd();
         gl.glPopMatrix();        
         gl.glFlush();
-        
-        // Continue with animation        
-        mass.simulate();
     }
 
     /////////////////////////////////////////////////////////////////
