@@ -37,16 +37,18 @@
  */
 package org.berlin.pino.test.functional.jogl;
 
+import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.media.opengl.GLCanvas;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import org.berlin.pino.test.jogl.p.Gravity;
+import org.berlin.pino.test.jogl.box.GLBox;
 
 import com.sun.opengl.util.Animator;
 
@@ -64,22 +66,26 @@ public class SmallerGLFrameWin extends JFrame {
 
     public void buildFrame() {
         
+        final JPanel panel = new JPanel();
         final JTextField text  = new JTextField("http://www.botnode.com");
         final JTextField text2 = new JTextField("http://www.google.com");
-        
-        final BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);       
-        this.getContentPane().setLayout(layout);
-        this.add(text);
-        
-        final Gravity gl = new Gravity();
-        final GLCanvas canvas = gl.buildCanvas();
+                
+        final BoxLayout layout = new BoxLayout(panel, BoxLayout.Y_AXIS);                
+        // this.getContentPane().setLayout(layout);                      
+        panel.setLayout(layout);
+
+        final GLCanvas canvas = (new GLBox.Builder()).buildCanvas();
         final Animator animator = new Animator(canvas);
         
-        this.add(canvas);
-        this.add(text2);
+        // Add components //        
+        panel.add(text);                               
+        panel.add(canvas);
+        panel.add(text2);
+        panel.setPreferredSize(new Dimension(600, 400));
         
-        this.setLocation(400, 200);
-        this.setSize(440, 300);
+        // Add the panel to the main frame
+        this.add(panel);
+        this.setLocation(400, 200);        
         this.setResizable(false);                
         
         /////////////////////         
@@ -96,7 +102,8 @@ public class SmallerGLFrameWin extends JFrame {
                 }).start();
             }
         });        
-        animator.start();       
+        animator.start();
+        this.pack();
     }
     
     public static void main(String [] args) {
@@ -104,8 +111,9 @@ public class SmallerGLFrameWin extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 final SmallerGLFrameWin demo = new SmallerGLFrameWin();
-                demo.buildFrame();
+                demo.buildFrame();                
                 demo.setVisible(true);
+                
             }
         });
         

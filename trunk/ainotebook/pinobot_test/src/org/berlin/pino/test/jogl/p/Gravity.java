@@ -64,24 +64,6 @@ public class Gravity implements GLEventListener, MouseListener,
         GLCanvas canvas = new GLCanvas();
         canvas.addGLEventListener(new Gravity());
         canvas.setSize(900, 200);
-        /*        
-        final Animator animator = new Animator(canvas);
-        frame.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                // Run this on another thread than the AWT event queue to
-                // make sure the call to Animator.stop() completes before
-                // exiting
-                new Thread(new Runnable() {
-                    public void run() {
-                        animator.stop();
-                        System.exit(0);
-                    }
-                }).start();
-            }
-        });
-        frame.setVisible(true);     
-        animator.start();
-        */
         return canvas;
     }
 
@@ -92,8 +74,7 @@ public class Gravity implements GLEventListener, MouseListener,
         GL gl = drawable.getGL();
 
         System.err.println("INIT GL IS: " + gl.getClass().getName());
-        System.err.println("Chosen GLCapabilities: "
-                + drawable.getChosenGLCapabilities());
+        System.err.println("Chosen GLCapabilities: " + drawable.getChosenGLCapabilities());
 
         gl.setSwapInterval(1);
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -199,8 +180,7 @@ public class Gravity implements GLEventListener, MouseListener,
 
     /////////////////////////////////////////////////////////////////
     
-    public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
-            boolean deviceChanged) {
+    public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
 
     }
 
