@@ -1,0 +1,51 @@
+#####################################################################
+# README
+#
+#
+#####################################################################
+
+Main Components:
+ 2/6/2009
+--------------------
+
+ 
+ JFrame, JPanel, GLPanel, JTextArea, JTextField, JButton
+
+ ----------------
+ | JPanel/All   | -- (1) Object One (non-visible) [ JPanel ]
+ ----------------      
+      |
+      v
+ ----------------
+ | GL Panel     | -- (2) Object Two (80px height) [ GLPanel ]
+ ----------------      
+      |
+      v
+ ----------------
+ | Chat Window  | -- (3) Object Three (infinite height) [ JTextArea ]
+ ----------------      
+      |
+      v
+ ----------------------
+ | Command Input      | -- (4) Object Four [ JTextField ]
+ ----------------------
+      |
+      v      
+ ----------------------
+ | JPanel/Buttons     | -- (5) Object Four [ JPanel ]
+ ----------------------      
+      |
+      v
+ ----------------------
+ | Button/Enter       | -- (6) Object Six [ JButton ]
+ ----------------------      
+      |
+      v      
+ ----------------------
+ | Button/Clear       | -- (7) Object Seven [ JButton ]
+ ----------------------      
+      |
+      v      
+ ----------------------
+ | Button/Exit        | -- (8) Object Eight [ JButton ]
+ ----------------------      
