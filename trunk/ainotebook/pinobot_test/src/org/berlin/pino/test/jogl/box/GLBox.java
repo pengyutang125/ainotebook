@@ -163,8 +163,8 @@ public class GLBox implements GLEventListener, MouseListener, MouseMotionListene
         gl.glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom Right Of The Quad (Right)
         gl.glEnd(); // Done Drawing The Quad
 
-        rtri += 0.4f;
-        rquad -= 0.45f;               
+        rtri += 1.6f;
+        rquad -= 1.65f;               
         this.bounds();
         return gl;
 

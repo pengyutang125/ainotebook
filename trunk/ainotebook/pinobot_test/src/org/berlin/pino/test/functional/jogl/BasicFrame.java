@@ -80,7 +80,7 @@ public class BasicFrame extends JFrame {
         this.setResizable(false);
         
         /////////////////////         
-        addWindowListener(new WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 // Run this on another thread than the AWT event queue to
                 // make sure the call to Animator.stop() completes before
