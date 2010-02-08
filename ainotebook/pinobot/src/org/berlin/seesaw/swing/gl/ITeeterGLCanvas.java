@@ -37,10 +37,8 @@
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.seesaw.swing;
+package org.berlin.seesaw.swing.gl;
 
-public interface TeeterButton {
+public interface ITeeterGLCanvas {
 
-    public void setText(final String text);
-    
-} // End of the Interface //
+}

@@ -39,8 +39,6 @@
  */
 package org.berlin.seesaw.swing;
 
-public interface TeeterButton {
+public interface ITeeterTextArea {
 
-    public void setText(final String text);
-    
-} // End of the Interface //
+}
