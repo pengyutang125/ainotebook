@@ -1,4 +1,5 @@
 /**
+ *
  * Copyright (c) 2006-2010 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
  *
  * http://www.opensource.org/licenses/bsd-license.php
@@ -29,18 +30,14 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Date: 2/15/2010 
+ * Date: 2/15/2010
  *   
  * Home Page: http://botnode.com/
  * 
- * Description: Seesaw (Teeter Totter) Swing Framework
- * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.seesaw.swing;
+package org.berlin.seesaw.app;
 
-public interface TeeterButton {
+public interface ITeeterWindow {
 
-    public void setText(final String text);
-    
-} // End of the Interface //
+}

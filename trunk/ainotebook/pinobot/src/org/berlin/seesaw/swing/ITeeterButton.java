@@ -39,7 +39,7 @@
  */
 package org.berlin.seesaw.swing;
 
-public interface TeeterButton {
+public interface ITeeterButton {
 
     public void setText(final String text);
     

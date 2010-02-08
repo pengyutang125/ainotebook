@@ -39,8 +39,10 @@
  */
 package org.berlin.seesaw.swing;
 
-public interface TeeterButton {
+import java.awt.event.WindowAdapter;
 
-    public void setText(final String text);
+public interface ITeeterFrame {
+
+    public void addWindowListener(final WindowAdapter winAdapter);
     
 } // End of the Interface //
