@@ -27,7 +27,7 @@ Main Components:
       |
       v
  ----------------------
- | Command Input      | -- (4) Object Four [ JTextField ]
+ | Command Input      | -- (4) Object Four [ JTextArea ]
  ----------------------
       |
       v      
