@@ -13,23 +13,55 @@ import org.berlin.seesaw.swing.ITeeterButton;
 import org.berlin.seesaw.swing.ITeeterEventWorker;
 import org.berlin.seesaw.swing.TeeterButton;
 
-public class TeeterButtonTest {
+public class TeeterPanelTest {
 
-    public static JComponent buildMyComponent() {
+    public static ITeeterButton createEnterButton() {
         
         final ITeeterEventWorker eventWorker = new BaseWorker() {
             public void execute() {
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                System.out.println("Tested!");
+                System.out.println("Tested - Enter!");
             }
         };        
-        final ITeeterButton button = new TeeterButton(new JButton("Push Me!"), eventWorker);
-        button.addEventHandler();
-        return button.getComponent();
+        return new TeeterButton(new JButton("Enter"), eventWorker);
+    }
+    
+    public static ITeeterButton createExitButton() {
+        
+        final ITeeterEventWorker eventWorker = new BaseWorker() {
+            public void execute() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Tested - Exit!");
+            }
+        };        
+        return new TeeterButton(new JButton("Exit"), eventWorker);                
+    }
+    
+    public static ITeeterButton createClearButton() {
+        
+        final ITeeterEventWorker eventWorker = new BaseWorker() {
+            public void execute() {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                System.out.println("Tested - Clear!");
+            }
+        };        
+        return new TeeterButton(new JButton("Clear"), eventWorker);
+    }
+    
+    public static ITeeterPanel buildPanel() {
+        final 
     }
     
     public static void main(String [] args) {
