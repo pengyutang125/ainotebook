@@ -1,4 +1,4 @@
-package org.berlin.pino.win;
+package org.berlin.pino.win.base;
 
 import javax.swing.JPanel;
 

@@ -35,7 +35,7 @@
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.pino.win;
+package org.berlin.pino.win.base;
 
 import org.berlin.seesaw.app.ITeeterWindow;
 import org.berlin.seesaw.swing.ITeeterButton;
