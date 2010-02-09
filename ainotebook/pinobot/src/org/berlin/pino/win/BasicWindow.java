@@ -8,9 +8,6 @@ import org.berlin.seesaw.swing.ITeeterTextArea;
 import org.berlin.seesaw.swing.gl.ITeeterGLCanvas;
 import org.berlin.seesaw.swing.layout.ITeeterLayout;
 
-/**
- * @author AP417
- */
 public class BasicWindow implements IBasicWindow {
 
     private ITeeterLayout   layout;
