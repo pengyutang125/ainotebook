@@ -39,6 +39,58 @@
  */
 package org.berlin.seesaw.swing;
 
+import javax.swing.JComponent;
+
+/**
+ */
 public interface ITeeterTextArea {
 
-}
+    /**
+     * Method setText.
+     * @param text String
+     */
+    public void setText(final String text);     
+    
+    /**
+     * Method getText.
+     * @return String
+     */
+    public String getText();    
+    
+    /**
+     * Method getComponent.
+     * @return JComponent
+     */
+    public JComponent getComponent();
+    
+    /**
+     * Method setColumnsAndRows.
+     * @param cols int
+     * @param rows int
+     */
+    public void setColumnsAndRows(final int cols, final int rows);
+    
+    /**
+     * Method setLineWrap.
+     * @param lineWrap boolean
+     */
+    public void setLineWrap(final boolean lineWrap);     
+    
+    /**
+     * Method setCaretPosition.
+     * @param pos int
+     */
+    public void setCaretPosition(final int pos);
+    
+    /**
+     * Method setEditable.
+     * @param b boolean
+     */
+    public void setEditable(final boolean b);
+    
+    /**
+     * Method defaultSettings.
+     */
+    public void defaultSettings();
+    
+} // End of the Interface //

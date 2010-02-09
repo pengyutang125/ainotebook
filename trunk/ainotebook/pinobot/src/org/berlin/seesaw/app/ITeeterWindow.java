@@ -38,6 +38,10 @@
  */
 package org.berlin.seesaw.app;
 
+import javax.swing.JPanel;
+
 public interface ITeeterWindow {
 
+    public JPanel getComponent();
+    
 }
