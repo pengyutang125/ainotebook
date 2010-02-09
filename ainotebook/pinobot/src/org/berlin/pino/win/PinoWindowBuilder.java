@@ -54,8 +54,6 @@ import org.berlin.seesaw.swing.TeeterButton;
 import org.berlin.seesaw.swing.layout.DefaultTeeterLayout;
 import org.berlin.seesaw.swing.layout.ITeeterLayout;
 
-/**
- */
 public class PinoWindowBuilder extends AbstractWindowBuilder {
      
     /**
@@ -131,6 +129,10 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
     
     /////////////////////////////////////////////////////////////////
     
+    /**
+     * Method withOutputTextArea.
+     * @return PinoWindowBuilder
+     */
     public PinoWindowBuilder withOutputTextArea() {
         final ITeeterTextArea textArea = new PinoOutputTextArea(new JTextArea(""));
         textArea.defaultSettings();
@@ -139,6 +141,10 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
         return this;
     }
     
+    /**
+     * Method withInputCommandArea.
+     * @return PinoWindowBuilder
+     */
     public PinoWindowBuilder withInputCommandArea() {
         final ITeeterTextArea textArea = new PinoCommandInputArea(new JTextArea(""));
         textArea.defaultSettings();
@@ -147,6 +153,10 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
     }
         
     
+    /**
+     * Method withButtonPanel.
+     * @return PinoWindowBuilder
+     */
     public PinoWindowBuilder withButtonPanel() {
         
         final ITeeterButton enterButton = this.createEnterButton();
@@ -170,6 +180,10 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
     }
     
     
+    /**
+     * Method withMainPanel.
+     * @return PinoWindowBuilder
+     */
     public PinoWindowBuilder withMainPanel() {
               
         this.withOutputTextArea();
