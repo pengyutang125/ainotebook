@@ -42,6 +42,12 @@ package org.berlin.seesaw.swing;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
+/**
+ * An implementation of a "push" button.
+ * 
+ * @version 1.1 02/02/2010
+ * @author Berlin Brown 
+ */
 public class TeeterButton implements ITeeterButton {
 
     private final JButton button;
@@ -52,6 +58,13 @@ public class TeeterButton implements ITeeterButton {
         this.eventWorker = eventWorker;
     }
     
+    /**
+     * Sets the button's text.
+     * 
+     * @param text the string used to set the text
+     * @see #getText
+     * 
+     */
     public void setText(final String text) {
         this.button.setText(text);
     }
