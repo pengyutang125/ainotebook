@@ -33,32 +33,65 @@
  *   
  * Home Page: http://botnode.com/
  * 
+ * Description: Seesaw (Teeter Totter) Swing Framework
+ * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.pino.win;
+package org.berlin.seesaw.swing.layout;
 
-import org.berlin.seesaw.app.ITeeterWindow;
-import org.berlin.seesaw.swing.ITeeterButton;
-import org.berlin.seesaw.swing.ITeeterPanel;
-import org.berlin.seesaw.swing.ITeeterTextArea;
-import org.berlin.seesaw.swing.gl.ITeeterGLCanvas;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
-public interface IBasicWindow extends ITeeterWindow {
+public class DefaultTeeterLayout implements ITeeterLayout {
 
-    public void setWindowPanel(final ITeeterPanel panel);
+    private GridBagLayout layout = new GridBagLayout();   
+    private GridBagConstraints constraints = new GridBagConstraints();
+    
+    public void defaultSettings() {        
 
-    public void setGLCanvas(final ITeeterGLCanvas glCanvas);
+        constraints.anchor = GridBagConstraints.WEST;
+        constraints.gridy = 0;
+        constraints.gridx = 0;
+        // Specifies how to distribute extra horizontal space.
+        constraints.weightx = 0;
+        constraints.fill = GridBagConstraints.NONE;
+        
+    }
     
-    public void setChatTextArea(final ITeeterTextArea chatTextArea);
+    /**
+     * Move the position right.
+     */
+    public GridBagConstraints moveRight() {
+        constraints.gridx = constraints.gridx + 1;
+        return constraints;
+    }
     
-    public void setInputTextArea(final ITeeterTextArea inputTextArea);
+    /**
+     * @param layout the layout to set
+     */
+    public void setLayout(final GridBagLayout layout) {
+        this.layout = layout;
+    }
+
+    /**
+     * @return the layout
+     */
+    public GridBagLayout getLayout() {
+        return layout;
+    }
+
+    /**
+     * @return the constraints
+     */
+    public GridBagConstraints getConstraints() {
+        return constraints;
+    }
+
+    /**
+     * @param constraints the constraints to set
+     */
+    public void setConstraints(final GridBagConstraints constraints) {
+        this.constraints = constraints;
+    } 
     
-    public void setButtonPanel(final ITeeterPanel buttonPanel);
-    
-    public void setButtonEnter(final ITeeterButton buttonEnter);
-    
-    public void setButtonClear(final ITeeterButton buttonClear);
-    
-    public void setButtonExit(final ITeeterButton buttonExit);
-    
-} // End of the Interface //
+} // End of the Class //

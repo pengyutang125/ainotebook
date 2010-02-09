@@ -37,28 +37,25 @@
  */
 package org.berlin.pino.win;
 
-import org.berlin.seesaw.app.ITeeterWindow;
 import org.berlin.seesaw.swing.ITeeterButton;
-import org.berlin.seesaw.swing.ITeeterPanel;
-import org.berlin.seesaw.swing.ITeeterTextArea;
-import org.berlin.seesaw.swing.gl.ITeeterGLCanvas;
+import org.berlin.seesaw.swing.layout.ITeeterLayout;
 
-public interface IBasicWindow extends ITeeterWindow {
+public class CommandButtonPanel extends TeeterPanel {
 
-    public void setWindowPanel(final ITeeterPanel panel);
-
-    public void setGLCanvas(final ITeeterGLCanvas glCanvas);
+    private ITeeterLayout layout;
+    private final ITeeterButton buttonEnter;    
+    private final ITeeterButton buttonClear;    
+    private final ITeeterButton buttonExit;
     
-    public void setChatTextArea(final ITeeterTextArea chatTextArea);
+    public CommandButtonPanel(final ITeeterLayout layout, final ITeeterButton enterButton, final ITeeterButton clearButton,  
+                final ITeeterButton exitButton) {
+        
+        this.buttonEnter = enterButton;   
+        this.buttonClear = clearButton;
+        this.buttonExit = exitButton;
+        this.layout = layout;
+    }
     
-    public void setInputTextArea(final ITeeterTextArea inputTextArea);
     
-    public void setButtonPanel(final ITeeterPanel buttonPanel);
     
-    public void setButtonEnter(final ITeeterButton buttonEnter);
-    
-    public void setButtonClear(final ITeeterButton buttonClear);
-    
-    public void setButtonExit(final ITeeterButton buttonExit);
-    
-} // End of the Interface //
+} // End of the Class //
