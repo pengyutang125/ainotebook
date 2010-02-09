@@ -40,9 +40,21 @@
 package org.berlin.seesaw.swing;
 
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
+import javax.swing.text.DefaultCaret;
 
 /**
+ * A <code>JTextArea</code> is a multi-line area that displays plain text. 
+ * It is intended to be a lightweight component that provides source 
+ * compatibility with the <code>java.awt.TextArea</code>.
+ * 
+ * @author  Berlin Brown
+ * @version 1.1 02/02/2010
+ * 
+ * @see JTextPane
+ * @see JEditorPane
  */
 public class TeeterTextArea implements ITeeterTextArea {
 
@@ -66,7 +78,10 @@ public class TeeterTextArea implements ITeeterTextArea {
     }
 
     /**
-     * Method getText.
+     * Returns the text contained in this <code>TextComponent</code>.
+     * If the underlying document is <code>null</code>,
+     * will give a <code>NullPointerException</code>.
+     * 
      * @return String
      * @see org.berlin.seesaw.swing.ITeeterTextArea#getText()
      */
@@ -75,9 +90,11 @@ public class TeeterTextArea implements ITeeterTextArea {
             return this.textArea.getText();
         }
     }
-
+    
     /**
-     * Method setText.
+     * Sets the text of this <code>TextComponent</code>
+     * to the specified text.  
+     * 
      * @param text String
      * @see org.berlin.seesaw.swing.ITeeterTextArea#setText(String)
      */
