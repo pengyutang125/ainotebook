@@ -39,7 +39,25 @@
  */
 package org.berlin.seesaw.swing;
 
+import javax.swing.JButton;
+
 public class TeeterPanel implements ITeeterPanel {
    
+    public TeeterButton(final JButton button, final ITeeterEventWorker eventWorker) {
+        this.button = button;
+        this.eventWorker = eventWorker;
+    }
+
+    @Override
+    public void addButton(ITeeterButton button) {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void addTextArea(ITeeterTextArea text) {
+        // TODO Auto-generated method stub
+        
+    }
     
 } // End of the Class //
