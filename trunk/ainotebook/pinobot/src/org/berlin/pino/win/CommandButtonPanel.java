@@ -37,25 +37,48 @@
  */
 package org.berlin.pino.win;
 
+import java.awt.GridBagConstraints;
+
+import javax.swing.JPanel;
+
 import org.berlin.seesaw.swing.ITeeterButton;
+import org.berlin.seesaw.swing.TeeterPanel;
 import org.berlin.seesaw.swing.layout.ITeeterLayout;
 
 public class CommandButtonPanel extends TeeterPanel {
-
-    private ITeeterLayout layout;
+    
     private final ITeeterButton buttonEnter;    
     private final ITeeterButton buttonClear;    
     private final ITeeterButton buttonExit;
     
-    public CommandButtonPanel(final ITeeterLayout layout, final ITeeterButton enterButton, final ITeeterButton clearButton,  
-                final ITeeterButton exitButton) {
+    public CommandButtonPanel(final JPanel panel, final ITeeterLayout layout, 
+                final ITeeterButton enterButton, final ITeeterButton clearButton,  final ITeeterButton exitButton) {
         
+        super(panel, layout);
         this.buttonEnter = enterButton;   
         this.buttonClear = clearButton;
-        this.buttonExit = exitButton;
-        this.layout = layout;
+        this.buttonExit  = exitButton;        
     }
     
-    
+    /**
+     * Construct the layout with the internal swing components.     
+     */
+    public void constructView() {
+        
+        final GridBagConstraints constraints = this.getLayout().getConstraints();
+        
+        // Add the enter button        
+        this.getComponent().add(this.buttonEnter.getComponent(), constraints);
+        this.getLayout().shiftRight();
+        
+        // Add the clear button        
+        this.getComponent().add(this.buttonClear.getComponent(), constraints);
+        this.getLayout().shiftRight();
+        
+        // Add exit
+        this.getComponent().add(this.buttonExit.getComponent(), constraints);
+        this.getLayout().shiftRight();
+        
+    }        
     
 } // End of the Class //

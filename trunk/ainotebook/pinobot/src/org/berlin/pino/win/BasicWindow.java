@@ -1,122 +1,102 @@
 package org.berlin.pino.win;
 
+import javax.swing.JPanel;
+
 import org.berlin.seesaw.swing.ITeeterButton;
 import org.berlin.seesaw.swing.ITeeterPanel;
 import org.berlin.seesaw.swing.ITeeterTextArea;
 import org.berlin.seesaw.swing.gl.ITeeterGLCanvas;
+import org.berlin.seesaw.swing.layout.ITeeterLayout;
 
+/**
+ * @author AP417
+ */
 public class BasicWindow implements IBasicWindow {
 
+    private ITeeterLayout   layout;
+    
     private ITeeterPanel    windowPanel;
     private ITeeterGLCanvas glCanvas;  
     private ITeeterTextArea chatTextArea;   
-    private ITeeterTextArea inputTextArea;    
+    private ITeeterTextArea inputTextArea;
+    
     private ITeeterPanel    buttonPanel;
     private ITeeterButton   buttonEnter;    
     private ITeeterButton   buttonClear;    
     private ITeeterButton   buttonExit;
-
-    private BasicWindow(final Builder builder) {
-        
-        this.windowPanel   = builder.windowPanel;
-        this.glCanvas      = builder.glCanvas;
-        this.chatTextArea  = builder.chatTextArea;
-        this.inputTextArea = builder.inputTextArea;
-        this.buttonPanel   = builder.buttonPanel;
-        this.buttonEnter   = builder.buttonEnter;
-        this.buttonClear   = builder.buttonClear;
-        this.buttonExit    = builder.buttonExit;
-
+    
+    ///////////////////////////////////////////////////////
+    
+    public String toString() {
+        return String.format("#{Basic Window: %s}", this.windowPanel);
     }
     
     /**
      * @param windowPanel the windowPanel to set
+     * @see org.berlin.pino.win.IBasicWindow#setWindowPanel(ITeeterPanel)
      */
     public void setWindowPanel(final ITeeterPanel windowPanel) {
         this.windowPanel = windowPanel;
     }
     /**
      * @param glCanvas the glCanvas to set
+     * @see org.berlin.pino.win.IBasicWindow#setGLCanvas(ITeeterGLCanvas)
      */
     public void setGLCanvas(final ITeeterGLCanvas glCanvas) {
         this.glCanvas = glCanvas;
     }
     /**
      * @param chatTextArea the chatTextArea to set
+     * @see org.berlin.pino.win.IBasicWindow#setChatTextArea(ITeeterTextArea)
      */
     public void setChatTextArea(final ITeeterTextArea chatTextArea) {
         this.chatTextArea = chatTextArea;
     }
     /**
      * @param inputTextArea the inputTextArea to set
+     * @see org.berlin.pino.win.IBasicWindow#setInputTextArea(ITeeterTextArea)
      */
     public void setInputTextArea(final ITeeterTextArea inputTextArea) {
         this.inputTextArea = inputTextArea;
     }
     /**
      * @param buttonPanel the buttonPanel to set
+     * @see org.berlin.pino.win.IBasicWindow#setButtonPanel(ITeeterPanel)
      */
     public void setButtonPanel(final ITeeterPanel buttonPanel) {
         this.buttonPanel = buttonPanel;
     }
     /**
      * @param buttonEnter the buttonEnter to set
+     * @see org.berlin.pino.win.IBasicWindow#setButtonEnter(ITeeterButton)
      */
     public void setButtonEnter(final ITeeterButton buttonEnter) {
         this.buttonEnter = buttonEnter;
     }
     /**
      * @param buttonClear the buttonClear to set
+     * @see org.berlin.pino.win.IBasicWindow#setButtonClear(ITeeterButton)
      */
     public void setButtonClear(final ITeeterButton buttonClear) {
         this.buttonClear = buttonClear;
     }
     /**
      * @param buttonExit the buttonExit to set
+     * @see org.berlin.pino.win.IBasicWindow#setButtonExit(ITeeterButton)
      */
     public void setButtonExit(final ITeeterButton buttonExit) {
         this.buttonExit = buttonExit;
     }
-    
+    public JPanel getComponent() {
+        return this.windowPanel.getComponent();
+    }
+
     /**
-     * Builder class.
-     *
+     * @param layout the layout to set
      */
-    public static class Builder {
+    public void setLayout(ITeeterLayout layout) {
+        this.layout = layout;
+    }
         
-        private ITeeterPanel windowPanel;
-        private ITeeterGLCanvas glCanvas;  
-        private ITeeterTextArea chatTextArea;   
-        private ITeeterTextArea inputTextArea;
-        
-        private ITeeterPanel buttonPanel;
-        private ITeeterButton buttonEnter;    
-        private ITeeterButton buttonClear;    
-        private ITeeterButton buttonExit;
-        
-        public IBasicWindow build() {
-            
-            // Transfer the data from this builder 
-            // to the newly created object.
-            return new BasicWindow(this);
-            
-        }
-                
-        /**
-         * Create the panel and the buttons.
-         * 
-         * @return
-         */
-        public Builder withButtons(final ITeeterPanel buttonPanel, final ITeeterButton buttonEnter, 
-                            final ITeeterButton buttonClear, final ITeeterButton buttonExit) {
-            
-            this.buttonPanel = buttonPanel;
-            this.buttonEnter = buttonEnter;
-            this.buttonClear = buttonClear;
-            this.buttonExit  = buttonExit;
-            return this;
-        }
-        
-    } // End of the Class //
     
 } // End of the Class //
