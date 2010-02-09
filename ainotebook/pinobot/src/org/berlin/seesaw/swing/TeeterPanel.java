@@ -39,25 +39,69 @@
  */
 package org.berlin.seesaw.swing;
 
-import javax.swing.JButton;
+import javax.swing.JPanel;
 
-public class TeeterPanel implements ITeeterPanel {
+import org.berlin.seesaw.swing.layout.ITeeterLayout;
+
+
+/**
+ */
+public abstract class TeeterPanel implements ITeeterPanel {
    
-    public TeeterButton(final JButton button, final ITeeterEventWorker eventWorker) {
-        this.button = button;
-        this.eventWorker = eventWorker;
+    private final ITeeterLayout layout;    
+    private final JPanel panel;
+    
+    /**
+     * Constructor for TeeterPanel.
+     * @param panel JPanel
+     * @param layout ITeeterLayout
+     */
+    public TeeterPanel(final JPanel panel, final ITeeterLayout layout) {
+        this.panel = panel;
+        this.layout = layout;
     }
-
-    @Override
-    public void addButton(ITeeterButton button) {
-        // TODO Auto-generated method stub
+        
+    /**
+     * Method addButton.
+     * @param button ITeeterButton
+     * @see org.berlin.seesaw.swing.ITeeterPanel#addButton(ITeeterButton)
+     */
+    public void addButton(ITeeterButton button) {     
         
     }
-
-    @Override
+    
+    /**
+     * Method addTextArea.
+     * @param text ITeeterTextArea
+     * @see org.berlin.seesaw.swing.ITeeterPanel#addTextArea(ITeeterTextArea)
+     */
     public void addTextArea(ITeeterTextArea text) {
-        // TODO Auto-generated method stub
         
     }
+    
+    /**
+     * Method toString.
+     * @return String
+     */
+    public String toString() {
+        return String.format("#{TeeterPanel: %s}", this.layout);
+    }
+    
+    
+    /**
+     * @return the layout
+     * @see org.berlin.seesaw.swing.ITeeterPanel#getLayout()
+     */
+    public ITeeterLayout getLayout() {
+        return layout;
+    }
+
+    /**
+     * @return the panel
+     * @see org.berlin.seesaw.swing.ITeeterPanel#getComponent()
+     */
+    public JPanel getComponent() {
+        return panel;
+    }    
     
 } // End of the Class //

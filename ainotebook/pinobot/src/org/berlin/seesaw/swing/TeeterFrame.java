@@ -41,8 +41,17 @@ package org.berlin.seesaw.swing;
 
 import java.awt.event.WindowAdapter;
 
+/**
+ */
 public class TeeterFrame implements ITeeterFrame {
 
-    public void addWindowListener(final WindowAdapter winAdapter);
+    /**
+     * Method addWindowListener.
+     * @param winAdapter WindowAdapter
+     * @see org.berlin.seesaw.swing.ITeeterFrame#addWindowListener(WindowAdapter)
+     */
+    public void addWindowListener(final WindowAdapter winAdapter) {
+        
+    }
     
 } // End of the Interface //

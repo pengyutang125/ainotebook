@@ -60,4 +60,16 @@ public interface IBasicWindow extends ITeeterWindow {
     
     public void setLayout(ITeeterLayout layout);
     
+    public ITeeterTextArea getChatTextArea();
+
+    /**
+     * @return the inputTextArea
+     */
+    public ITeeterTextArea getInputTextArea();
+     
+    /**
+     * @return the buttonPanel
+     */
+    public ITeeterPanel getButtonPanel();
+    
 } // End of the Interface //

@@ -42,11 +42,17 @@ package org.berlin.seesaw.swing.layout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 
+/**
+ */
 public class DefaultTeeterLayout implements ITeeterLayout {
 
     private GridBagLayout layout = new GridBagLayout();   
     private GridBagConstraints constraints = new GridBagConstraints();
     
+    /**
+     * Method defaultSettings.
+     * @see org.berlin.seesaw.swing.layout.ITeeterLayout#defaultSettings()
+     */
     public void defaultSettings() {        
 
         constraints.anchor = GridBagConstraints.WEST;
@@ -60,14 +66,29 @@ public class DefaultTeeterLayout implements ITeeterLayout {
     
     /**
      * Move the position right.
+     * @return GridBagConstraints
+     * @see org.berlin.seesaw.swing.layout.ITeeterLayout#shiftRight()
      */
-    public GridBagConstraints moveRight() {
+    public GridBagConstraints shiftRight() {
         constraints.gridx = constraints.gridx + 1;
         return constraints;
     }
     
+    
+    /**
+     * Move the position down.
+     * @return GridBagConstraints
+     * @see org.berlin.seesaw.swing.layout.ITeeterLayout#shiftDown()
+     */
+    public GridBagConstraints shiftDown() {
+        constraints.gridy = constraints.gridy + 1;
+        return constraints;
+    }
+    
+    
     /**
      * @param layout the layout to set
+     * @see org.berlin.seesaw.swing.layout.ITeeterLayout#setLayout(GridBagLayout)
      */
     public void setLayout(final GridBagLayout layout) {
         this.layout = layout;
@@ -75,6 +96,7 @@ public class DefaultTeeterLayout implements ITeeterLayout {
 
     /**
      * @return the layout
+     * @see org.berlin.seesaw.swing.layout.ITeeterLayout#getLayout()
      */
     public GridBagLayout getLayout() {
         return layout;
@@ -82,6 +104,7 @@ public class DefaultTeeterLayout implements ITeeterLayout {
 
     /**
      * @return the constraints
+     * @see org.berlin.seesaw.swing.layout.ITeeterLayout#getConstraints()
      */
     public GridBagConstraints getConstraints() {
         return constraints;
@@ -89,6 +112,7 @@ public class DefaultTeeterLayout implements ITeeterLayout {
 
     /**
      * @param constraints the constraints to set
+     * @see org.berlin.seesaw.swing.layout.ITeeterLayout#setConstraints(GridBagConstraints)
      */
     public void setConstraints(final GridBagConstraints constraints) {
         this.constraints = constraints;

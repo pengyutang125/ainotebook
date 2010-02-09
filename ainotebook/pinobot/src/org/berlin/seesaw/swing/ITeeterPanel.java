@@ -39,11 +39,41 @@
  */
 package org.berlin.seesaw.swing;
 
+import javax.swing.JPanel;
+
+import org.berlin.seesaw.swing.layout.ITeeterLayout;
+
+/**
+ */
 public interface ITeeterPanel {
 
+    /**
+     * Method addButton.
+     * @param button ITeeterButton
+     */
     public void addButton(ITeeterButton button);
     
+    /**
+     * Method addTextArea.
+     * @param text ITeeterTextArea
+     */
     public void addTextArea(ITeeterTextArea text);
     
+    /**
+     * Method getLayout.
+     * @return ITeeterLayout
+     */
+    public ITeeterLayout getLayout();
+    
+    /**
+     * Construct the layout with the internal swing components.     
+     */
+    public void constructView();
+    
+    /**
+     * Method getComponent.
+     * @return JPanel
+     */
+    public JPanel getComponent();
     
 } // End of Interface //

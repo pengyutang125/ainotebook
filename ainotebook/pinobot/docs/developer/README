@@ -12,6 +12,10 @@ Main Components:
  JFrame, JPanel, GLPanel, JTextArea, JTextField, JButton
 
  ----------------
+ | JFrame       | -- (A) Object Zero JFrame
+ ----------------      
+
+ ----------------
  | JPanel/All   | -- (1) Object One (non-visible) [ JPanel ]
  ----------------      
       |
