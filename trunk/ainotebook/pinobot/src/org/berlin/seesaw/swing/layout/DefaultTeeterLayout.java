@@ -41,6 +41,7 @@ package org.berlin.seesaw.swing.layout;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 /**
  */
@@ -54,10 +55,12 @@ public class DefaultTeeterLayout implements ITeeterLayout {
      * @see org.berlin.seesaw.swing.layout.ITeeterLayout#defaultSettings()
      */
     public void defaultSettings() {        
-
+        
+        final Insets insets = new Insets(2, 2, 2, 2);
+        constraints.insets = insets;
         constraints.anchor = GridBagConstraints.WEST;
-        constraints.gridy = 0;
-        constraints.gridx = 0;
+        constraints.gridy  = 0;
+        constraints.gridx  = 0;
         // Specifies how to distribute extra horizontal space.
         constraints.weightx = 0;
         constraints.fill = GridBagConstraints.NONE;
