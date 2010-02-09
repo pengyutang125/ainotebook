@@ -39,8 +39,21 @@
  */
 package org.berlin.seesaw.swing;
 
+import javax.swing.JComponent;
+
 public interface ITeeterButton {
 
     public void setText(final String text);
+    
+    public String getText();
+    
+    public void addEventHandler();
+    
+    public JComponent getComponent();
+    
+    /**
+     * Directly invoke the event handler.
+     */
+    public void onEvent();   
     
 } // End of the Interface //

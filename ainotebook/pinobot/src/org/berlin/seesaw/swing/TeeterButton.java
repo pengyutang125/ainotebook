@@ -39,8 +39,41 @@
  */
 package org.berlin.seesaw.swing;
 
-public interface TeeterButton {
+import javax.swing.JButton;
+import javax.swing.JComponent;
 
-    public void setText(final String text);
+public class TeeterButton implements ITeeterButton {
+
+    private final JButton button;
+    private final ITeeterEventWorker eventWorker;
     
+    public TeeterButton(final JButton button, final ITeeterEventWorker eventWorker) {
+        this.button = button;
+        this.eventWorker = eventWorker;
+    }
+    
+    public void setText(final String text) {
+        this.button.setText(text);
+    }
+    
+    public String getText() {
+        return this.button.getText();
+    }
+    
+    public void addEventHandler() {
+        // Build a listener based on the swing component.
+        this.button.addActionListener(this.eventWorker.buildListener(this.button));
+    }
+   
+    /**
+     * Directly invoke the event handler.
+     */
+    public void onEvent() {
+        
+    }
+    
+    public JComponent getComponent() {
+        return this.button;
+    }
+        
 } // End of the Interface //

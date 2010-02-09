@@ -39,6 +39,6 @@
  */
 package org.berlin.seesaw.swing;
 
-public interface TeeterTextBox {
+public class TeeterTextBox implements ITeeterTextBox {
 
 }
