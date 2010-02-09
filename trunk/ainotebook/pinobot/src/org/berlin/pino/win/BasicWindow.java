@@ -10,7 +10,7 @@ import org.berlin.seesaw.swing.layout.ITeeterLayout;
 
 /**
  * 
- * @author Test 
+ * @author NNN 
  *
  */
 public class BasicWindow implements IBasicWindow {
