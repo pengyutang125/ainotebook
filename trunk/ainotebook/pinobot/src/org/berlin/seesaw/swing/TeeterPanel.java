@@ -39,6 +39,7 @@
  */
 package org.berlin.seesaw.swing;
 
-public interface TeeterPanel {
-
-}
+public class TeeterPanel implements ITeeterPanel {
+   
+    
+} // End of the Class //

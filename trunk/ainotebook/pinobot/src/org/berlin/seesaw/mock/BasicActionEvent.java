@@ -37,8 +37,74 @@
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.seesaw.swing;
+package org.berlin.seesaw.mock;
 
-public class TeeterTextArea implements ITeeterTextArea {
+import java.awt.AWTEvent;
 
-}
+public class BasicActionEvent extends AWTEvent {
+    
+    /**
+     * The string that gives more details
+     * of what caused the event.     
+     */
+    private String actionCommand;
+    private long when;   
+    private int modifiers;
+
+    /**
+     * Constructs an <code>ActionEvent</code> object.
+     */
+    public BasicActionEvent(Object source, int id, String command) {
+        this(source, id, command, 0);
+    }
+
+    /**
+     * Constructs an <code>ActionEvent</code> object with modifier keys.
+     */
+    public BasicActionEvent(Object source, int id, String command, int modifiers) {
+        this(source, id, command, 0, modifiers);
+    }
+
+    /**
+     * Constructs an <code>ActionEvent</code> object with the specified
+     * modifier keys and timestamp. 
+     */
+    public BasicActionEvent(Object source, int id, String command, long when, int modifiers) {
+        
+        super(source, id);
+        
+        this.actionCommand = command;
+        this.when = when;
+        this.modifiers = modifiers;
+    }
+        
+    /**
+     * Returns the command string associated with this action.
+     */
+    public String getActionCommand() {
+        return actionCommand;
+    }
+
+    /**
+     * Returns the timestamp of when this event occurred.  
+     */
+    public long getWhen() {
+        return when;
+    }
+
+    /**
+     * Returns the modifier keys held down during this action event. 
+     */
+    public int getModifiers() {
+        return modifiers;
+    }
+
+    /**
+     * Returns a parameter string identifying this action event.
+     */
+    public String paramString() {
+                       
+        return "{paramString}";
+    }
+    
+} // End of the Class //

@@ -41,4 +41,9 @@ package org.berlin.seesaw.swing;
 
 public interface ITeeterPanel {
 
-}
+    public void addButton(ITeeterButton button);
+    
+    public void addTextArea(ITeeterTextArea text);
+    
+    
+} // End of Interface //
