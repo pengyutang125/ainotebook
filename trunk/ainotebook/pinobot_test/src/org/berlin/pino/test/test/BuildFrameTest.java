@@ -14,9 +14,9 @@ public class BuildFrameTest extends TestCase {
 
     public void test1() {
         
-        final ITeeterButton buttonEnter = new TeeterButton(null);
-        final ITeeterButton buttonClear = new TeeterButton(null);
-        final ITeeterButton buttonExit  = new TeeterButton(null);        
+        final ITeeterButton buttonEnter = new TeeterButton(null, null);
+        final ITeeterButton buttonClear = new TeeterButton(null, null);
+        final ITeeterButton buttonExit  = new TeeterButton(null, null);        
         final ITeeterPanel panel = new TeeterPanel();
         panel.addButton(buttonEnter);
         panel.addButton(buttonClear);
