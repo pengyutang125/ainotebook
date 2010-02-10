@@ -50,7 +50,7 @@ public abstract class BaseWorker implements ITeeterEventWorker {
     public abstract void execute();
     
     private ActionEvent lastEvent;
-    private Object masterParent;
+    private ITeeterWidget masterParent;
     
     public SwingWorker buildWorker(final ITeeterWidget masterParent, final ActionEvent event) {
         
@@ -110,7 +110,7 @@ public abstract class BaseWorker implements ITeeterEventWorker {
     /**
      * @return the masterParent
      */
-    public Object getMasterParent() {
+    public ITeeterWidget getMasterParent() {
         return masterParent;
     }
     

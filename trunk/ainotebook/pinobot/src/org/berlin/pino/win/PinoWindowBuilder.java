@@ -43,6 +43,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import org.berlin.pino.win.action.PinoAction;
 import org.berlin.pino.win.base.AbstractWindowBuilder;
 import org.berlin.pino.win.base.IBasicWindow;
 import org.berlin.seesaw.swing.BaseWorker;
@@ -71,17 +72,14 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
     public ITeeterButton createEnterButton() {
         
         final ITeeterEventWorker eventWorker = new BaseWorker() {
-            public void execute() {                
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                System.out.println("Tested - Enter!");
-                System.out.println(this.getLastEvent());
+            public void execute() {
+                
+                final ITeeterButton button = (ITeeterButton) this.getMasterParent();                
+                final PinoAction action = (PinoAction) button.getWindow().getActionHandler();
+                action.handleOnButtonEnter();               
             }
         };        
-        final ITeeterButton button = new TeeterButton(new JButton("Enter"), eventWorker);
+        final ITeeterButton button = new TeeterButton(new JButton("Enter"), eventWorker, this.getBasicWindow());
         button.addEventHandler();
         return button;
     }
@@ -99,11 +97,14 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println("^-------------");
                 System.out.println("Tested - Clear!");
                 System.out.println(this.getLastEvent());
+                System.out.println(this.getMasterParent());
+                System.out.println("v-------------");
             }
         };        
-        final ITeeterButton button = new TeeterButton(new JButton("Clear"), eventWorker);
+        final ITeeterButton button = new TeeterButton(new JButton("Clear"), eventWorker, this.getBasicWindow());
         button.addEventHandler();
         return button;
     }
@@ -125,7 +126,7 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
                 System.out.println(this.getLastEvent());
             }
         };        
-        final ITeeterButton button = new TeeterButton(new JButton("Exit"), eventWorker);
+        final ITeeterButton button = new TeeterButton(new JButton("Exit"), eventWorker, this.getBasicWindow());
         button.addEventHandler();
         return button;
     }

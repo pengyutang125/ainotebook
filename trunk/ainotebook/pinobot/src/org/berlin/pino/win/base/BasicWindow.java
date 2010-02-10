@@ -39,6 +39,7 @@ package org.berlin.pino.win.base;
 
 import javax.swing.JComponent;
 
+import org.berlin.pino.win.action.PinoAction;
 import org.berlin.seesaw.swing.ITeeterButton;
 import org.berlin.seesaw.swing.ITeeterPanel;
 import org.berlin.seesaw.swing.ITeeterTextArea;
@@ -63,6 +64,8 @@ public class BasicWindow implements IBasicWindow {
     private ITeeterButton   buttonEnter;    
     private ITeeterButton   buttonClear;    
     private ITeeterButton   buttonExit;
+   
+    private PinoAction actionHandler = new PinoAction(this);
     
     ///////////////////////////////////////////////////////
     
@@ -171,6 +174,20 @@ public class BasicWindow implements IBasicWindow {
 
     public void setText(String text) {    
         
+    }
+
+    /**
+     * @return the actionHandler
+     */
+    public PinoAction getActionHandler() {
+        return actionHandler;
+    }
+
+    /**
+     * @param actionHandler the actionHandler to set
+     */
+    public void setActionHandler(PinoAction actionHandler) {
+        this.actionHandler = actionHandler;
     }        
     
 } // End of the Class //

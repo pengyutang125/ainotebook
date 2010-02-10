@@ -1,5 +1,4 @@
 /**
- *
  * Copyright (c) 2006-2010 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
  *
  * http://www.opensource.org/licenses/bsd-license.php
@@ -30,26 +29,21 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Date: 2/15/2010
+ * Date: 2/15/2010 
  *   
  * Home Page: http://botnode.com/
+ * 
+ * Description: Seesaw (Teeter Totter) Swing Framework
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
 package org.berlin.seesaw.app;
 
-import javax.swing.JPanel;
+public interface ITeeterActionHandler {
 
-import org.berlin.pino.win.action.PinoAction;
-import org.berlin.seesaw.swing.ITeeterWidget;
-
-public interface ITeeterWindow extends ITeeterWidget {
-    
-    public ITeeterActionHandler getActionHandler();
-        
     /**
-     * @param actionHandler the actionHandler to set
+     * @return the window
      */
-    public void setActionHandler(PinoAction actionHandler);
+    public ITeeterWindow getWindow();
     
-} // End of the Class //
+}

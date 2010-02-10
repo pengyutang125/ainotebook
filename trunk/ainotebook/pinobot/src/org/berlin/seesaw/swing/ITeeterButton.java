@@ -41,6 +41,8 @@ package org.berlin.seesaw.swing;
 
 import javax.swing.JComponent;
 
+import org.berlin.seesaw.app.ITeeterWindow;
+
 public interface ITeeterButton extends ITeeterWidget {
 
     public void setText(final String text);
@@ -54,6 +56,12 @@ public interface ITeeterButton extends ITeeterWidget {
     /**
      * Directly invoke the event handler.
      */
-    public void onEvent();   
+    public void onEvent();
     
+    /**
+     * @return the window
+     */
+    public ITeeterWindow getWindow();
+    
+            
 } // End of the Interface //

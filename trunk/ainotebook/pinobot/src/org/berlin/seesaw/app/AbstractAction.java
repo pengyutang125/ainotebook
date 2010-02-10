@@ -1,5 +1,4 @@
 /**
- *
  * Copyright (c) 2006-2010 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
  *
  * http://www.opensource.org/licenses/bsd-license.php
@@ -30,7 +29,7 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  *
- * Date: 2/15/2010
+ * Date: 2/15/2010 
  *   
  * Home Page: http://botnode.com/
  * 
@@ -38,18 +37,20 @@
  */
 package org.berlin.seesaw.app;
 
-import javax.swing.JPanel;
 
-import org.berlin.pino.win.action.PinoAction;
-import org.berlin.seesaw.swing.ITeeterWidget;
+public class AbstractAction implements ITeeterActionHandler {
 
-public interface ITeeterWindow extends ITeeterWidget {
+    private final ITeeterWindow window;
     
-    public ITeeterActionHandler getActionHandler();
-        
+    public AbstractAction(final ITeeterWindow window) {
+        this.window = window;
+    }
+
     /**
-     * @param actionHandler the actionHandler to set
+     * @return the window
      */
-    public void setActionHandler(PinoAction actionHandler);
+    public ITeeterWindow getWindow() {
+        return window;
+    }
     
 } // End of the Class //
