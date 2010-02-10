@@ -42,6 +42,8 @@ package org.berlin.seesaw.swing;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 
+import org.berlin.seesaw.app.ITeeterWindow;
+
 /**
  * An implementation of a "push" button.
  * 
@@ -52,10 +54,12 @@ public class TeeterButton implements ITeeterButton {
 
     private final JButton button;
     private final ITeeterEventWorker eventWorker;
+    private final ITeeterWindow window;
     
-    public TeeterButton(final JButton button, final ITeeterEventWorker eventWorker) {
+    public TeeterButton(final JButton button, final ITeeterEventWorker eventWorker, final ITeeterWindow window) {
         this.button = button;
         this.eventWorker = eventWorker;
+        this.window = window;
     }
     
     /**
@@ -93,6 +97,13 @@ public class TeeterButton implements ITeeterButton {
     
     public JComponent getComponent() {
         return this.button;
+    }
+
+    /**
+     * @return the window
+     */
+    public ITeeterWindow getWindow() {
+        return window;
     }
         
 } // End of the Interface //
