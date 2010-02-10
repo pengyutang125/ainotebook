@@ -39,6 +39,21 @@
  */
 package org.berlin.seesaw.swing.gl;
 
-public interface TeeterGLCanvas {
+import javax.swing.JComponent;
+
+import org.berlin.seesaw.swing.ITeeterWidget;
+
+public class TeeterGLCanvas implements ITeeterWidget {
+
+    public JComponent getComponent() {
+        return null;
+    }
+
+    public String getText() {       
+        return "";
+    }
+
+    public void setText(String text) { 
+    }
 
 }

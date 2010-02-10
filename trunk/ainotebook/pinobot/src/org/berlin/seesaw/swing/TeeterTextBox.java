@@ -39,6 +39,33 @@
  */
 package org.berlin.seesaw.swing;
 
+import javax.swing.JComponent;
+
 public class TeeterTextBox implements ITeeterTextBox {
+
+    /**
+     * Returns the objects's text.
+     * 
+     * @return the object text
+     * @see #setText
+     */
+    public String getText() {
+        return "";
+    }
+
+    /**
+     * Sets the text of this <code>TextComponent</code>
+     * to the specified text.  
+     * 
+     * @param text String
+     * @see org.berlin.seesaw.swing.ITeeterTextArea#setText(String)
+     */
+    public void setText(String text) {       
+        
+    }
+
+    public JComponent getComponent() {
+        return null;
+    }
 
 }

@@ -40,8 +40,8 @@ package org.berlin.seesaw.app;
 
 import javax.swing.JPanel;
 
-public interface ITeeterWindow {
+import org.berlin.seesaw.swing.ITeeterWidget;
 
-    public JPanel getComponent();
-    
+public interface ITeeterWindow extends ITeeterWidget {
+
 }

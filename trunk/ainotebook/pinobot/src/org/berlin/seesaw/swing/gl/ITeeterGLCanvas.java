@@ -39,6 +39,8 @@
  */
 package org.berlin.seesaw.swing.gl;
 
-public interface ITeeterGLCanvas {
+import org.berlin.seesaw.swing.ITeeterWidget;
+
+public interface ITeeterGLCanvas extends ITeeterWidget {
 
 }

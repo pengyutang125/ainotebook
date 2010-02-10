@@ -37,7 +37,7 @@
  */
 package org.berlin.pino.win.base;
 
-import javax.swing.JPanel;
+import javax.swing.JComponent;
 
 import org.berlin.seesaw.swing.ITeeterButton;
 import org.berlin.seesaw.swing.ITeeterPanel;
@@ -126,7 +126,7 @@ public class BasicWindow implements IBasicWindow {
     public void setButtonExit(final ITeeterButton buttonExit) {
         this.buttonExit = buttonExit;
     }
-    public JPanel getComponent() {
+    public JComponent getComponent() {
         return this.windowPanel.getComponent();
     }
 
@@ -163,6 +163,14 @@ public class BasicWindow implements IBasicWindow {
      */
     public ITeeterLayout getLayout() {
         return layout;
+    }
+
+    public String getText() {
+        return "";
+    }
+
+    public void setText(String text) {    
+        
     }        
     
 } // End of the Class //

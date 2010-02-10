@@ -39,6 +39,6 @@
  */
 package org.berlin.seesaw.swing;
 
-public interface ITeeterTextBox {
+public interface ITeeterTextBox extends ITeeterWidget {
 
 }
