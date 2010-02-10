@@ -1,0 +1,5 @@
+#!/bin/sh
+
+
+java -jar engine/Tron.jar maps/huge-room.txt "java MyTronBot" "java -jar example_bots/RandomBot.jar" 
+
