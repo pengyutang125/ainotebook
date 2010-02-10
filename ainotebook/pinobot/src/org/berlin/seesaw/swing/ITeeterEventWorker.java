@@ -46,8 +46,8 @@ public interface ITeeterEventWorker {
     
     public void execute();
     
-    public SwingWorker buildWorker(final Object masterParent, final ActionEvent event);
+    public SwingWorker buildWorker(final ITeeterWidget masterParent, final ActionEvent event);
     
-    public ActionListener buildListener(final Object masterParent);
+    public ActionListener buildListener(final ITeeterWidget masterParent);
     
 }

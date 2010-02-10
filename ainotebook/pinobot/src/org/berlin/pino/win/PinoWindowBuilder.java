@@ -71,13 +71,14 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
     public ITeeterButton createEnterButton() {
         
         final ITeeterEventWorker eventWorker = new BaseWorker() {
-            public void execute() {
+            public void execute() {                
                 try {
                     Thread.sleep(500);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 System.out.println("Tested - Enter!");
+                System.out.println(this.getLastEvent());
             }
         };        
         final ITeeterButton button = new TeeterButton(new JButton("Enter"), eventWorker);
@@ -99,6 +100,7 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
                     e.printStackTrace();
                 }
                 System.out.println("Tested - Clear!");
+                System.out.println(this.getLastEvent());
             }
         };        
         final ITeeterButton button = new TeeterButton(new JButton("Clear"), eventWorker);
@@ -120,6 +122,7 @@ public class PinoWindowBuilder extends AbstractWindowBuilder {
                     e.printStackTrace();
                 }
                 System.out.println("Tested - Exit!");
+                System.out.println(this.getLastEvent());
             }
         };        
         final ITeeterButton button = new TeeterButton(new JButton("Exit"), eventWorker);

@@ -52,7 +52,7 @@ public abstract class BaseWorker implements ITeeterEventWorker {
     private ActionEvent lastEvent;
     private Object masterParent;
     
-    public SwingWorker buildWorker(final Object masterParent, final ActionEvent event) {
+    public SwingWorker buildWorker(final ITeeterWidget masterParent, final ActionEvent event) {
         
         // At this point, we know the event and the parent object
         // before the event method is called.
@@ -62,7 +62,7 @@ public abstract class BaseWorker implements ITeeterEventWorker {
         
     }
     
-    public ActionListener buildListener(final Object masterParent) {
+    public ActionListener buildListener(final ITeeterWidget masterParent) {
         
         return new ActionListener() {    
             public void actionPerformed(final ActionEvent event) {

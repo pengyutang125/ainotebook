@@ -106,6 +106,7 @@ public class TeeterTextArea implements ITeeterTextArea {
     
     /**
      * Method setColumnsAndRows.
+     * 
      * @param cols int
      * @param rows int
      * @see org.berlin.seesaw.swing.ITeeterTextArea#setColumnsAndRows(int, int)

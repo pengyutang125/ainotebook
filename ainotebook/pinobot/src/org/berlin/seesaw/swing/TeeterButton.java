@@ -59,7 +59,7 @@ public class TeeterButton implements ITeeterButton {
     }
     
     /**
-     * Sets the button's text.
+     * Sets the object's text.
      * 
      * @param text the string used to set the text
      * @see #getText
@@ -69,13 +69,19 @@ public class TeeterButton implements ITeeterButton {
         this.button.setText(text);
     }
     
+    /**
+     * Returns the objects's text.
+     * 
+     * @return the object text
+     * @see #setText
+     */
     public String getText() {
         return this.button.getText();
     }
     
     public void addEventHandler() {
         // Build a listener based on the swing component.
-        this.button.addActionListener(this.eventWorker.buildListener(this.button));
+        this.button.addActionListener(this.eventWorker.buildListener(this));
     }
    
     /**

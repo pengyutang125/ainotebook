@@ -45,7 +45,7 @@ import org.berlin.seesaw.swing.layout.ITeeterLayout;
 
 /**
  */
-public interface ITeeterPanel {
+public interface ITeeterPanel extends ITeeterWidget {
 
     /**
      * Method addButton.
@@ -69,11 +69,5 @@ public interface ITeeterPanel {
      * Construct the layout with the internal swing components.     
      */
     public void constructView();
-    
-    /**
-     * Method getComponent.
-     * @return JPanel
-     */
-    public JPanel getComponent();
-    
+           
 } // End of Interface //

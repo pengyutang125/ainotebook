@@ -39,6 +39,7 @@
  */
 package org.berlin.seesaw.swing;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import org.berlin.seesaw.swing.layout.ITeeterLayout;
@@ -80,6 +81,20 @@ public abstract class TeeterPanel implements ITeeterPanel {
     }
     
     /**
+     * Returns the objects's text.
+     * 
+     * @return the object text
+     * @see #setText
+     */
+    public String getText() {
+        return "";
+    }
+
+    public void setText(String text) {     
+        
+    }
+    
+    /**
      * Method toString.
      * @return String
      */
@@ -100,8 +115,8 @@ public abstract class TeeterPanel implements ITeeterPanel {
      * @return the panel
      * @see org.berlin.seesaw.swing.ITeeterPanel#getComponent()
      */
-    public JPanel getComponent() {
-        return panel;
+    public JComponent getComponent() {
+        return this.panel;
     }    
     
 } // End of the Class //

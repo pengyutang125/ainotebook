@@ -39,39 +39,28 @@
  */
 package org.berlin.seesaw.swing;
 
-import java.awt.event.WindowAdapter;
-
 import javax.swing.JComponent;
 
-/**
- */
-public class TeeterFrame implements ITeeterFrame {
+public interface ITeeterWidget {
 
     /**
-     * Method addWindowListener.
-     * @param winAdapter WindowAdapter
-     * @see org.berlin.seesaw.swing.ITeeterFrame#addWindowListener(WindowAdapter)
-     */
-    public void addWindowListener(final WindowAdapter winAdapter) {
-        
-    }
-
-    /**
-     * Returns the objects's text.
+     * Sets the text of this <code>TextComponent</code>
+     * to the specified text.  
      * 
-     * @return the object text
-     * @see #setText
+     * @param text String
+     * @see org.berlin.seesaw.swing.ITeeterTextArea#setText(String)
      */
-    public String getText() {
-        return "";
-    }
-
-    public void setText(String text) {     
-        
-    }
-
-    public JComponent getComponent() {
-        return null;
-    }
+    public void setText(final String text);     
+    
+    /**
+     * Gets the text of this <code>TextComponent</code>
+     * to the specified text.  
+     * 
+     * @param text String
+     * @see org.berlin.seesaw.swing.ITeeterTextArea#setText(String)
+     */
+    public String getText();  
+    
+    public JComponent getComponent();
     
 } // End of the Interface //

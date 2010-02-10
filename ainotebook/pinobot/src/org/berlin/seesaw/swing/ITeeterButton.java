@@ -41,7 +41,7 @@ package org.berlin.seesaw.swing;
 
 import javax.swing.JComponent;
 
-public interface ITeeterButton {
+public interface ITeeterButton extends ITeeterWidget {
 
     public void setText(final String text);
     

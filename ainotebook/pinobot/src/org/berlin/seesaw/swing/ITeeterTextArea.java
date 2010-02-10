@@ -43,7 +43,7 @@ import javax.swing.JComponent;
 
 /**
  */
-public interface ITeeterTextArea {
+public interface ITeeterTextArea extends ITeeterWidget {
 
     /**
      * Method setText.
