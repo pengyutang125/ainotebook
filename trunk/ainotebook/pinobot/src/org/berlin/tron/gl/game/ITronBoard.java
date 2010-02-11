@@ -52,9 +52,10 @@ public interface ITronBoard {
     
     public int getNumCols();     
    
-    public void initRandom();     
+    public void initRandom();   
            
     public void setRandomObject(final int x, final int y);
+    public void setBoardVal(final byte type, final int x, final int y);
     
     public void makeRandomBoard();             
     public void printBoard();  

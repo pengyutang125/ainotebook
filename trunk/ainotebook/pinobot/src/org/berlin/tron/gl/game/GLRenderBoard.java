@@ -60,7 +60,7 @@ public class GLRenderBoard {
     
     private float glSize = 1.0f;
     private float halfGlSize = 0.5f;
-    private float padding = 0.009f;
+    private float padding = 0.019f;
     
     private UpdateStateTask changeStateTask;
     
@@ -110,10 +110,11 @@ public class GLRenderBoard {
         final float sqrSize = (this.xwidth / this.sizeX);
         this.glSize = sqrSize / 2.0f;
         this.halfGlSize = this.xwidth / 2.0f;  
-        
+                
         this.changeStateTask = new UpdateStateTask(this);
         final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(this.changeStateTask, 200, 150);
+        timer.scheduleAtFixedRate(this.changeStateTask, this.changeStateTask.getTaskDelayMs(), 
+                this.changeStateTask.getTaskPeriodMs());                
         
         System.out.println("+ Render Board size=" + this.sizeX +  " glsize=" + this.glSize + " half=" + this.halfGlSize);
     }    
@@ -164,7 +165,7 @@ public class GLRenderBoard {
                 } 
             }  // End of inner for//
             
-        } // End of the For //   
+        } // End of the For //          
     }
 
     /**
