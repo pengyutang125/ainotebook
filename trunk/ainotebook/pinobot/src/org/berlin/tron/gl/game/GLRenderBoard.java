@@ -39,6 +39,8 @@
  */
 package org.berlin.tron.gl.game;
 
+import java.util.Timer;
+
 import javax.media.opengl.GL;
 
 import org.berlin.tron.gl.Mass;
@@ -60,6 +62,8 @@ public class GLRenderBoard {
     private float halfGlSize = 0.5f;
     private float padding = 0.009f;
     
+    private UpdateStateTask changeStateTask;
+    
     public GLRenderBoard(                      
             final float N_X, final float N_Y, 
             final float xwidth, final float yheight) {
@@ -68,6 +72,7 @@ public class GLRenderBoard {
         this.sizeY = N_Y;
         this.xwidth = xwidth;
         this.yheight = yheight;
+                
     }
     
     public void renderMass(final GL gl, final Mass mass) {
@@ -105,6 +110,10 @@ public class GLRenderBoard {
         final float sqrSize = (this.xwidth / this.sizeX);
         this.glSize = sqrSize / 2.0f;
         this.halfGlSize = this.xwidth / 2.0f;  
+        
+        this.changeStateTask = new UpdateStateTask(this);
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(this.changeStateTask, 200, 150);
         
         System.out.println("+ Render Board size=" + this.sizeX +  " glsize=" + this.glSize + " half=" + this.halfGlSize);
     }    
