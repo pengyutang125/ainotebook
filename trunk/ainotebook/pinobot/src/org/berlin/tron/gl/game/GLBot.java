@@ -43,4 +43,26 @@ public class GLBot {
 
     private IBotMoves moves = new BotMoves();    
     
+    /**
+     * @return the moves
+     */
+    public IBotMoves getMoves() {        
+        return moves;
+    }
+    
+    /**
+     * @param moves the moves to set
+     */
+    public void setMoves(IBotMoves moves) {
+        this.moves = moves;
+    }    
+
+    public void makeMove(final Move move) {
+        this.moves.makeMove(move);
+    }    
+    
+    public void printMoves() {
+        this.moves.printMoves();
+    }
+    
 } // End of the Class //

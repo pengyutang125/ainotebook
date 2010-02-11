@@ -100,6 +100,22 @@ public class GLRenderBoard {
         this.board = board; 
     }
     
+    public void buildGameState() {
+        
+        final GLBot bot1 = new GLBot();
+        final GLBot bot2 = new GLBot();
+        bot1.makeMove(new Move(1, 1));
+        bot1.makeMove(new Move(1, 2));
+        
+        
+        
+        this.changeStateTask = new BasicGameState(this, bot1, bot2);
+        final Timer timer = new Timer();
+        timer.scheduleAtFixedRate(this.changeStateTask, this.changeStateTask.getTaskDelayMs(), 
+                this.changeStateTask.getTaskPeriodMs());
+        
+    }
+    
     /**
      * There are N x N number of squares,
      * each square consists of a glsize.
@@ -109,12 +125,7 @@ public class GLRenderBoard {
         final float sqrSize = (this.xwidth / this.sizeX);
         this.glSize = sqrSize / 2.0f;
         this.halfGlSize = this.xwidth / 2.0f;  
-                
-        this.changeStateTask = new BasicGameState(this);
-        final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(this.changeStateTask, this.changeStateTask.getTaskDelayMs(), 
-                this.changeStateTask.getTaskPeriodMs());                
-        
+        this.buildGameState();                               
         System.out.println("+ Render Board size=" + this.sizeX +  " glsize=" + this.glSize + " half=" + this.halfGlSize);
     }    
     
