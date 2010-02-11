@@ -100,12 +100,22 @@ public class TronBoard implements ITronBoard {
     }
     
     public void makeRandomBoard() {
-                
+        System.out.println("-->>> making random board");
         for (int i = 0; i < size; i++) {            
             for (int j = 0; j < size; j++) {                
                 this.setRandomObject(i, j);
             }
         } // End of the For //
+    }
+    
+    public void clearBoard() {
+        
+        for (int i = 0; i < size; i++) {            
+            for (int j = 0; j < size; j++) {
+                this.board[(i * size) + j] = EMPTY;
+            }
+        } // End of the For //
+        
     }
 
     public void printBoard() {

@@ -62,4 +62,11 @@ public class UpdateStateTask extends TimerTask {
         this.taskPeriodMs = taskPeriodMs;
     }
 
+    /**
+     * @return the glRenderBoard
+     */
+    public GLRenderBoard getGlRenderBoard() {
+        return glRenderBoard;
+    }
+
 } // End of the Class //

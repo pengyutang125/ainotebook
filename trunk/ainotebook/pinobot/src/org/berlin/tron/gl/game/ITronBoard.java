@@ -60,6 +60,7 @@ public interface ITronBoard {
     public void makeRandomBoard();             
     public void printBoard();  
     public byte [] getBoard();
+    public void clearBoard();
     
     public int getSize();
     
