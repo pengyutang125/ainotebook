@@ -64,4 +64,13 @@ public class BotMoves implements IBotMoves {
         this.moves.push(move);
     }
     
+    public void printMove(final Move move) {
+        System.out.println(move);
+    }
+    
+    public void printMoves() {
+        for (Move curmove : this.moves) {
+            this.printMove(curmove);
+        }
+    }
 } // End of the Class //

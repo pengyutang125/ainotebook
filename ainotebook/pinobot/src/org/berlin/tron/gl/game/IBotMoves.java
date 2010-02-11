@@ -42,8 +42,7 @@ package org.berlin.tron.gl.game;
 import java.util.List;
 
 public interface IBotMoves {
-
-
+    
     /**
      * @return the moves
      */
@@ -55,5 +54,9 @@ public interface IBotMoves {
     public void setMoves(List<Move> moves);
         
     public void makeMove(final Move move);
+    
+    public void printMove(final Move move);
+    
+    public void printMoves();
         
 } // End of the Class //

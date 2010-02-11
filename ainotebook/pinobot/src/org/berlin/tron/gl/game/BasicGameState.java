@@ -39,45 +39,44 @@
  */
 package org.berlin.tron.gl.game;
 
-public class Move {
+import java.util.TimerTask;
 
-    private final int x;
-    private final int y;
+public class BasicGameState extends UpdateStateTask {
     
-    public Move(final int x, final int y) {
-        this.x = x;
-        this.y = y;
+    private ITronBoard basicBoard;
+    private final GLBot bot1;
+    private final GLBot bot2;
+    
+    public BasicGameState(final GLRenderBoard board, final GLBot bot1, final GLBot bot2) {
+        super(board);
+        this.bot1 = bot1;
+        this.bot2 = bot2;
     }
     
-    public String toString() {
-        return "${Move x=" + this.x + " y=" + this.y +  "}";
+    public void updateState() {
+        
+        synchronized(this.basicBoard) {
+            
+            // Continue to normal game state update //
+            basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
+            this.getGlRenderBoard().setBoard(basicBoard);             
+            
+        } // End of the block //
     }
+    
+    @Override
+    public void run() {
+                
+        if (this.getGlRenderBoard() != null) {
 
-    /**
-     * @return the x
-     */
-    public int getX() {
-        return x;
-    }
+            // If null, create a new basic board //
+            if (this.basicBoard == null) {
+                this.basicBoard = new TronBoard(this.getGlRenderBoard().getBoard().getSize());                    
+            } else {
+                this.updateState();
+            } // End of the if - else //
 
-    /**
-     * @return the y
-     */
-    public int getY() {
-        return y;
+        } // End of Sync Block //              
     }
     
-    public Move incx() {
-        return new Move(this.x + 1, this.y);
-    }
-    public Move incy() {
-        return new Move(this.x, this.y + 1);
-    }
-    
-    public Move decx() {
-        return new Move(this.x - 1, this.y);
-    }
-    public Move decy() {
-        return new Move(this.x, this.y - 1);        
-    }
 } // End of the Class //

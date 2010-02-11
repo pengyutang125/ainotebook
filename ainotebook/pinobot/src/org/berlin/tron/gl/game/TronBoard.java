@@ -66,15 +66,7 @@ public class TronBoard implements ITronBoard {
         this.size = size;
         this.board = new byte [size * size];
     }
-    
-    public int getNumRows() {
-        return size;
-    }
-    
-    public int getNumCols() {
-        return size;
-    }
-   
+            
     public void initRandom() {
         try {
             //this.random = SecureRandom.getInstance("SHA1PRNG");
@@ -84,7 +76,22 @@ public class TronBoard implements ITronBoard {
             this.random = new Random();
         }
     }
-           
+          
+    public void marshalMoves(final byte type, final GLBot bot) {
+        
+        if (bot == null) {
+            return;
+        }
+        
+        final IBotMoves moves = bot.getMoves();
+        for (Move curmove : moves.getMoves()) {
+            final int x = curmove.getX();
+            final int y = curmove.getY();
+            this.setBoardVal(type, x, y);            
+        } // End of the For //
+        
+    }
+    
     public void setRandomObject(final int x, final int y) {
         
         final int randVal = this.random.nextInt(12);        
@@ -99,8 +106,7 @@ public class TronBoard implements ITronBoard {
         } // End of the if - else //
     }
     
-    public void makeRandomBoard() {
-        System.out.println("-->>> making random board");
+    public void makeRandomBoard() {        
         for (int i = 0; i < size; i++) {            
             for (int j = 0; j < size; j++) {                
                 this.setRandomObject(i, j);
@@ -152,6 +158,14 @@ public class TronBoard implements ITronBoard {
      * @return the size
      */
     public int getSize() {
+        return size;
+    }
+    
+    public int getNumRows() {
+        return size;
+    }
+    
+    public int getNumCols() {
         return size;
     }
     
