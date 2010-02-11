@@ -96,8 +96,7 @@ public class GLRenderBoard {
     public void makeRandomBoard() {
         
         final ITronBoard board = new TronBoard((int) this.sizeX);
-        board.initRandom();
-        board.makeRandomBoard();
+        board.clearBoard();
         this.board = board; 
     }
     
@@ -111,7 +110,7 @@ public class GLRenderBoard {
         this.glSize = sqrSize / 2.0f;
         this.halfGlSize = this.xwidth / 2.0f;  
                 
-        this.changeStateTask = new UpdateStateTask(this);
+        this.changeStateTask = new BasicGameState(this);
         final Timer timer = new Timer();
         timer.scheduleAtFixedRate(this.changeStateTask, this.changeStateTask.getTaskDelayMs(), 
                 this.changeStateTask.getTaskPeriodMs());                
