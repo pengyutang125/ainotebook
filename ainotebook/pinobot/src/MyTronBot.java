@@ -43,6 +43,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * My Tron Bot
+ * 
+ * @author BerlinBrown
+ *
+ */
 class MyTronBot {
     
     public static String B = Vers.V;
@@ -51,6 +57,7 @@ class MyTronBot {
                 
         final int x = Map.MyX();
         final int y = Map.MyY();
+        
         final List<String> validMoves = new ArrayList<String>();
         
         if (!Map.IsWall(x, y - 1)) {
@@ -71,14 +78,18 @@ class MyTronBot {
         if (validMoves.size() == 0) {
             return "North"; // Hopeless. Might as well go North!
         } else {
-            Random rand = new Random();
+            final Random rand = new Random();
             int whichMove = rand.nextInt(validMoves.size());
             return validMoves.get(whichMove);
         }
     }
 
+    /////////////////////////////////////////////
+    //
     // Ignore this method. It's just doing boring stuff like communicating
     // with the contest tournament engine.
+    //
+    /////////////////////////////////////////////
     public static void main(String[] args) {
         
         while (true) {
@@ -86,6 +97,6 @@ class MyTronBot {
             Map.MakeMove(MakeMove());
         }
         
-    }
+    } // End of the Class //
     
 } // End of the class //
