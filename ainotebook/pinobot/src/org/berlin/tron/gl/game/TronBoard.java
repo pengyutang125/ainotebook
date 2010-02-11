@@ -77,7 +77,8 @@ public class TronBoard implements ITronBoard {
    
     public void initRandom() {
         try {
-            this.random = SecureRandom.getInstance("SHA1PRNG");
+            //this.random = SecureRandom.getInstance("SHA1PRNG");
+            this.random = new Random(System.currentTimeMillis());
         } catch(Exception e) {
             e.printStackTrace();
             this.random = new Random();
@@ -129,10 +130,14 @@ public class TronBoard implements ITronBoard {
     /**
      * @return the board
      */
-    public byte[] getBoard() {
+    public byte [] getBoard() {
         return board;
     }
 
+    public void setBoardVal(final byte type, final int x, final int y) {
+        this.board[(y * size) + x] = type;        
+    }
+    
     /**
      * @return the size
      */
