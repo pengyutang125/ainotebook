@@ -72,7 +72,7 @@ class MyTronBot {
         if (!Map.IsWall(x - 1, y)) {
             validMoves.add("West");
         }
-        
+                        
         /////////////////////////////////////////
         
         if (validMoves.size() == 0) {
