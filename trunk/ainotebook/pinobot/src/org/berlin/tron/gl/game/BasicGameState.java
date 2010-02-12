@@ -39,18 +39,19 @@
  */
 package org.berlin.tron.gl.game;
 
-import java.util.TimerTask;
 
 public class BasicGameState extends UpdateStateTask {
     
+    private GLGame game;
     private ITronBoard basicBoard;
-    private final GLBot bot1;
-    private final GLBot bot2;
+    private final IBot bot1;
+    private final IBot bot2;
     
-    public BasicGameState(final GLRenderBoard board, final GLBot bot1, final GLBot bot2) {
+    public BasicGameState(final GLGame game, final GLRenderBoard board, final IBot bot1, final IBot bot2) {
         super(board);
         this.bot1 = bot1;
         this.bot2 = bot2;
+        this.game = game;
     }
     
     public void updateState() {
@@ -59,6 +60,8 @@ public class BasicGameState extends UpdateStateTask {
             
             // Continue to normal game state update //
             basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
+            basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
+            this.game.stepGame();
             this.getGlRenderBoard().setBoard(basicBoard);             
             
         } // End of the block //

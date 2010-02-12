@@ -77,7 +77,7 @@ public class TronBoard implements ITronBoard {
         }
     }
           
-    public void marshalMoves(final byte type, final GLBot bot) {
+    public void marshalMoves(final byte type, final IBot bot) {
         
         if (bot == null) {
             return;

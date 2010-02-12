@@ -75,7 +75,7 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
 
         this.board = new GLRenderBoard(DEFAULT_N, DEFAULT_N, 4.4f, 4.4f);
         this.board.calcGLSize();
-        this.board.makeRandomBoard();
+        this.board.makeBoard();
         
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
