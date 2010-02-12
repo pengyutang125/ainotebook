@@ -51,10 +51,14 @@ import java.util.Random;
  */
 class MyTronBot {
     
-    public static String B = Vers.V;
+    public static String V = Vers.V;
     
+    /**
+     * Static Make Move 
+     * @return
+     */
     public static String MakeMove() {
-                
+                      
         final int x = Map.MyX();
         final int y = Map.MyY();
         
