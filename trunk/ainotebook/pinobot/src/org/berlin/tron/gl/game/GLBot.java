@@ -48,6 +48,8 @@ public class GLBot implements IBot {
     private IBotMoves moves = new BotMoves();    
     private Random random = new Random(System.currentTimeMillis()); 
     
+    private IBot otherBot;
+    
     public GLBot(final ITronBoard basicBoard) {
         this.board = basicBoard;
     }
@@ -98,7 +100,23 @@ public class GLBot implements IBot {
         if (move.getY() >= this.board.getSize()) {
             return false;
         }
-        return true;        
+        
+        return this.checkRawMap(board.getBoard(), move);               
+    }
+    
+    public boolean checkRawMap(final byte [] board, final Move newMove) {
+        
+        if (newMove == null) {
+            return false;
+        }
+        
+        final int x = newMove.getX();
+        final int y = newMove.getY();
+        final byte type = board[(y * this.board.getSize()) + x];
+        if (type == ITronBoard.WALL) {
+            return false;
+        }        
+        return true;
     }
     
     public Move checkValidMoves() {
@@ -145,6 +163,28 @@ public class GLBot implements IBot {
         } else {
             System.out.println("Bot cannot make another move");
         } // End of the if //
+    }
+
+    public Move getOtherBotPos() {
+        if (this.getOtherBot() != null) {
+            final Stack<Move> stack = (Stack<Move>) this.getOtherBot().getMoves();
+            return stack.peek();
+        }
+        return null;
+    }
+
+    /**
+     * @return the otherBot
+     */
+    public IBot getOtherBot() {
+        return otherBot;
+    }
+
+    /**
+     * @param otherBot the otherBot to set
+     */
+    public void setOtherBot(final IBot otherBot) {
+        this.otherBot = otherBot;
     }
     
 } // End of the Class //
