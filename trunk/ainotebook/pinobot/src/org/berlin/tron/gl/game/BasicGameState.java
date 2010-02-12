@@ -58,6 +58,7 @@ public class BasicGameState extends UpdateStateTask {
         
         synchronized(this.basicBoard) {
             
+            GLRenderBoard.wallSet1(basicBoard);
             // Continue to normal game state update //
             basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
             basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
