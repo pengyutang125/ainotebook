@@ -57,7 +57,10 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
     public static final int GL_WIDTH  = GLGridApp.SCREEN_WIDTH;
     public static final int GL_HEIGHT = (int) (GLGridApp.SCREEN_HEIGHT * 0.9);
     
-    private static final float DEFAULT_N = 12.0f;
+    /**
+     * Number of spots on the board.
+     */
+    private static final float DEFAULT_N = 10.0f;
     
     private GLU glu = new GLU();
     private GLRenderBoard board;
@@ -176,8 +179,7 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
         gl.glEnd();                                        
         gl.glColor3f(1.0f, 1.0f, 1.0f);
         
-    }    
-      
+    }
     
     /////////////////////////////////////////////////////////////////
     

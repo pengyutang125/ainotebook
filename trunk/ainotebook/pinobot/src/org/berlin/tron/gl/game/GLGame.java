@@ -9,9 +9,9 @@ public class GLGame {
     private final GLRenderBoard board;
     
     public GLGame(final GLRenderBoard board, final IBot bot1, final IBot bot2) {
-        this.board = board;
-        this.bot1 = bot1;
-        this.bot2 = bot2;
+        this.board  = board;
+        this.bot1   = bot1;
+        this.bot2   = bot2;
     }
  
     public void setInitBotPos() {

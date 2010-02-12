@@ -39,7 +39,9 @@
  */
 package org.berlin.tron.gl.game;
 
+import java.util.List;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * Board can only consist of:
@@ -55,6 +57,8 @@ import java.util.Random;
  *
  */
 public class TronBoard implements ITronBoard {
+    
+    private List<Move> points = new Stack<Move>();
     
     private final int size;
     private final byte board [];
@@ -80,11 +84,21 @@ public class TronBoard implements ITronBoard {
         }
     }
     
+    public void savePoint(final byte type, final int x, final int y) {
+        if (type != EMPTY) {
+            final Move point = new Point(x, y);            
+            if (!this.points.contains(point)) {
+                this.points.add(point);
+            }
+        } // End of if //
+    }
+    
     /**
      * Ensure that a bot cannot end up on a wall or other player.
      * He must be dead and not render on top of another object.
      */
     public boolean validateBoardMove(final byte onMoveType, final IBot bot, final int x, final int y) {
+        
         if (bot == null) {
             return false;
         }
@@ -135,7 +149,7 @@ public class TronBoard implements ITronBoard {
                 this.setBoardVal(type, x, y);
             }
         } // End of the For //
-        
+        this.printPoints();
     }
     
     public void setRandomObject(final int x, final int y) {
@@ -143,15 +157,14 @@ public class TronBoard implements ITronBoard {
         synchronized(this.board) {
             final int randVal = this.random.nextInt(12);        
             if (randVal == 1) {
-                this.board[(y * size) + x] = PLAYER1;
-            } else if (randVal == 2) {
-                this.board[(y * size) + x] = PLAYER2;
+                this.setBoardVal(PLAYER1, x, y);                
+            } else if (randVal == 2) {                
+                this.setBoardVal(PLAYER2, x, y);
             } else if (randVal == 3) {
-                this.board[(y * size) + x] = WALL;
+                this.setBoardVal(WALL, x, y);
             } else {
-                this.board[(y * size) + x] = EMPTY;
+                this.setBoardVal(EMPTY, x, y);                
             } // End of the if - else //
-
         }
     }
     
@@ -168,7 +181,7 @@ public class TronBoard implements ITronBoard {
         synchronized(this.board) {
             for (int i = 0; i < size; i++) {            
                 for (int j = 0; j < size; j++) {
-                    this.board[(i * size) + j] = EMPTY;
+                    this.setBoardVal(EMPTY, j, i);                    
                 }
             } // End of the For //
         }
@@ -204,6 +217,7 @@ public class TronBoard implements ITronBoard {
 
     public void setBoardVal(final byte type, final int x, final int y) {
         synchronized(this.board) {
+            this.savePoint(type, x, y);
             this.board[(y * size) + x] = type;
         }
     }
@@ -227,6 +241,13 @@ public class TronBoard implements ITronBoard {
     
     public int getNumCols() {
         return size;
+    }
+
+    public void printPoints() {
+        System.out.println("<Points on Board> size=" + this.points.size());
+        for (Move curmove : this.points) {
+            System.out.println(curmove);
+        }
     }
     
 } // End of the Class //

@@ -39,6 +39,8 @@
  */
 package org.berlin.tron.gl.game;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
@@ -55,9 +57,11 @@ public class GLBot implements IBot {
     private boolean unableToMakeMove = false;
     private boolean dead = false;
 
-    private String name = "(bot:" + sysRand.nextInt() + ")";
-    
+    private String name = "(bot:" + sysRand.nextInt() + ")";   
     private String causeDeath = "";
+    
+    private List<String> messages = new ArrayList<String>();
+    private List<MoveThought> thoughts = new ArrayList<MoveThought>();
     
     /**
      * Main constructor for Bot.
@@ -103,26 +107,33 @@ public class GLBot implements IBot {
     
     public boolean validateMove(final Stack<Move> stack, final Move move) {
         
+        final MoveThought thought = new MoveThought(move.getX(), move.getY(), move);
+        this.thoughts.add(thought);
         if (stack.contains(move)) {
+            thought.setThoughtOnMove("- BadMove, I already moved there");
             return false;
         }        
         if (move.getX() < 0) {
+            thought.setThoughtOnMove("- BadMove, less than board size X");
             return false;
         }        
         if (move.getY() < 0) {
+            thought.setThoughtOnMove("- BadMove, less than board size Y");
             return false;
         }
         if (move.getX() >= this.board.getSize()) {
+            thought.setThoughtOnMove("- BadMove, greater than board size X");
             return false;
         }        
         if (move.getY() >= this.board.getSize()) {
+            thought.setThoughtOnMove("- BadMove, greater than board size Y");
             return false;
         }
         
-        return this.checkRawMap(board.getBoard(), move);               
+        return this.checkRawMap(board.getBoard(), move, thought);               
     }
     
-    public boolean checkRawMap(final byte [] board, final Move newMove) {
+    public boolean checkRawMap(final byte [] board, final Move newMove, final MoveThought moveThought) {
         
         if (newMove == null) {
             return false;
@@ -132,8 +143,13 @@ public class GLBot implements IBot {
         final int y = newMove.getY();
         final byte type = this.getBoard().getBoardVal(x, y);
         if (type == ITronBoard.WALL) {
+            moveThought.setThoughtOnMove("- BadMove, might hit a wall");
             return false;
-        }        
+        } 
+        if ((type == ITronBoard.PLAYER1) || (type == ITronBoard.PLAYER2)) {
+            moveThought.setThoughtOnMove("- BadMove, might myself or another player");
+            return false;
+        }
         return true;
     }
     
@@ -155,34 +171,35 @@ public class GLBot implements IBot {
         if (lastMove == null) {
             // Ideally the last move shouldn't be null.
             return new Move(0, 0);
-        }
-        // Only check four times.
-        Move newMove = null;
-        Move realMove = null;
-        for (int i = 0; i < 4; i++) {
-            
-            final int direction = random.nextInt(4);
-            if (direction == 0) {
-                newMove = lastMove.decx();
-                if (!validateMove(stack, newMove)) { continue; }
-                realMove = newMove;
-            } else if (direction == 1) {
-                newMove = lastMove.incx();
-                if (!validateMove(stack, newMove)) { continue; }
-                realMove = newMove;
-            } else if (direction == 2) {
-                newMove = lastMove.incy();
-                if (!validateMove(stack, newMove)) { continue; }
-                realMove = newMove;
-            } else {
-                newMove = lastMove.decy();
-                if (!validateMove(stack, newMove)) { continue; }
-                realMove = newMove;
-            } // End of if - else direction check //
-            
-        } // End of the for //
+        } // End of the if  //
         
-        return realMove;
+        final List<Move> validMovesList = new ArrayList<Move>();
+        final Move north = lastMove.incy();
+        final Move south = lastMove.decy();
+        final Move east  = lastMove.incx();      
+        final Move west  = lastMove.decx();
+        
+        final boolean nb = validateMove(stack, north);
+        final boolean sb = validateMove(stack, south);
+        final boolean eb = validateMove(stack, east);
+        final boolean wb = validateMove(stack, west);
+        
+        if (nb) validMovesList.add(north);
+        if (sb) validMovesList.add(south);
+        if (eb) validMovesList.add(east);
+        if (wb) validMovesList.add(west);
+        this.messages.add("Message: Direction Check - " + nb + " " + sb + " " + eb + " " + wb);
+        
+        // Add to the queue //
+        if (validMovesList.size() == 0) {
+            return north;
+        } else if (validMovesList.size() == 0) {
+            return validMovesList.get(0);
+        } else {
+            final int sel = random.nextInt(validMovesList.size());
+            return validMovesList.get(sel);
+        } // End of if - else //
+        
     }
     
     public void makeLogicMove() {
@@ -191,6 +208,10 @@ public class GLBot implements IBot {
         System.out.println("+++++++++++++++++++++");
         System.out.println(this.board);
         this.board.printBoard();
+        System.out.println("----");
+        for (Move curmove : this.thoughts) {
+            System.out.println(curmove);
+        }
         System.out.println("=====================");
         System.out.println("=====================<<<<<< (END OF BOT PRINT BOARD)");        
         
