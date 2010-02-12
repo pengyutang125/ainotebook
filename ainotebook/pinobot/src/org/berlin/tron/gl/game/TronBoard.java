@@ -39,7 +39,6 @@
  */
 package org.berlin.tron.gl.game;
 
-import java.security.SecureRandom;
 import java.util.Random;
 
 /**

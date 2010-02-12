@@ -60,5 +60,9 @@ public interface IBot {
     public void makeLogicMove();
     
     public Move checkValidMoves();
-        
+
+    public Move getOtherBotPos();
+    
+    public void setOtherBot(IBot otherBot);
+    
 } // End of the Class //

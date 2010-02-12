@@ -54,7 +54,7 @@ import org.berlin.tron.gl.game.GLRenderBoard;
 
 public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionListener {
 
-    private static final float DEFAULT_N = 20.0f;
+    private static final float DEFAULT_N = 30.0f;
     
     private GLU glu = new GLU();
     private GLRenderBoard board;
