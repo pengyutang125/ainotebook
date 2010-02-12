@@ -39,73 +39,26 @@
  */
 package org.berlin.tron.gl.game;
 
-public class Move {
-
-    private final int x;
-    private final int y;
+public interface IBot {
     
-    public Move(final int x, final int y) {
-        this.x = x;
-        this.y = y;
-    }
-    
-    public String toString() {
-        return "${Move x=" + this.x + " y=" + this.y +  "}";
-    }
-
     /**
-     * @return the x
+     * @return the moves
      */
-    public int getX() {
-        return x;
-    }
-
+    public IBotMoves getMoves();        
+        
     /**
-     * @return the y
+     * @param moves the moves to set
      */
-    public int getY() {
-        return y;
-    }
+    public void setMoves(IBotMoves moves);
+
+    public void makeMove(final Move move);
     
-    public Move incx() {
-        return new Move(this.x + 1, this.y);
-    }
-    public Move incy() {
-        return new Move(this.x, this.y + 1);
-    }
-    
-    public Move decx() {
-        return new Move(this.x - 1, this.y);
-    }
-    public Move decy() {
-        return new Move(this.x, this.y - 1);        
-    }
-    
-    public boolean equals(Object obj) {
+    public void printMoves();
         
-        if (obj == null) {
-            return false;
-        }
-        if (!(obj instanceof Move)) {
-            return false;
-        }
-        final Move m = (Move) obj;
-        if ((m.getX() == this.x) && (m.getY() == this.y)) {
-            return true;            
-        }
-        return false;                
-    }
+    public ITronBoard getBoard();
     
-    /**
-     * Create hashcode when this object is used as
-     * a key with map to void collisions.
-     */ 
-    public int hashCode() {
+    public void makeLogicMove();
+    
+    public Move checkValidMoves();
         
-        int hash = 1;
-        hash = hash * 31 + this.toString().hashCode();
-        hash = hash * 31 + ("" + this.x).hashCode();                      
-        return hash;
-    }
-    
 } // End of the Class //

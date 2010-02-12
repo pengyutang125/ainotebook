@@ -39,9 +39,18 @@
  */
 package org.berlin.tron.gl.game;
 
-public class GLBot {
+import java.util.Random;
+import java.util.Stack;
 
+public class GLBot implements IBot {
+
+    private final ITronBoard board;
     private IBotMoves moves = new BotMoves();    
+    private Random random = new Random(System.currentTimeMillis()); 
+    
+    public GLBot(final ITronBoard basicBoard) {
+        this.board = basicBoard;
+    }
     
     /**
      * @return the moves
@@ -63,6 +72,79 @@ public class GLBot {
     
     public void printMoves() {
         this.moves.printMoves();
+    }
+
+    /**
+     * @return the board
+     */
+    public ITronBoard getBoard() {
+        return board;
+    }
+    
+    public boolean validateMove(final Stack<Move> stack, final Move move) {
+        
+        if (stack.contains(move)) {
+            return false;
+        }        
+        if (move.getX() < 0) {
+            return false;
+        }        
+        if (move.getY() < 0) {
+            return false;
+        }
+        if (move.getX() >= this.board.getSize()) {
+            return false;
+        }        
+        if (move.getY() >= this.board.getSize()) {
+            return false;
+        }
+        return true;        
+    }
+    
+    public Move checkValidMoves() {
+        
+        final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
+        final Move lastMove = stack.peek();
+        if (lastMove == null) {
+            // Ideally the last move shouldn't be null.
+            return new Move(0, 0);
+        }
+        // Only check four times.
+        Move newMove = null;
+        Move realMove = null;
+        for (int i = 0; i < 4; i++) {
+            
+            final int direction = random.nextInt(4);
+            if (direction == 0) {
+                newMove = lastMove.decx();
+                if (!validateMove(stack, newMove)) { continue; }
+                realMove = newMove;
+            } else if (direction == 1) {
+                newMove = lastMove.incx();
+                if (!validateMove(stack, newMove)) { continue; }
+                realMove = newMove;
+            } else if (direction == 2) {
+                newMove = lastMove.incy();
+                if (!validateMove(stack, newMove)) { continue; }
+                realMove = newMove;
+            } else {
+                newMove = lastMove.decy();
+                if (!validateMove(stack, newMove)) { continue; }
+                realMove = newMove;
+            } // End of if - else direction check //
+            
+        } // End of the for //
+        
+        return realMove;
+    }
+    
+    public void makeLogicMove() {
+        final Move newMove = this.checkValidMoves();
+        if (newMove != null) {
+            this.makeMove(newMove);
+        } else {
+            System.out.println("Bot cannot make another move");
+        } // End of the if //
     }
     
 } // End of the Class //

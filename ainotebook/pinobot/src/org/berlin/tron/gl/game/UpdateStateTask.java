@@ -6,8 +6,8 @@ public class UpdateStateTask extends TimerTask {
 
     private final GLRenderBoard glRenderBoard;
     
-    private int taskDelayMs  = 100;
-    private int taskPeriodMs = 100;
+    private int taskDelayMs  = 150;
+    private int taskPeriodMs = 150;
     
     private long lastRunStart = 0;
     private long lastRunEnd = 0;

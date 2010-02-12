@@ -39,8 +39,6 @@
  */
 package org.berlin.tron.gl.game;
 
-import java.util.Timer;
-
 import javax.media.opengl.GL;
 
 import org.berlin.tron.gl.Mass;
@@ -61,9 +59,7 @@ public class GLRenderBoard {
     private float glSize = 1.0f;
     private float halfGlSize = 0.5f;
     private float padding = 0.019f;
-    
-    private UpdateStateTask changeStateTask;
-    
+            
     public GLRenderBoard(                      
             final float N_X, final float N_Y, 
             final float xwidth, final float yheight) {
@@ -93,27 +89,20 @@ public class GLRenderBoard {
         gl.glPopMatrix();
     }    
     
-    public void makeRandomBoard() {
+    public void makeBoard() {
         
         final ITronBoard board = new TronBoard((int) this.sizeX);
         board.clearBoard();
         this.board = board; 
+        this.buildGame();
     }
     
-    public void buildGameState() {
+    public void buildGame() {
         
-        final GLBot bot1 = new GLBot();
-        final GLBot bot2 = new GLBot();
-        bot1.makeMove(new Move(1, 1));
-        bot1.makeMove(new Move(1, 2));
-        
-        
-        
-        this.changeStateTask = new BasicGameState(this, bot1, bot2);
-        final Timer timer = new Timer();
-        timer.scheduleAtFixedRate(this.changeStateTask, this.changeStateTask.getTaskDelayMs(), 
-                this.changeStateTask.getTaskPeriodMs());
-        
+        final GLGameBuilder builder = new GLGameBuilder(this);
+        final GLGame game = builder.build();
+        game.setInitBotPos();
+        game.launchTask();
     }
     
     /**
@@ -124,8 +113,7 @@ public class GLRenderBoard {
         
         final float sqrSize = (this.xwidth / this.sizeX);
         this.glSize = sqrSize / 2.0f;
-        this.halfGlSize = this.xwidth / 2.0f;  
-        this.buildGameState();                               
+        this.halfGlSize = this.xwidth / 2.0f;                                        
         System.out.println("+ Render Board size=" + this.sizeX +  " glsize=" + this.glSize + " half=" + this.halfGlSize);
     }    
     
