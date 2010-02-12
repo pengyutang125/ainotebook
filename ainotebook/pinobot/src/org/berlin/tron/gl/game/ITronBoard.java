@@ -48,20 +48,20 @@ public interface ITronBoard {
     public static byte PLAYER2 = 64;
     public static byte WALL    = 1;
     
-    public int getNumRows();
-    
+    public int getNumRows();    
     public int getNumCols();     
    
     public void initRandom();   
            
     public void setRandomObject(final int x, final int y);
     public void setBoardVal(final byte type, final int x, final int y);
-    
+    public byte getBoardVal(final int x, final int y);
     public void marshalMoves(final byte type, final IBot bot);
     
     public void makeRandomBoard();             
     public void printBoard();  
-    public byte [] getBoard();
+    public byte [] getBoard();        
+    
     public void clearBoard();
     
     public int getSize();

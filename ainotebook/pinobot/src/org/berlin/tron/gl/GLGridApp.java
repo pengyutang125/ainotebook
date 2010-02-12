@@ -57,15 +57,19 @@ import com.sun.opengl.util.Animator;
 public class GLGridApp extends JFrame {
     
     /**
-     * 
+     * Serial Version Id.
      */
     private static final long serialVersionUID = 443658669585028L;
-
+    
+    public static final int TEXT_COLS     = 30;
+    public static final int SCREEN_WIDTH  = 240;
+    public static final int SCREEN_HEIGHT = (int) (SCREEN_WIDTH * 0.90);
+    
     public void buildFrame() {
         
         final JTextArea text = new JTextArea("AppLoaded - " + new Date());
         text.setRows(3);
-        text.setColumns(80);
+        text.setColumns(TEXT_COLS);
         
         final BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);       
         this.getContentPane().setLayout(layout);
@@ -76,8 +80,8 @@ public class GLGridApp extends JFrame {
         final Animator animator = new Animator(canvas);
         
         this.add(canvas);
-        this.setLocation(100, 100);
-        this.setSize(900, 760);
+        this.setLocation(10, 800);
+        this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         this.setResizable(false);
         this.pack();
         

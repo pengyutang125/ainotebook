@@ -44,14 +44,32 @@ import java.util.Stack;
 
 public class GLBot implements IBot {
 
+    public static final Random sysRand = new Random(System.currentTimeMillis());
+        
     private final ITronBoard board;
     private IBotMoves moves = new BotMoves();    
     private Random random = new Random(System.currentTimeMillis()); 
     
     private IBot otherBot;
     
+    private boolean unableToMakeMove = false;
+    private boolean dead = false;
+
+    private String name = "(bot:" + sysRand.nextInt() + ")";
+    
+    private String causeDeath = "";
+    
+    /**
+     * Main constructor for Bot.
+     * 
+     * @param basicBoard
+     */
     public GLBot(final ITronBoard basicBoard) {
         this.board = basicBoard;
+    }
+    
+    public String toString() {
+        return "#{Bot-" + this.getName() + " dead?=" + this.isDead() + " move?=" + (!this.isUnableToMakeMove()) + " cause-death=" + this.getCauseDeath() + "}";
     }
     
     /**
@@ -112,11 +130,22 @@ public class GLBot implements IBot {
         
         final int x = newMove.getX();
         final int y = newMove.getY();
-        final byte type = board[(y * this.board.getSize()) + x];
+        final byte type = this.getBoard().getBoardVal(x, y);
         if (type == ITronBoard.WALL) {
             return false;
         }        
         return true;
+    }
+    
+    public Move getLastMove() {
+        
+        final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
+        final Move lastMove = stack.peek();
+        if (lastMove == null) {
+            // Ideally the last move shouldn't be null.
+            return new Move(-1, -1);
+        }
+        return lastMove;
     }
     
     public Move checkValidMoves() {
@@ -157,12 +186,30 @@ public class GLBot implements IBot {
     }
     
     public void makeLogicMove() {
+        
+        System.out.println("+++++++++++++++++++++");
+        System.out.println("+++++++++++++++++++++");
+        System.out.println(this.board);
+        this.board.printBoard();
+        System.out.println("=====================");
+        System.out.println("=====================<<<<<< (END OF BOT PRINT BOARD)");        
+        
+        // If dead, don't make a move //
+        if (this.isDead()) {
+            System.out.println("Bot is dead - " + this);
+            return;
+        }
+        
         final Move newMove = this.checkValidMoves();
         if (newMove != null) {
             this.makeMove(newMove);
-        } else {
-            System.out.println("Bot cannot make another move");
+        } else {                       
+            this.unableToMakeMove = true;
+            System.out.println("Bot cannot make another move - " + this);
+            //  Just move north //
+            this.makeMove(this.getLastMove().incy());
         } // End of the if //
+        
     }
 
     public Move getOtherBotPos() {
@@ -185,6 +232,55 @@ public class GLBot implements IBot {
      */
     public void setOtherBot(final IBot otherBot) {
         this.otherBot = otherBot;
+    }
+
+    /**
+     * @return the unableToMakeMove
+     */
+    public boolean isUnableToMakeMove() {
+        return unableToMakeMove;
+    }
+
+    /**
+     * @return the dead
+     */
+    public boolean isDead() {
+        return dead;
+    }
+
+    /**
+     * @param dead the dead to set
+     */
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * @return the causeDeath
+     */
+    public String getCauseDeath() {
+        return causeDeath;
+    }
+
+    /**
+     * @param causeDeath the causeDeath to set
+     */
+    public void setCauseDeath(String causeDeath) {
+        this.causeDeath = causeDeath;
     }
     
 } // End of the Class //

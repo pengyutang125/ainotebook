@@ -76,7 +76,7 @@ class MyTronBot {
         if (!Map.IsWall(x - 1, y)) {
             validMoves.add("West");
         }
-                        
+                                       
         /////////////////////////////////////////
         
         if (validMoves.size() == 0) {
@@ -85,7 +85,7 @@ class MyTronBot {
             final Random rand = new Random();
             int whichMove = rand.nextInt(validMoves.size());
             return validMoves.get(whichMove);
-        }
+        } // End of the if - else //
     }
 
     /////////////////////////////////////////////
