@@ -54,10 +54,17 @@ import org.berlin.tron.gl.game.GLRenderBoard;
 
 public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionListener {
 
-    private static final float DEFAULT_N = 30.0f;
+    public static final int GL_WIDTH  = GLGridApp.SCREEN_WIDTH;
+    public static final int GL_HEIGHT = (int) (GLGridApp.SCREEN_HEIGHT * 0.9);
+    
+    private static final float DEFAULT_N = 12.0f;
     
     private GLU glu = new GLU();
     private GLRenderBoard board;
+    
+    private boolean disableGrid = true;
+    private boolean disableAxis = true;
+    
     /**
      * Main
      * 
@@ -67,16 +74,12 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
         
         GLCanvas canvas = new GLCanvas();
         canvas.addGLEventListener(new GLGridBoard());
-        canvas.setSize(860, 660);
+        canvas.setSize(GL_WIDTH, GL_HEIGHT);
         return canvas;
     }
 
     public void init(GLAutoDrawable drawable) {
 
-        this.board = new GLRenderBoard(DEFAULT_N, DEFAULT_N, 4.4f, 4.4f);
-        this.board.calcGLSize();
-        this.board.makeBoard();
-        
         // Use debug pipeline
         // drawable.setGL(new DebugGL(drawable.getGL()));
         GL gl = drawable.getGL();
@@ -86,7 +89,12 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
 
         gl.setSwapInterval(1);
         gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        gl.glShadeModel(GL.GL_FLAT); 
+        gl.glShadeModel(GL.GL_FLAT);
+        
+        this.board = new GLRenderBoard(DEFAULT_N, DEFAULT_N, 4.4f, 4.4f);
+        this.board.calcGLSize();
+        this.board.makeBoard();
+        
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width,
@@ -190,8 +198,10 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
         final float lineYEnd   =  2.2f;
         final float xmin       = -2.2f;
         final float xmax       =  2.2f;
-        renderGridVerticalAlongX(gl, NforX, lineYStart, lineYEnd, xmin, xmax);
-        renderGridVerticalAlongX_End(gl, lineYStart, lineYEnd, xmax);
+        if (!this.disableGrid) {
+            renderGridVerticalAlongX(gl, NforX, lineYStart, lineYEnd, xmin, xmax);
+            renderGridVerticalAlongX_End(gl, lineYStart, lineYEnd, xmax);
+        }
         
         /////////////////////////////////////////
         // For Render Along Y
@@ -201,11 +211,16 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
         final float lineXEnd   =  2.2f;
         final float ymin       = -2.2f;
         final float ymax       =  2.2f;
-        renderGridHorizontalAlongY(gl, N, lineXStart, lineXEnd, ymin, ymax);
-        renderGridHorizontalAlongY_End(gl, lineXStart, lineXEnd, ymax);
+        
+        if (!this.disableGrid) {
+            renderGridHorizontalAlongY(gl, N, lineXStart, lineXEnd, ymin, ymax);
+            renderGridHorizontalAlongY_End(gl, lineXStart, lineXEnd, ymax);
+        }
         
         // Render the XY Axis lines
-        this.renderXYAxis(gl, lineXStart, lineXEnd, lineYStart, lineYEnd);
+        if (!this.disableAxis) {
+            this.renderXYAxis(gl, lineXStart, lineXEnd, lineYStart, lineYEnd);
+        }
         
         this.board.renderBoard(gl);        
         

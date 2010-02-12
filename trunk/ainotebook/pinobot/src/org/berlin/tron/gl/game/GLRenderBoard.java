@@ -56,9 +56,9 @@ public class GLRenderBoard {
     private final float xwidth;
     private final float yheight;
     
-    private float glSize = 1.0f;
+    private float glSize     = 1.0f;
     private float halfGlSize = 0.5f;
-    private float padding = 0.019f;
+    private float padding    = 0.019f;
             
     public GLRenderBoard(                      
             final float N_X, final float N_Y, 
@@ -95,6 +95,8 @@ public class GLRenderBoard {
         board.clearBoard();
         wallSet1(board);
         this.board = board;
+        System.out.println("Tron Board At Create!");
+        System.out.println(this.board);
         this.buildGame();
     }
     
@@ -145,17 +147,17 @@ public class GLRenderBoard {
         if (massType == ITronBoard.PLAYER1) {
             
             mass.setType(ITronBoard.PLAYER1);
-            mass.setColor(1.0f, 0.0f, 0.0f);
+            mass.setColor(0.92f, 0.92f, 0.92f);
             
         } else if (massType == ITronBoard.PLAYER2) {
             
             mass.setType(ITronBoard.PLAYER2);
-            mass.setColor(0.0f, 0.0f, 1.0f);
+            mass.setColor(0.91f, 0.91f, 0.95f);
             
         } else if (massType == ITronBoard.WALL) {
             
             mass.setType(ITronBoard.WALL);
-            mass.setColor(0.7f, 0.7f, 0.7f);
+            mass.setColor(0.96f, 0.96f, 0.96f);
             
         } // End of the if //
         return mass;
@@ -165,23 +167,24 @@ public class GLRenderBoard {
 
         final int size = this.board.getSize();
         final byte [] board = this.board.getBoard();
-        
-        for (int j = 0; j < size; j++) {            
-            for (int i = 0; i < size; i++) {
-                
-                final byte val = board[(j * size) + i];
-                                
-                final float entitySize = this.glSize * 2.0f;
-                final float x = (((i * entitySize) - this.halfGlSize) - this.glSize) + entitySize;
-                final float y = ((j * entitySize) - this.halfGlSize) + this.glSize;
-                
-                final Mass mass = this.createGLMass(val, x, y, this.glSize);
-                if (mass.getType() != ITronBoard.EMPTY) {                    
-                    this.renderMass(gl, mass);
-                } 
-            }  // End of inner for//
-            
-        } // End of the For //          
+        synchronized(this.board.getBoard()) {
+            for (int j = 0; j < size; j++) {            
+                for (int i = 0; i < size; i++) {
+
+                    final byte val = board[(j * size) + i];
+
+                    final float entitySize = this.glSize * 2.0f;
+                    final float x = (((i * entitySize) - this.halfGlSize) - this.glSize) + entitySize;
+                    final float y = ((j * entitySize) - this.halfGlSize) + this.glSize;
+
+                    final Mass mass = this.createGLMass(val, x, y, this.glSize);
+                    if (mass.getType() != ITronBoard.EMPTY) {                    
+                        this.renderMass(gl, mass);
+                    } 
+                }  // End of inner for//
+
+            } // End of the For //     
+        } // End of sync block
     }
 
     /**

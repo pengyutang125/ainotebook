@@ -43,14 +43,16 @@ public class Move {
 
     private final int x;
     private final int y;
+    private final long moveTimeMs;
     
     public Move(final int x, final int y) {
         this.x = x;
         this.y = y;
+        this.moveTimeMs = System.currentTimeMillis();
     }
     
     public String toString() {
-        return "${Move x=" + this.x + " y=" + this.y +  "}";
+        return "${Move x=" + this.x + " y=" + this.y +  "[" + this.moveTimeMs + "]}";
     }
 
     /**
@@ -106,6 +108,13 @@ public class Move {
         hash = hash * 31 + this.toString().hashCode();
         hash = hash * 31 + ("" + this.x).hashCode();                      
         return hash;
+    }
+
+    /**
+     * @return the moveTimeMs
+     */
+    public long getMoveTimeMs() {
+        return moveTimeMs;
     }
     
 } // End of the Class //

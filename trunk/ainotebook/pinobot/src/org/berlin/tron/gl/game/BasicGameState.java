@@ -61,7 +61,7 @@ public class BasicGameState extends UpdateStateTask {
             GLRenderBoard.wallSet1(basicBoard);
             // Continue to normal game state update //
             basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
-            basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
+            //basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
             this.game.stepGame();
             this.getGlRenderBoard().setBoard(basicBoard);             
             
@@ -75,7 +75,7 @@ public class BasicGameState extends UpdateStateTask {
 
             // If null, create a new basic board //
             if (this.basicBoard == null) {
-                this.basicBoard = new TronBoard(this.getGlRenderBoard().getBoard().getSize());                    
+                this.basicBoard = this.getGlRenderBoard().getBoard();                    
             } else {
                 this.updateState();
             } // End of the if - else //

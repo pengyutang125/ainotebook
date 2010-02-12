@@ -65,7 +65,11 @@ public class TronBoard implements ITronBoard {
         this.size = size;
         this.board = new byte [size * size];
     }
-            
+    
+    public String toString() {
+        return "TronBoard: size=" + this.size + " obj=" + super.toString();
+    }
+    
     public void initRandom() {
         try {
             //this.random = SecureRandom.getInstance("SHA1PRNG");
@@ -75,6 +79,33 @@ public class TronBoard implements ITronBoard {
             this.random = new Random();
         }
     }
+    
+    /**
+     * Ensure that a bot cannot end up on a wall or other player.
+     * He must be dead and not render on top of another object.
+     */
+    public boolean validateBoardMove(final byte onMoveType, final IBot bot, final int x, final int y) {
+        if (bot == null) {
+            return false;
+        }
+        if ((x < 0) || (y < 0) || (x >= this.getNumCols()) || (y >= this.getNumRows())) {
+            bot.setCauseDeath("Hit Bounds at : x=" + x + "y=" + y);
+            bot.setDead(true);
+            return false;
+        }
+        final byte existType = this.getBoardVal(x, y);
+        
+        System.out.println("validate board move: ");
+        System.out.println(this);
+        this.printBoard();        
+        if (existType != ITronBoard.EMPTY) {
+            bot.setCauseDeath("Ran into something - " + existType + " (" + x + "," + y+ ")");
+            bot.setDead(true);
+            return false;
+        }
+        
+        return true;
+    }
           
     public void marshalMoves(final byte type, final IBot bot) {
         
@@ -82,27 +113,46 @@ public class TronBoard implements ITronBoard {
             return;
         }
         
+        final Move lastBotMove = bot.getLastMove();
+        Move invalidMove = null;
+        final int lastx = lastBotMove.getX();
+        final int lasty = lastBotMove.getY();        
+        final boolean validMove = validateBoardMove(type, bot, lastx, lasty);        
+        if (!validMove) {
+            invalidMove = lastBotMove;
+        }
+        // Continue to setting moves
         final IBotMoves moves = bot.getMoves();
-        for (Move curmove : moves.getMoves()) {
+        System.out.println("--->>>");
+        bot.printMoves();
+        for (Move curmove : moves.getMoves()) {            
             final int x = curmove.getX();
-            final int y = curmove.getY();
-            this.setBoardVal(type, x, y);            
+            final int y = curmove.getY();            
+            if ((invalidMove != null) && (invalidMove.equals(curmove))) {
+                // Don't draw
+            } else {
+                System.out.println("Setting board ->" + x + " / " + y);
+                this.setBoardVal(type, x, y);
+            }
         } // End of the For //
         
     }
     
     public void setRandomObject(final int x, final int y) {
         
-        final int randVal = this.random.nextInt(12);        
-        if (randVal == 1) {
-            this.board[(y * size) + x] = PLAYER1;
-        } else if (randVal == 2) {
-            this.board[(y * size) + x] = PLAYER2;
-        } else if (randVal == 3) {
-            this.board[(y * size) + x] = WALL;
-        } else {
-            this.board[(y * size) + x] = EMPTY;
-        } // End of the if - else //
+        synchronized(this.board) {
+            final int randVal = this.random.nextInt(12);        
+            if (randVal == 1) {
+                this.board[(y * size) + x] = PLAYER1;
+            } else if (randVal == 2) {
+                this.board[(y * size) + x] = PLAYER2;
+            } else if (randVal == 3) {
+                this.board[(y * size) + x] = WALL;
+            } else {
+                this.board[(y * size) + x] = EMPTY;
+            } // End of the if - else //
+
+        }
     }
     
     public void makeRandomBoard() {        
@@ -115,12 +165,13 @@ public class TronBoard implements ITronBoard {
     
     public void clearBoard() {
         
-        for (int i = 0; i < size; i++) {            
-            for (int j = 0; j < size; j++) {
-                this.board[(i * size) + j] = EMPTY;
-            }
-        } // End of the For //
-        
+        synchronized(this.board) {
+            for (int i = 0; i < size; i++) {            
+                for (int j = 0; j < size; j++) {
+                    this.board[(i * size) + j] = EMPTY;
+                }
+            } // End of the For //
+        }
     }
 
     public void printBoard() {
@@ -129,13 +180,13 @@ public class TronBoard implements ITronBoard {
                 
                 final byte p = this.board[(j * size) + i];
                 if (p == PLAYER1) {
-                    System.out.print("#");
+                    System.out.print("[#-x=" + i + " y=" + j + "],");
                 } else if (p == PLAYER2) {
-                    System.out.print("+");                    
+                    System.out.print("[+-x=" + i + " y=" + j + "],");                    
                 } else if (p == WALL) {   
-                    System.out.print("x");
+                    System.out.print("[x-x=" + i + " y=" + j + "],");
                 } else {
-                    System.out.print(".");                    
+                    System.out.print("[.-x=" + i + " y=" + j + "],");                    
                 } // End of the if - else //                
             } // End of the for //
             System.out.println();
@@ -146,11 +197,21 @@ public class TronBoard implements ITronBoard {
      * @return the board
      */
     public byte [] getBoard() {
-        return board;
+        synchronized(this.board) {
+            return board;
+        }
     }
 
     public void setBoardVal(final byte type, final int x, final int y) {
-        this.board[(y * size) + x] = type;        
+        synchronized(this.board) {
+            this.board[(y * size) + x] = type;
+        }
+    }
+    
+    public byte getBoardVal(final int x, final int y) {
+        synchronized(this.board) {
+            return this.board[(y * size) + x];
+        }
     }
     
     /**

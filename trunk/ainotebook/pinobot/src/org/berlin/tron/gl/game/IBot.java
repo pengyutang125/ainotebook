@@ -41,6 +41,8 @@ package org.berlin.tron.gl.game;
 
 public interface IBot {
     
+    public static final String VERS = "0.0";
+    
     /**
      * @return the moves
      */
@@ -59,10 +61,31 @@ public interface IBot {
     
     public void makeLogicMove();
     
+    public Move getLastMove();
+    
     public Move checkValidMoves();
 
     public Move getOtherBotPos();
     
     public void setOtherBot(IBot otherBot);
+    
+    public boolean isUnableToMakeMove();
+        
+    public boolean isDead();
+
+    /**
+     * @param dead the dead to set
+     */
+    public void setDead(boolean dead);
+    
+    public String getName();        
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name);
+    
+    public String getCauseDeath();
+    public void setCauseDeath(String causeDeath);
     
 } // End of the Class //
