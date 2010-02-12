@@ -43,7 +43,7 @@ public class Move {
 
     private final int x;
     private final int y;
-    private final long moveTimeMs;
+    private final long moveTimeMs;    
     
     public Move(final int x, final int y) {
         this.x = x;

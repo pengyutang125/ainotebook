@@ -57,7 +57,7 @@ public interface ITronBoard {
     public void setBoardVal(final byte type, final int x, final int y);
     public byte getBoardVal(final int x, final int y);
     public void marshalMoves(final byte type, final IBot bot);
-    
+    public void savePoint(final byte type, final int x, final int y);
     public void makeRandomBoard();             
     public void printBoard();  
     public byte [] getBoard();        

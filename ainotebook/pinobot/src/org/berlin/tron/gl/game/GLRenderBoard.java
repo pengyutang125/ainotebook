@@ -93,7 +93,7 @@ public class GLRenderBoard {
         
         final ITronBoard board = new TronBoard((int) this.sizeX);
         board.clearBoard();
-        wallSet1(board);
+        wallSet2(board);
         this.board = board;
         System.out.println("Tron Board At Create!");
         System.out.println(this.board);
@@ -115,6 +115,12 @@ public class GLRenderBoard {
         board.setBoardVal(ITronBoard.WALL, 7, 6);
         board.setBoardVal(ITronBoard.WALL, 8, 6);        
         
+    }
+    
+    public static void wallSet2(final ITronBoard board) {
+        board.setBoardVal(ITronBoard.WALL, 4, 2);
+        board.setBoardVal(ITronBoard.WALL, 4, 3);
+        board.setBoardVal(ITronBoard.WALL, 4, 4);
     }
     
     public void buildGame() {
