@@ -39,45 +39,9 @@
  */
 package org.berlin.tron.gl.game;
 
-public interface IChallengeGame {
+public interface GameWidget {
 
-    public void addChallengeMove(final Move challenge);
+    public void setVerbose(final boolean b);
+    public boolean getVerbose();
     
-    public void addCurrentMove(final Move currentPlayer);
-    
-    /**
-     * Add a move for the other player
-     */
-    public void addOtherMove(final Move otherPlayer);
-
-    /**
-     * @return the movesCurrentPlayer
-     */
-    public IBotMoves getMovesCurrentPlayer();
-
-    /**
-     * @param movesCurrentPlayer the movesCurrentPlayer to set
-     */
-    public void setMovesCurrentPlayer(IBotMoves movesCurrentPlayer);
-
-    /**
-     * @return the movesOtherPlayer
-     */
-    public IBotMoves getMovesOtherPlayer();
-
-    /**
-     * @param movesOtherPlayer the movesOtherPlayer to set
-     */
-    public void setMovesOtherPlayer(IBotMoves movesOtherPlayer);
-
-    public void init(final int width, final int height);
-       
-    public void checkInit(final int width, final int height);
-    
-    public void findWalls(final int x, final int y);
-        
-    public String makeLogicMove();
-        
-    public void checkInitPlayerPos(final Move initMove, final Move otherPlayerMove);
-    
-} // End of the Class //
+}

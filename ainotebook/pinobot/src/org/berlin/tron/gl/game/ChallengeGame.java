@@ -39,37 +39,55 @@
  */
 package org.berlin.tron.gl.game;
 
-public class ChallengeGame implements IChallengeGame {
+public class ChallengeGame implements IChallengeGame, GameWidget {
     
     private IBotMoves challengeMove      = new BotMoves();
     private IBotMoves movesCurrentPlayer = new BotMoves();
     private IBotMoves movesOtherPlayer   = new BotMoves();
     
     private ITronBoard tronBoard;
-    private IBot player1;
-    private IBot player2;
+    private IBot player1ai;
+    private IBot player2ai;
+    
+    private boolean readyForLogic = false;
+    private boolean verbose = false;
     
     public void init(final int width, final int height) {
+        
         this.tronBoard = new TronBoard(width, height);
-        player1 = new GLBot(this.tronBoard);
-        player2 = new GLBot(this.tronBoard);        
+        player1ai = new GLBot(this.tronBoard);
+        player2ai = new GLBot(this.tronBoard); 
+        player1ai.setOtherBot(player2ai);
+        player2ai.setOtherBot(player1ai);
+        
     }
     
     public String makeLogicMove() {
-        if (this.player1 != null) {
-            this.player1.makeLogicMove();
-            return this.player1.getLastMove().getDirection();
-        }        
-        return "North";
-    }
-    
-    public String makeMove() {        
-        final Move move = this.player1.getLastMove();
-        if (move != null) {
-            return move.getDirection();
-        } // End of the if //
+         
+        this.readyForLogic = ((this.player1ai.getMoves().size() >= 1)
+                && (this.challengeMove.size() >= 1));
+                                
+        if (!this.readyForLogic) {
+            return "North";
+        }
         
-        return IMove.NORTH;
+        try {
+            if (this.player1ai != null) {
+
+                this.player1ai.makeLogicMove();
+                final Move lastMove = this.player1ai.getLastMove();
+                if (lastMove == null) {
+                    return "North";
+                } else {
+                    return lastMove.getDirection();
+                } // End of the if - else //
+                
+            } // End of the if - check for player 1 //
+            
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return "North";
     }
     
     public void findWalls(final int x, final int y) {
@@ -87,6 +105,16 @@ public class ChallengeGame implements IChallengeGame {
         if (this.challengeMove.size() == 0) {
             this.init(width, height);
         } // End of the if /
+    }
+    
+    public void checkInitPlayerPos(final Move initMove, final Move otherPlayerMove) {
+        if (this.player1ai.getMoves().size() == 0) {
+            this.player1ai.makeMove(initMove);
+        } // End of the if //
+        
+        if (this.player2ai.getMoves().size() == 0) {
+            this.player2ai.makeMove(otherPlayerMove);
+        }
     }
     
     public void addChallengeMove(final Move challenge) {
@@ -107,6 +135,7 @@ public class ChallengeGame implements IChallengeGame {
     public void addOtherMove(final Move otherPlayer) {
         this.tronBoard.setBoardVal(ITronBoard.PLAYER2, otherPlayer.getX(), otherPlayer.getY());
         this.movesOtherPlayer.makeMove(otherPlayer);
+        this.player2ai.makeMove(otherPlayer);
     }
     
     /**
@@ -132,6 +161,20 @@ public class ChallengeGame implements IChallengeGame {
      */
     public void setMovesOtherPlayer(IBotMoves movesOtherPlayer) {
         this.movesOtherPlayer = movesOtherPlayer;
+    }
+
+    /**
+     * @return the verbose
+     */
+    public boolean getVerbose() {
+        return verbose;
+    }
+
+    /**
+     * @param verbose the verbose to set
+     */
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
     
 } // End of the Class //

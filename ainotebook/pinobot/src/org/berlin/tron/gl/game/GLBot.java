@@ -63,6 +63,8 @@ public class GLBot implements IBot {
     private List<String> messages = new ArrayList<String>();
     private List<MoveThought> thoughts = new ArrayList<MoveThought>();
     
+    private boolean verbose = false;
+    
     /**
      * Main constructor for Bot.
      * 
@@ -164,7 +166,7 @@ public class GLBot implements IBot {
         return lastMove;
     }
     
-    public Move checkValidMoves() {
+    public Move checkValidMovesRaw() {
         
         final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
         final Move lastMove = stack.peek();
@@ -201,12 +203,14 @@ public class GLBot implements IBot {
             validMovesList.add(west);
             validMovesLeft++;
         }
-        this.messages.add("Message: (movesleft=" + validMovesLeft + ") Direction Check - " + nb + " " + sb + " " + eb + " " + wb);
+        this.messages.add("Message: (movesleft=" + validMovesLeft + ") Direction Check - " + nb + " " + sb + " " + eb + " " + wb + " // " + east);
         
         // Add to the queue //
         if (validMovesList.size() == 0) {
+            this.messages.add("+ Message: [return my move] size is zero, returning north");
             return north;
-        } else if (validMovesList.size() == 0) {
+        } else if (validMovesList.size() == 1) {
+            this.messages.add("+ Message: [return my move] size is one, first");
             return validMovesList.get(0);
         } else {
             final int sel = random.nextInt(validMovesList.size());
@@ -214,39 +218,54 @@ public class GLBot implements IBot {
         } // End of if - else //        
     }
     
-    public void makeLogicMove() {
-        
-        System.out.println("+++++++++++++++++++++");
-        System.out.println("+++++++++++++++++++++");
-        System.out.println(this.board);
-        this.board.printBoard();
-        System.out.println("----");
-        for (Move curmove : this.thoughts) {
-            System.out.println(curmove);
-        }
-        for (String msg : this.messages) {
-            System.out.println(msg);
-            
-        }
-        System.out.println("=====================");
-        System.out.println("=====================<<<<<< (END OF BOT PRINT BOARD)");        
-        
-        // If dead, don't make a move //
-        if (this.isDead()) {
-            System.out.println("Bot is dead - " + this);
+    public Move checkValidMoves() {
+        final Move rawMove = this.checkValidMovesRaw();
+        this.messages.add("+ Message: valid move = " + rawMove);
+        return rawMove;
+    }
+    
+    public void printMessages() {   
+       
+        if (!this.getVerbose()) {
             return;
         }
         
+        for (String msg : this.messages) {           
+            System.out.println(msg);            
+        }
+    }
+    
+    public void printThoughts() {
+        if (!this.getVerbose()) {
+            return;
+        }
+        for (MoveThought thought : this.thoughts) {
+            System.out.println(thought);
+        }
+    }
+    
+    public void printAIMap() {
+        this.board.printBoard();
+    }
+    
+    public void makeLogicMove() {
+     
+        this.printAIMap();
+        this.printThoughts();
+        this.printMessages();
+        
+        // If dead, don't make a move //
+        if (this.isDead()) {
+            return;
+        }        
         final Move newMove = this.checkValidMoves();
         if (newMove != null) {
             this.makeMove(newMove);
         } else {                       
-            this.unableToMakeMove = true;
-            System.out.println("Bot cannot make another move - " + this);
+            this.unableToMakeMove = true;            
             //  Just move north //
             this.makeMove(this.getLastMove().incy());
-        } // End of the if //
-        
+        } // End of the if //        
     }
 
     public Move getOtherBotPos() {
@@ -318,6 +337,20 @@ public class GLBot implements IBot {
      */
     public void setCauseDeath(String causeDeath) {
         this.causeDeath = causeDeath;
+    }
+
+    /**
+     * @return the verbose
+     */
+    public boolean getVerbose() {
+        return verbose;
+    }
+
+    /**
+     * @param verbose the verbose to set
+     */
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
     
 } // End of the Class //
