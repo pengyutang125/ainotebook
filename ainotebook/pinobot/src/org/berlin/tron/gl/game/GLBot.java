@@ -184,11 +184,24 @@ public class GLBot implements IBot {
         final boolean eb = validateMove(stack, east);
         final boolean wb = validateMove(stack, west);
         
-        if (nb) validMovesList.add(north);
-        if (sb) validMovesList.add(south);
-        if (eb) validMovesList.add(east);
-        if (wb) validMovesList.add(west);
-        this.messages.add("Message: Direction Check - " + nb + " " + sb + " " + eb + " " + wb);
+        int validMovesLeft = 0;
+        if (nb) {
+            validMovesList.add(north);
+            validMovesLeft++;
+        }
+        if (sb) {
+            validMovesList.add(south);
+            validMovesLeft++;
+        }
+        if (eb) {
+            validMovesList.add(east);
+            validMovesLeft++;
+        }
+        if (wb) {
+            validMovesList.add(west);
+            validMovesLeft++;
+        }
+        this.messages.add("Message: (movesleft=" + validMovesLeft + ") Direction Check - " + nb + " " + sb + " " + eb + " " + wb);
         
         // Add to the queue //
         if (validMovesList.size() == 0) {
@@ -198,8 +211,7 @@ public class GLBot implements IBot {
         } else {
             final int sel = random.nextInt(validMovesList.size());
             return validMovesList.get(sel);
-        } // End of if - else //
-        
+        } // End of if - else //        
     }
     
     public void makeLogicMove() {
@@ -211,6 +223,10 @@ public class GLBot implements IBot {
         System.out.println("----");
         for (Move curmove : this.thoughts) {
             System.out.println(curmove);
+        }
+        for (String msg : this.messages) {
+            System.out.println(msg);
+            
         }
         System.out.println("=====================");
         System.out.println("=====================<<<<<< (END OF BOT PRINT BOARD)");        
