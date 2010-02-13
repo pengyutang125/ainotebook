@@ -61,8 +61,8 @@ public class GLGridApp extends JFrame {
      */
     private static final long serialVersionUID = 443658669585028L;
     
-    public static final int TEXT_COLS     = 30;
-    public static final int SCREEN_WIDTH  = 240;
+    public static final int TEXT_COLS     = 80;
+    public static final int SCREEN_WIDTH  = 800;
     public static final int SCREEN_HEIGHT = (int) (SCREEN_WIDTH * 0.90);
     
     public void buildFrame() {
@@ -80,7 +80,7 @@ public class GLGridApp extends JFrame {
         final Animator animator = new Animator(canvas);
         
         this.add(canvas);
-        this.setLocation(10, 800);
+        this.setLocation(10, 10);
         this.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
         this.setResizable(false);
         this.pack();

@@ -153,17 +153,17 @@ public class GLRenderBoard {
         if (massType == ITronBoard.PLAYER1) {
             
             mass.setType(ITronBoard.PLAYER1);
-            mass.setColor(0.92f, 0.92f, 0.92f);
+            mass.setColor(0.62f, 0.62f, 0.62f);
             
         } else if (massType == ITronBoard.PLAYER2) {
             
             mass.setType(ITronBoard.PLAYER2);
-            mass.setColor(0.91f, 0.91f, 0.95f);
+            mass.setColor(0.71f, 0.71f, 0.75f);
             
         } else if (massType == ITronBoard.WALL) {
             
             mass.setType(ITronBoard.WALL);
-            mass.setColor(0.96f, 0.96f, 0.96f);
+            mass.setColor(0.86f, 0.86f, 0.86f);
             
         } // End of the if //
         return mass;
