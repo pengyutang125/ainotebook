@@ -26,7 +26,7 @@ public class GLGame {
     public void stepGame() {
         
         bot1.makeLogicMove();
-        //bot2.makeLogicMove();
+        bot2.makeLogicMove();
         
     }
     
