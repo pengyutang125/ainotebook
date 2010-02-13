@@ -39,11 +39,18 @@
  */
 package org.berlin.tron.gl.game;
 
-public class Move {
+/**
+ * Basic X,Y Move.
+ * 
+ * @author BerlinBrown
+ *
+ */
+public class Move implements IMove {
 
     private final int x;
     private final int y;
     private final long moveTimeMs;    
+    private String direction = "";
     
     public Move(final int x, final int y) {
         this.x = x;
@@ -70,16 +77,20 @@ public class Move {
     }
     
     public Move incx() {
+        direction = EAST;
         return new Move(this.x + 1, this.y);
     }
     public Move incy() {
+        direction = SOUTH;
         return new Move(this.x, this.y + 1);
     }
     
     public Move decx() {
+        direction = WEST;
         return new Move(this.x - 1, this.y);
     }
     public Move decy() {
+        direction = NORTH;
         return new Move(this.x, this.y - 1);        
     }
     
@@ -115,6 +126,20 @@ public class Move {
      */
     public long getMoveTimeMs() {
         return moveTimeMs;
+    }
+
+    /**
+     * @return the direction
+     */
+    public String getDirection() {
+        return direction;
+    }
+
+    /**
+     * @param direction the direction to set
+     */
+    public void setDirection(String direction) {
+        this.direction = direction;
     }
     
 } // End of the Class //

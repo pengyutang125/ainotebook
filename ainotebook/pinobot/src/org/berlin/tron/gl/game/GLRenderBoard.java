@@ -91,7 +91,7 @@ public class GLRenderBoard {
     
     public void makeBoard() {
         
-        final ITronBoard board = new TronBoard((int) this.sizeX);
+        final ITronBoard board = new TronBoard((int) sizeX, (int) sizeY);
         board.clearBoard();
         wallSet2(board);
         this.board = board;
@@ -171,13 +171,15 @@ public class GLRenderBoard {
     
     public void renderBoard(final GL gl) {
 
-        final int size = this.board.getSize();
+        final int sizex = this.board.getNumCols();
+        final int sizey = this.board.getNumRows();
+        
         final byte [] board = this.board.getBoard();
         synchronized(this.board.getBoard()) {
-            for (int j = 0; j < size; j++) {            
-                for (int i = 0; i < size; i++) {
+            for (int j = 0; j < sizey; j++) {            
+                for (int i = 0; i < sizex; i++) {
 
-                    final byte val = board[(j * size) + i];
+                    final byte val = board[(j * sizey) + i];
 
                     final float entitySize = this.glSize * 2.0f;
                     final float x = (((i * entitySize) - this.halfGlSize) - this.glSize) + entitySize;

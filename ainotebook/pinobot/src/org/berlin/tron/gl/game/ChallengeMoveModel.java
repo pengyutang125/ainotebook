@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2006-2007 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
  *
@@ -40,30 +39,10 @@
  */
 package org.berlin.tron.gl.game;
 
+public class ChallengeMoveModel extends Move {
 
-public interface ITronBoard {
+    public ChallengeMoveModel(int x, int y) {
+        super(x, y);     
+    }
     
-    public static final String VERS = "0.1";
-    
-    public static byte EMPTY   = 0;
-    public static byte PLAYER1 = 127;
-    public static byte PLAYER2 = 64;
-    public static byte WALL    = 1;
-    
-    public int getNumRows();    
-    public int getNumCols();     
-   
-    public void initRandom();   
-           
-    public void setRandomObject(final int x, final int y);
-    public void setBoardVal(final byte type, final int x, final int y);
-    public byte getBoardVal(final int x, final int y);
-    public void marshalMoves(final byte type, final IBot bot);
-    public void savePoint(final byte type, final int x, final int y);
-    public void makeRandomBoard();             
-    public void printBoard();  
-    public byte [] getBoard();        
-    
-    public void clearBoard();
-    
-} // End of the Method //
+} // End of the class //

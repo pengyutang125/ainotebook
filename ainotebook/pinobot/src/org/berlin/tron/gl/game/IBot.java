@@ -41,7 +41,7 @@ package org.berlin.tron.gl.game;
 
 public interface IBot {
     
-    public static final String VERS = "0.0";
+    public static final String VERS = "0.1";
     
     /**
      * @return the moves

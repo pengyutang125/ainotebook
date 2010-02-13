@@ -58,5 +58,7 @@ public interface IBotMoves {
     public void printMove(final Move move);
     
     public void printMoves();
-        
+
+    public int size();
+    
 } // End of the Class //

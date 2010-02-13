@@ -121,11 +121,11 @@ public class GLBot implements IBot {
             thought.setThoughtOnMove("- BadMove, less than board size Y");
             return false;
         }
-        if (move.getX() >= this.board.getSize()) {
+        if (move.getX() >= this.board.getNumCols()) {
             thought.setThoughtOnMove("- BadMove, greater than board size X");
             return false;
         }        
-        if (move.getY() >= this.board.getSize()) {
+        if (move.getY() >= this.board.getNumRows()) {
             thought.setThoughtOnMove("- BadMove, greater than board size Y");
             return false;
         }

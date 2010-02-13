@@ -1,4 +1,3 @@
-
 /**
  * Copyright (c) 2006-2007 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
  *
@@ -40,30 +39,43 @@
  */
 package org.berlin.tron.gl.game;
 
+public interface IChallengeGame {
 
-public interface ITronBoard {
+    public void addChallengeMove(final Move challenge);
     
-    public static final String VERS = "0.1";
+    public void addCurrentMove(final Move currentPlayer);
     
-    public static byte EMPTY   = 0;
-    public static byte PLAYER1 = 127;
-    public static byte PLAYER2 = 64;
-    public static byte WALL    = 1;
+    /**
+     * Add a move for the other player
+     */
+    public void addOtherMove(final Move otherPlayer);
+
+    /**
+     * @return the movesCurrentPlayer
+     */
+    public IBotMoves getMovesCurrentPlayer();
+
+    /**
+     * @param movesCurrentPlayer the movesCurrentPlayer to set
+     */
+    public void setMovesCurrentPlayer(IBotMoves movesCurrentPlayer);
+
+    /**
+     * @return the movesOtherPlayer
+     */
+    public IBotMoves getMovesOtherPlayer();
+
+    /**
+     * @param movesOtherPlayer the movesOtherPlayer to set
+     */
+    public void setMovesOtherPlayer(IBotMoves movesOtherPlayer);
+
+    public void init(final int width, final int height);
+       
+    public void checkInit(final int width, final int height);
     
-    public int getNumRows();    
-    public int getNumCols();     
-   
-    public void initRandom();   
-           
-    public void setRandomObject(final int x, final int y);
-    public void setBoardVal(final byte type, final int x, final int y);
-    public byte getBoardVal(final int x, final int y);
-    public void marshalMoves(final byte type, final IBot bot);
-    public void savePoint(final byte type, final int x, final int y);
-    public void makeRandomBoard();             
-    public void printBoard();  
-    public byte [] getBoard();        
+    public void findWalls(final int x, final int y);
     
-    public void clearBoard();
+    public void makeLogicMove();
     
-} // End of the Method //
+} // End of the Class //
