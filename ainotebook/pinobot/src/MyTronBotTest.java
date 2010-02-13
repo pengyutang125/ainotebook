@@ -52,28 +52,18 @@ import org.berlin.tron.gl.game.Move;
  * @author BerlinBrown
  *
  */
-class MyTronBot {
+class MyTronBotTest {
     
     public static String V = Vers.V;
     public static String V2 = ITronBoard.VERS;
     public static String V3 = IBot.VERS;
     
     private static final IChallengeGame game = new ChallengeGame(); 
-    
-    public static void findWalls(IChallengeGame curGame, final int width, final int height) {
-        
-        for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++) {
-                
-                if (Map.IsWall(i, j)) {
-                    game.findWalls(i, j);
-                } // End of the if - //
-                
-            } // End of the for //
             
-        } // End of the For //
-    }
-    
+    /**
+     * Static Make Move 
+     * @return
+     */
     /**
      * Static Make Move 
      * @return
@@ -81,14 +71,14 @@ class MyTronBot {
     public static String MakeMove() {
         
         try {                       
-            game.checkInit(Map.Width(), Map.Height());  
-            MyTronBot.findWalls(game, Map.Width(), Map.Height());
+            game.checkInit(FakeMap.Width(), FakeMap.Height());  
+            MyTronBot.findWalls(game, Map.Width(), Map.Height());       
             
-            final int x = Map.MyX();
-            final int y = Map.MyY();            
+            final int x = FakeMap.MyX();
+            final int y = FakeMap.MyY();            
             
-            final int oppx = Map.OpponentX();
-            final int oppy = Map.OpponentX();
+            final int oppx = FakeMap.OpponentX();
+            final int oppy = FakeMap.OpponentX();
             game.checkInitPlayerPos(new Move(x, y), new Move(oppx, oppy));
 
             final Move makeMoveModel = new ChallengeMoveModel(x, y);
@@ -98,28 +88,29 @@ class MyTronBot {
             game.addOtherMove(new Move(oppx, oppy));                        
             
             final String lastMove = game.makeLogicMove();
-            //final String lastMove = "North";
             return lastMove;
             
         } catch(Exception e) {
-            
+            e.printStackTrace();
         } // End of the try catch //
         
         // On the event of any error, return North
         return "North";
     }
-
+    
     /////////////////////////////////////////////
     //
     // Ignore this method. It's just doing boring stuff like communicating
     // with the contest tournament engine.
     //
     /////////////////////////////////////////////
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         
         while (true) {
-            Map.Initialize();            
-            Map.MakeMove(MakeMove());
+            FakeMap.myInit();
+            //Map.MakeMove(MakeMove());
+            System.out.println(MakeMove());
+            Thread.sleep(500);
         }
         
     } // End of the Class //
