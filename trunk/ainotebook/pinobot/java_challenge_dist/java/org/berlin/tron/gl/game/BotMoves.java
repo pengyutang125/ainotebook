@@ -48,10 +48,12 @@ import java.util.Stack;
  * @author BerlinBrown
  *
  */
-public class BotMoves implements IBotMoves {
+public class BotMoves implements IBotMoves, GameWidget {
 
     public Stack<Move> moves = new Stack<Move>();
-
+    
+    private boolean verbose = false;
+    
     /**
      * @return the moves
      */
@@ -75,12 +77,28 @@ public class BotMoves implements IBotMoves {
     }
     
     public void printMove(final Move move) {
-        System.out.println(move);
+        if (this.getVerbose()) {
+            System.out.println(move);
+        }
     }
     
     public void printMoves() {
         for (Move curmove : this.moves) {
             this.printMove(curmove);
         }
+    }
+
+    /**
+     * @return the verbose
+     */
+    public boolean getVerbose() {
+        return verbose;
+    }
+
+    /**
+     * @param verbose the verbose to set
+     */
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 } // End of the Class //

@@ -56,13 +56,15 @@ import java.util.Stack;
  * @author BerlinBrown
  *
  */
-public class TronBoard implements ITronBoard {
+public class TronBoard implements ITronBoard, GameWidget {
     
     private List<Move> points = new Stack<Move>();
     
     private final int sizex;
     private final int sizey;
     private final byte board [];
+    
+    private boolean verbose = false;
     
     private Random random = new Random(); 
     
@@ -80,8 +82,7 @@ public class TronBoard implements ITronBoard {
         try {
             //this.random = SecureRandom.getInstance("SHA1PRNG");
             this.random = new Random(System.currentTimeMillis());
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch(Exception e) {                        
             this.random = new Random();
         }
     }
@@ -110,9 +111,7 @@ public class TronBoard implements ITronBoard {
             return false;
         }
         final byte existType = this.getBoardVal(x, y);
-        
-        System.out.println("validate board move: ");
-        System.out.println(this);
+                
         this.printBoard();        
         if (existType != ITronBoard.EMPTY) {
             bot.setCauseDeath("Ran into something - " + existType + " (" + x + "," + y+ ")");
@@ -146,8 +145,7 @@ public class TronBoard implements ITronBoard {
             final int y = curmove.getY();            
             if ((invalidMove != null) && (invalidMove.equals(curmove))) {
                 // Don't draw
-            } else {
-                System.out.println("Setting board ->" + x + " / " + y);
+            } else {                
                 this.setBoardVal(type, x, y);
             }
         } // End of the For //
@@ -190,6 +188,11 @@ public class TronBoard implements ITronBoard {
     }
 
     public void printBoard() {
+        
+        if (!this.getVerbose()) {
+            return;
+        }
+        
         for (int j = 0; j < sizey; j++) {            
             for (int i = 0; i < sizex; i++) {
                 
@@ -239,10 +242,27 @@ public class TronBoard implements ITronBoard {
     }
 
     public void printPoints() {
+        if (!this.getVerbose()) {
+            return;
+        }
         System.out.println("<Points on Board> size=" + this.points.size());
         for (Move curmove : this.points) {
             System.out.println(curmove);
         }
+    }
+
+    /**
+     * @return the verbose
+     */
+    public boolean getVerbose() {
+        return verbose;
+    }
+
+    /**
+     * @param verbose the verbose to set
+     */
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
     
 } // End of the Class //

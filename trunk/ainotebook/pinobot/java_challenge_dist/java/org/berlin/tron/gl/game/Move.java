@@ -50,7 +50,7 @@ public class Move implements IMove {
     private final int x;
     private final int y;
     private final long moveTimeMs;    
-    private String direction = "";
+    private String direction = "North";
     
     public Move(final int x, final int y) {
         this.x = x;
@@ -58,8 +58,13 @@ public class Move implements IMove {
         this.moveTimeMs = System.currentTimeMillis();
     }
     
+    public Move(final int x, final int y, final String direction) {
+        this(x, y);
+        this.direction = direction;
+    }
+    
     public String toString() {
-        return "${Move x=" + this.x + " y=" + this.y +  "[" + this.moveTimeMs + "]}";
+        return "${Move x=" + this.x + " y=" + this.y + " dir=" + this.direction + " [" + this.moveTimeMs + "]}";
     }
 
     /**
@@ -77,22 +82,24 @@ public class Move implements IMove {
     }
     
     public Move incx() {
-        direction = EAST;
-        return new Move(this.x + 1, this.y);
+        this.direction = EAST;
+        return new Move(this.x + 1, this.y, direction);
     }
     public Move incy() {
-        direction = SOUTH;
-        return new Move(this.x, this.y + 1);
+        this.direction = SOUTH;
+        return new Move(this.x, this.y + 1, direction);
     }
     
     public Move decx() {
-        direction = WEST;
-        return new Move(this.x - 1, this.y);
+        this.direction = WEST;
+        return new Move(this.x - 1, this.y, direction);
     }
     public Move decy() {
-        direction = NORTH;
-        return new Move(this.x, this.y - 1);        
+        this.direction = NORTH;
+        return new Move(this.x, this.y - 1, direction);        
     }
+    
+    ///////////////////////////////////////////////////////
     
     public boolean equals(Object obj) {
         
