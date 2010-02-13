@@ -75,7 +75,7 @@ public interface IChallengeGame {
     public void checkInit(final int width, final int height);
     
     public void findWalls(final int x, final int y);
-    
-    public void makeLogicMove();
+        
+    public String makeLogicMove();
     
 } // End of the Class //

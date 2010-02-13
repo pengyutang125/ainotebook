@@ -39,9 +39,12 @@
 // MyTronBot.java
 // Author: Berlin Brown
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import org.berlin.tron.gl.game.ChallengeGame;
+import org.berlin.tron.gl.game.ChallengeMoveModel;
+import org.berlin.tron.gl.game.IBot;
+import org.berlin.tron.gl.game.IChallengeGame;
+import org.berlin.tron.gl.game.ITronBoard;
+import org.berlin.tron.gl.game.Move;
 
 /**
  * My Tron Bot
@@ -52,40 +55,49 @@ import java.util.Random;
 class MyTronBot {
     
     public static String V = Vers.V;
+    public static String V2 = ITronBoard.VERS;
+    public static String V3 = IBot.VERS;
+    
+    private static final IChallengeGame game = new ChallengeGame(); 
+    
+    public static void findWalls(IChallengeGame curGame, final int width, final int height) {
+        
+        for (int j = 0; j < height; j++) {
+            for (int i = 0; i < width; i++) {                
+                game.findWalls(i, j);                
+            } // End of the for //
+            
+        } // End of the For //
+    }
     
     /**
      * Static Make Move 
      * @return
      */
     public static String MakeMove() {
-                      
-        final int x = Map.MyX();
-        final int y = Map.MyY();
         
-        final List<String> validMoves = new ArrayList<String>();
+        try {
+            game.checkInit(Map.Width(), Map.Height());  
+            findWalls(game, Map.Width(), Map.Height());
+            
+            final int x = Map.MyX();
+            final int y = Map.MyY();
+            
+            final int oppx = Map.OpponentX();
+            final int oppy = Map.OpponentX();
+
+            final Move makeMoveModel = new ChallengeMoveModel(x, y);            
+            game.addChallengeMove(makeMoveModel);
+            game.addCurrentMove(new Move(x, y));
+            game.addOtherMove(new Move(oppx, oppy));
+            final String lastMove = game.makeLogicMove();
+            return lastMove;
+        } catch(Exception e) {
+            // Ignore //
+        } // End of the try catch //
         
-        if (!Map.IsWall(x, y - 1)) {
-            validMoves.add("North");
-        }
-        if (!Map.IsWall(x + 1, y)) {
-            validMoves.add("East");
-        }
-        if (!Map.IsWall(x, y + 1)) {
-            validMoves.add("South");
-        }
-        if (!Map.IsWall(x - 1, y)) {
-            validMoves.add("West");
-        }
-                                       
-        /////////////////////////////////////////
-        
-        if (validMoves.size() == 0) {
-            return "North"; // Hopeless. Might as well go North!
-        } else {
-            final Random rand = new Random();
-            int whichMove = rand.nextInt(validMoves.size());
-            return validMoves.get(whichMove);
-        } // End of the if - else //
+        // On the event of any error, return North
+        return "North";
     }
 
     /////////////////////////////////////////////

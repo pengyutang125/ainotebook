@@ -55,10 +55,12 @@ public class ChallengeGame implements IChallengeGame {
         player2 = new GLBot(this.tronBoard);        
     }
     
-    public void makeLogicMove() {
+    public String makeLogicMove() {
         if (this.player1 != null) {
             this.player1.makeLogicMove();
+            return this.player1.getLastMove().getDirection();
         }        
+        return "North";
     }
     
     public String makeMove() {        
