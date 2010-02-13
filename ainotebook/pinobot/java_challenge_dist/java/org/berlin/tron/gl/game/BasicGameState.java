@@ -39,13 +39,14 @@
  */
 package org.berlin.tron.gl.game;
 
-public class BasicGameState extends UpdateStateTask {
+public class BasicGameState extends UpdateStateTask implements GameWidget {
 
     private GLGame game;
     private ITronBoard basicBoard;
     private final IBot bot1;
     private final IBot bot2;
-
+    private boolean verbose = false;
+    
     public BasicGameState(final GLGame game, final GLRenderBoard board, final IBot bot1, final IBot bot2) {
         super(board);
         this.bot1 = bot1;
@@ -80,6 +81,14 @@ public class BasicGameState extends UpdateStateTask {
             } // End of the if - else //
 
         } // End of Sync Block //
+    }
+
+    public boolean getVerbose() {
+        return verbose;
+    }
+
+    public void setVerbose(boolean b) {
+        this.verbose = b;
     }
 
 } // End of the Class //
