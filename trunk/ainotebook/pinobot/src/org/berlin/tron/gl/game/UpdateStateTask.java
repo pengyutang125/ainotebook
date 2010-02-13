@@ -22,7 +22,7 @@ public class UpdateStateTask extends TimerTask {
         
         if (this.glRenderBoard != null) {
             
-            final ITronBoard basicBoard = new TronBoard(glRenderBoard.getBoard().getSize());
+            final ITronBoard basicBoard = new TronBoard(glRenderBoard.getBoard().getNumCols(), glRenderBoard.getBoard().getNumRows()); 
             basicBoard.makeRandomBoard();           
             glRenderBoard.setBoard(basicBoard);
             

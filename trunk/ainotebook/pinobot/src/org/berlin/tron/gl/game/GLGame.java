@@ -17,10 +17,11 @@ public class GLGame {
     public void setInitBotPos() {
         
         final ITronBoard basicBoard = this.board.getBoard();        
-        int size = basicBoard.getSize();
+        int sizex = basicBoard.getNumCols();
+        int sizey = basicBoard.getNumRows();
         
         this.bot1.makeMove(new Move(0, 0));
-        this.bot2.makeMove(new Move(size-1, size-1));
+        this.bot2.makeMove(new Move(sizex-1, sizey-1));
     }
     
     public void stepGame() {

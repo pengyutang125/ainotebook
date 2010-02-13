@@ -39,48 +39,47 @@
  */
 package org.berlin.tron.gl.game;
 
-
 public class BasicGameState extends UpdateStateTask {
-    
+
     private GLGame game;
     private ITronBoard basicBoard;
     private final IBot bot1;
     private final IBot bot2;
-    
+
     public BasicGameState(final GLGame game, final GLRenderBoard board, final IBot bot1, final IBot bot2) {
         super(board);
         this.bot1 = bot1;
         this.bot2 = bot2;
         this.game = game;
     }
-    
+
     public void updateState() {
-        
-        synchronized(this.basicBoard) {
-            
+
+        synchronized (this.basicBoard) {
+
             GLRenderBoard.wallSet2(basicBoard);
             // Continue to normal game state update //
             basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
             basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
             this.game.stepGame();
-            this.getGlRenderBoard().setBoard(basicBoard);             
-            
+            this.getGlRenderBoard().setBoard(basicBoard);
+
         } // End of the block //
     }
-    
+
     @Override
     public void run() {
-                
+
         if (this.getGlRenderBoard() != null) {
 
             // If null, create a new basic board //
             if (this.basicBoard == null) {
-                this.basicBoard = this.getGlRenderBoard().getBoard();                    
+                this.basicBoard = this.getGlRenderBoard().getBoard();
             } else {
                 this.updateState();
             } // End of the if - else //
 
-        } // End of Sync Block //              
+        } // End of Sync Block //
     }
-    
+
 } // End of the Class //

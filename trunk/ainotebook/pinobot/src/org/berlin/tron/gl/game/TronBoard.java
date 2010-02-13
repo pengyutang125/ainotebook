@@ -60,18 +60,20 @@ public class TronBoard implements ITronBoard {
     
     private List<Move> points = new Stack<Move>();
     
-    private final int size;
+    private final int sizex;
+    private final int sizey;
     private final byte board [];
     
     private Random random = new Random(); 
     
-    public TronBoard(final int size) {
-        this.size = size;
-        this.board = new byte [size * size];
+    public TronBoard(final int sizex, final int sizey) {
+        this.sizex = sizex;
+        this.sizey = sizey;
+        this.board = new byte [sizex * sizey];
     }
     
     public String toString() {
-        return "TronBoard: size=" + this.size + " obj=" + super.toString();
+        return "TronBoard: size=" + this.sizex + " obj=" + super.toString();
     }
     
     public void initRandom() {
@@ -169,8 +171,8 @@ public class TronBoard implements ITronBoard {
     }
     
     public void makeRandomBoard() {        
-        for (int i = 0; i < size; i++) {            
-            for (int j = 0; j < size; j++) {                
+        for (int i = 0; i < sizey; i++) {            
+            for (int j = 0; j < sizex; j++) {                
                 this.setRandomObject(i, j);
             }
         } // End of the For //
@@ -179,8 +181,8 @@ public class TronBoard implements ITronBoard {
     public void clearBoard() {
         
         synchronized(this.board) {
-            for (int i = 0; i < size; i++) {            
-                for (int j = 0; j < size; j++) {
+            for (int i = 0; i < sizey; i++) {            
+                for (int j = 0; j < sizex; j++) {
                     this.setBoardVal(EMPTY, j, i);                    
                 }
             } // End of the For //
@@ -188,10 +190,10 @@ public class TronBoard implements ITronBoard {
     }
 
     public void printBoard() {
-        for (int j = 0; j < size; j++) {            
-            for (int i = 0; i < size; i++) {
+        for (int j = 0; j < sizey; j++) {            
+            for (int i = 0; i < sizex; i++) {
                 
-                final byte p = this.board[(j * size) + i];
+                final byte p = this.board[(j * sizey) + i];
                 if (p == PLAYER1) {
                     System.out.print("[#-x=" + i + " y=" + j + "],");
                 } else if (p == PLAYER2) {
@@ -218,29 +220,22 @@ public class TronBoard implements ITronBoard {
     public void setBoardVal(final byte type, final int x, final int y) {
         synchronized(this.board) {
             this.savePoint(type, x, y);
-            this.board[(y * size) + x] = type;
+            this.board[(y * sizey) + x] = type;
         }
     }
     
     public byte getBoardVal(final int x, final int y) {
         synchronized(this.board) {
-            return this.board[(y * size) + x];
+            return this.board[(y * sizey) + x];
         }
     }
-    
-    /**
-     * @return the size
-     */
-    public int getSize() {
-        return size;
-    }
-    
+            
     public int getNumRows() {
-        return size;
+        return sizey;
     }
     
     public int getNumCols() {
-        return size;
+        return sizex;
     }
 
     public void printPoints() {

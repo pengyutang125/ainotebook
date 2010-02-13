@@ -42,6 +42,12 @@ package org.berlin.tron.gl.game;
 import java.util.List;
 import java.util.Stack;
 
+/**
+ * Collection of moves.
+ * 
+ * @author BerlinBrown
+ *
+ */
 public class BotMoves implements IBotMoves {
 
     public Stack<Move> moves = new Stack<Move>();
@@ -62,6 +68,10 @@ public class BotMoves implements IBotMoves {
     
     public void makeMove(final Move move) {
         this.moves.push(move);
+    }
+    
+    public int size() {
+        return this.moves.size();
     }
     
     public void printMove(final Move move) {
