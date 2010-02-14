@@ -68,4 +68,4 @@ public class GLWalls {
         board.setBoardVal(ITronBoard.WALL, 4, 4);
     }
     
-}
+} // End of the method //

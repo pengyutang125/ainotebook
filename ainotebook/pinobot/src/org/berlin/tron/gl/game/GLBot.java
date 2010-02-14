@@ -63,7 +63,10 @@ public class GLBot implements IBot {
     private List<String> messages = new ArrayList<String>();
     private List<MoveThought> thoughts = new ArrayList<MoveThought>();
     
-    private boolean verbose = false;
+    /**
+     * Enable or disable debugging messages.
+     */
+    private boolean verbose = true;
     
     /**
      * Main constructor for Bot.

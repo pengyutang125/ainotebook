@@ -51,6 +51,7 @@ public class Move implements IMove {
     private final int y;
     private final long moveTimeMs;    
     private String direction = "North";
+    private double score = 0.0;
     
     public Move(final int x, final int y) {
         this.x = x;
@@ -147,6 +148,20 @@ public class Move implements IMove {
      */
     public void setDirection(String direction) {
         this.direction = direction;
+    }
+
+    /**
+     * @return the score
+     */
+    public double getScore() {
+        return score;
+    }
+
+    /**
+     * @param score the score to set
+     */
+    public void setScore(double score) {
+        this.score = score;
     }
     
 } // End of the Class //
