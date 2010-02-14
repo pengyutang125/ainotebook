@@ -50,6 +50,7 @@ import javax.swing.SwingUtilities;
 import com.sun.opengl.util.Animator;
 
 /**
+ * JFrame for the java opengl window.
  * 
  * @author BerlinBrown
  *
@@ -65,6 +66,9 @@ public class GLGridApp extends JFrame {
     public static final int SCREEN_WIDTH  = 800;
     public static final int SCREEN_HEIGHT = (int) (SCREEN_WIDTH * 0.90);
     
+    /**
+     * Method buildFrame.
+     */
     public void buildFrame() {
         
         final JTextArea text = new JTextArea("AppLoaded - " + new Date());
@@ -103,6 +107,10 @@ public class GLGridApp extends JFrame {
         
     }
     
+    /**
+     * Method main.
+     * @param args String[]
+     */
     public static void main(String [] args) {
         
         SwingUtilities.invokeLater(new Runnable() {

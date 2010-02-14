@@ -35,7 +35,7 @@
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  * 
- * Simple Java OpenGL
+ * Simple Java OpenGL - Render a 2D Opengl Tron board.
  */
 package org.berlin.tron.gl.game;
 
@@ -43,6 +43,11 @@ import javax.media.opengl.GL;
 
 import org.berlin.tron.gl.Mass;
 
+/**
+ * Interact with the GL libraries to render the board.
+ * 
+ * @author Berlin Brown
+ */
 public class GLRenderBoard {
 
     /**
@@ -60,6 +65,13 @@ public class GLRenderBoard {
     private float halfGlSize = 0.5f;
     private float padding    = 0.011f;
             
+    /**
+     * Constructor for GLRenderBoard.
+     * @param N_X float
+     * @param N_Y float
+     * @param xwidth float
+     * @param yheight float
+     */
     public GLRenderBoard(                      
             final float N_X, final float N_Y, 
             final float xwidth, final float yheight) {
@@ -71,6 +83,11 @@ public class GLRenderBoard {
                 
     }
     
+    /**
+     * Method renderMass.
+     * @param gl GL
+     * @param mass Mass
+     */
     public void renderMass(final GL gl, final Mass mass) {
         
         // Render The Mass //
@@ -89,6 +106,9 @@ public class GLRenderBoard {
         gl.glPopMatrix();
     }    
     
+    /**
+     * Method makeBoard.
+     */
     public void makeBoard() {
         
         final ITronBoard board = new TronBoard((int) sizeX, (int) sizeY);
@@ -100,6 +120,9 @@ public class GLRenderBoard {
         this.buildGame();
     }
            
+    /**
+     * Method buildGame.
+     */
     public void buildGame() {
         
         final GLGameBuilder builder = new GLGameBuilder(this);
@@ -120,6 +143,14 @@ public class GLRenderBoard {
         System.out.println("+ Render Board size=" + this.sizeX +  " glsize=" + this.glSize + " half=" + this.halfGlSize);
     }    
     
+    /**
+     * Method createGLMass.
+     * @param massType byte
+     * @param x float
+     * @param y float
+     * @param glSize float
+     * @return Mass
+     */
     public Mass createGLMass(final byte massType, float x, float y, float glSize) {
         
         final Mass mass = new Mass();
@@ -146,6 +177,10 @@ public class GLRenderBoard {
         return mass;
     }
     
+    /**
+     * Method renderBoard.
+     * @param gl GL
+     */
     public void renderBoard(final GL gl) {
 
         final int sizex = this.board.getNumCols();

@@ -56,6 +56,7 @@ public class BotMoves implements IBotMoves, GameWidget {
     
     /**
      * @return the moves
+     * @see org.berlin.tron.gl.game.IBotMoves#getMoves()
      */
     public List<Move> getMoves() {
         return moves;
@@ -63,25 +64,45 @@ public class BotMoves implements IBotMoves, GameWidget {
 
     /**
      * @param moves the moves to set
+     * @see org.berlin.tron.gl.game.IBotMoves#setMoves(List<Move>)
      */
     public void setMoves(List<Move> moves) {
         this.moves = (Stack<Move>) moves;
     }
     
+    /**
+     * Method makeMove.
+     * @param move Move
+     * @see org.berlin.tron.gl.game.IBotMoves#makeMove(Move)
+     */
     public void makeMove(final Move move) {
         this.moves.push(move);
     }
     
+    /**
+     * Method size.
+     * @return int
+     * @see org.berlin.tron.gl.game.IBotMoves#size()
+     */
     public int size() {
         return this.moves.size();
     }
     
+    /**
+     * Method printMove.
+     * @param move Move
+     * @see org.berlin.tron.gl.game.IBotMoves#printMove(Move)
+     */
     public void printMove(final Move move) {
         if (this.getVerbose()) {
             System.out.println(move);
         }
     }
     
+    /**
+     * Method printMoves.
+     * @see org.berlin.tron.gl.game.IBotMoves#printMoves()
+     */
     public void printMoves() {
         for (Move curmove : this.moves) {
             this.printMove(curmove);
@@ -90,6 +111,7 @@ public class BotMoves implements IBotMoves, GameWidget {
 
     /**
      * @return the verbose
+     * @see org.berlin.tron.gl.game.GameWidget#getVerbose()
      */
     public boolean getVerbose() {
         return verbose;
@@ -97,6 +119,7 @@ public class BotMoves implements IBotMoves, GameWidget {
 
     /**
      * @param verbose the verbose to set
+     * @see org.berlin.tron.gl.game.GameWidget#setVerbose(boolean)
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;

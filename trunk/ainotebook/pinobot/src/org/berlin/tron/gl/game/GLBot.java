@@ -91,12 +91,17 @@ public class GLBot implements IBot {
         this.board = basicBoard;
     }
     
+    /**
+     * Method toString.
+     * @return String
+     */
     public String toString() {
         return "#{Bot-" + this.getName() + " score=" + this.getScore() + " dead?=" + this.isDead() + " move?=" + (!this.isUnableToMakeMove()) + " cause-death=" + this.getCauseDeath() + "}";
     }
     
     /**
      * @return the moves
+     * @see org.berlin.tron.gl.game.IBot#getMoves()
      */
     public IBotMoves getMoves() {        
         return moves;
@@ -104,33 +109,60 @@ public class GLBot implements IBot {
     
     /**
      * @param moves the moves to set
+     * @see org.berlin.tron.gl.game.IBot#setMoves(IBotMoves)
      */
     public void setMoves(IBotMoves moves) {
         this.moves = moves;
     }    
 
+    /**
+     * Method makeMove.
+     * @param move Move
+     * @see org.berlin.tron.gl.game.IBot#makeMove(Move)
+     */
     public void makeMove(final Move move) {
         this.moves.makeMove(move);
     }    
     
+    /**
+     * Method printMoves.
+     * @see org.berlin.tron.gl.game.IBot#printMoves()
+     */
     public void printMoves() {
         this.moves.printMoves();
     }
 
     /**
      * @return the board
+     * @see org.berlin.tron.gl.game.IBot#getBoard()
      */
     public ITronBoard getBoard() {
         return board;
     }
     
+    /**
+     * Method addThoughts.
+     * @param moveThought MoveThought
+     * @see org.berlin.tron.gl.game.IBot#addThoughts(MoveThought)
+     */
     public void addThoughts(final MoveThought moveThought) {
         this.thoughts.add(moveThought);
     }
+    /**
+     * Method addMessages.
+     * @param msg String
+     * @see org.berlin.tron.gl.game.IBot#addMessages(String)
+     */
     public void addMessages(final String msg) {
         this.messages.add(msg);
     }
     
+    /**
+     * Method validateOtherMove.
+     * @param theOtherBot IBot
+     * @param move Move
+     * @return boolean
+     */
     public boolean validateOtherMove(final IBot theOtherBot, final Move move) {
         
         // For an invalid other bot, that is OK, return true.
@@ -149,6 +181,12 @@ public class GLBot implements IBot {
         
     }
     
+    /**
+     * Method validateMove.
+     * @param stack Stack<Move>
+     * @param move Move
+     * @return boolean
+     */
     public boolean validateMove(final Stack<Move> stack, final Move move) {
         
         if (stack.size() == 0) {
@@ -197,6 +235,13 @@ public class GLBot implements IBot {
         return this.checkRawMap(board.getBoard(), move, thought);               
     }
     
+    /**
+     * Method checkRawMap.
+     * @param board byte[]
+     * @param newMove Move
+     * @param moveThought MoveThought
+     * @return boolean
+     */
     public boolean checkRawMap(final byte [] board, final Move newMove, final MoveThought moveThought) {
         
         if (newMove == null) {
@@ -221,6 +266,11 @@ public class GLBot implements IBot {
         return true;
     }
     
+    /**
+     * Method getLastMove.
+     * @return Move
+     * @see org.berlin.tron.gl.game.IBot#getLastMove()
+     */
     public Move getLastMove() {
         
         final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
@@ -235,7 +285,8 @@ public class GLBot implements IBot {
     /**
      * Get Last Move, but allow for null.
      * 
-     * @return
+     * @return Move
+     * @see org.berlin.tron.gl.game.IBot#getLastMoveNull()
      */
     public Move getLastMoveNull() {
         final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
@@ -250,7 +301,7 @@ public class GLBot implements IBot {
     /**
      * Check for empty squares.
      * 
-     * @return
+     * @return List<Move>
      */
     public List<Move> checkValidMovesRaw() {
         
@@ -308,6 +359,8 @@ public class GLBot implements IBot {
     
     /**
      * CHeck the valid moves.
+     * @return Move
+     * @see org.berlin.tron.gl.game.IBot#checkValidMoves()
      */
     public Move checkValidMoves() {
         
@@ -347,6 +400,9 @@ public class GLBot implements IBot {
         return rawMove;
     }
     
+    /**
+     * Method printMessages.
+     */
     public void printMessages() {   
        
         if (!this.getVerbose()) {
@@ -358,6 +414,9 @@ public class GLBot implements IBot {
         }
     }
     
+    /**
+     * Method printThoughts.
+     */
     public void printThoughts() {
         if (!this.getVerbose()) {
             return;
@@ -367,12 +426,16 @@ public class GLBot implements IBot {
         }
     }
     
+    /**
+     * Method printAIMap.
+     */
     public void printAIMap() {
         this.board.printBoard();
     }
     
     /**
      * Make a logic move basd on the alternatives.
+     * @see org.berlin.tron.gl.game.IBot#makeLogicMove()
      */
     public void makeLogicMove() {
      
@@ -394,6 +457,11 @@ public class GLBot implements IBot {
         } // End of the if //        
     }
 
+    /**
+     * Method getOtherBotPos.
+     * @return Move
+     * @see org.berlin.tron.gl.game.IBot#getOtherBotPos()
+     */
     public Move getOtherBotPos() {
         if (this.getOtherBot() != null) {
             final Stack<Move> stack = (Stack<Move>) this.getOtherBot().getMoves();
@@ -404,6 +472,7 @@ public class GLBot implements IBot {
 
     /**
      * @return the otherBot
+     * @see org.berlin.tron.gl.game.IBot#getOtherBot()
      */
     public IBot getOtherBot() {
         return otherBot;
@@ -411,6 +480,7 @@ public class GLBot implements IBot {
 
     /**
      * @param otherBot the otherBot to set
+     * @see org.berlin.tron.gl.game.IBot#setOtherBot(IBot)
      */
     public void setOtherBot(final IBot otherBot) {
         this.otherBot = otherBot;
@@ -418,6 +488,7 @@ public class GLBot implements IBot {
 
     /**
      * @return the unableToMakeMove
+     * @see org.berlin.tron.gl.game.IBot#isUnableToMakeMove()
      */
     public boolean isUnableToMakeMove() {
         return unableToMakeMove;
@@ -425,6 +496,7 @@ public class GLBot implements IBot {
 
     /**
      * @return the dead
+     * @see org.berlin.tron.gl.game.IBot#isDead()
      */
     public boolean isDead() {
         return dead;
@@ -432,6 +504,7 @@ public class GLBot implements IBot {
 
     /**
      * @param dead the dead to set
+     * @see org.berlin.tron.gl.game.IBot#setDead(boolean)
      */
     public void setDead(boolean dead) {
         this.dead = dead;
@@ -439,6 +512,7 @@ public class GLBot implements IBot {
 
     /**
      * @return the name
+     * @see org.berlin.tron.gl.game.IBot#getName()
      */
     public String getName() {
         return name;
@@ -446,6 +520,7 @@ public class GLBot implements IBot {
 
     /**
      * @param name the name to set
+     * @see org.berlin.tron.gl.game.IBot#setName(String)
      */
     public void setName(String name) {
         this.name = name;
@@ -453,6 +528,7 @@ public class GLBot implements IBot {
 
     /**
      * @return the causeDeath
+     * @see org.berlin.tron.gl.game.IBot#getCauseDeath()
      */
     public String getCauseDeath() {
         return causeDeath;
@@ -460,6 +536,7 @@ public class GLBot implements IBot {
 
     /**
      * @param causeDeath the causeDeath to set
+     * @see org.berlin.tron.gl.game.IBot#setCauseDeath(String)
      */
     public void setCauseDeath(String causeDeath) {
         this.causeDeath = causeDeath;
@@ -481,6 +558,7 @@ public class GLBot implements IBot {
 
     /**
      * @return the score
+     * @see org.berlin.tron.gl.game.IBot#getScore()
      */
     public double getScore() {
         return score;
@@ -488,11 +566,17 @@ public class GLBot implements IBot {
 
     /**
      * @param score the score to set
+     * @see org.berlin.tron.gl.game.IBot#setScore(double)
      */
     public void setScore(double score) {
         this.score = score;
     }
 
+    /**
+     * Method incScore.
+     * @param score double
+     * @see org.berlin.tron.gl.game.IBot#incScore(double)
+     */
     public void incScore(double score) {
         this.score += score;
     }
@@ -500,6 +584,7 @@ public class GLBot implements IBot {
     
     /**
      * @return the moveScore
+     * @see org.berlin.tron.gl.game.IBot#getPerMoveScore()
      */
     public double getPerMoveScore() {
         return moveScore;
@@ -507,6 +592,7 @@ public class GLBot implements IBot {
 
     /**
      * @param moveScore the moveScore to set
+     * @see org.berlin.tron.gl.game.IBot#setPerMoveScore(double)
      */
     public void setPerMoveScore(double moveScore) {
         this.moveScore = moveScore;
@@ -514,6 +600,7 @@ public class GLBot implements IBot {
 
     /**
      * @param unableToMakeMove the unableToMakeMove to set
+     * @see org.berlin.tron.gl.game.IBot#setUnableToMakeMove(boolean)
      */
     public void setUnableToMakeMove(boolean unableToMakeMove) {
         this.unableToMakeMove = unableToMakeMove;
@@ -521,6 +608,7 @@ public class GLBot implements IBot {
 
     /**
      * @return the messages
+     * @see org.berlin.tron.gl.game.IBot#getMessages()
      */
     public List<String> getMessages() {
         return messages;
