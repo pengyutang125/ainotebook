@@ -39,6 +39,10 @@
 // MyTronBot.java
 // Author: Berlin Brown
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 import org.berlin.tron.gl.game.ChallengeGame;
 import org.berlin.tron.gl.game.ChallengeMoveModel;
 import org.berlin.tron.gl.game.IBot;
@@ -97,16 +101,48 @@ class MyTronBot {
             game.addCurrentMove(new Move(x, y));
             game.addOtherMove(new Move(oppx, oppy));                        
             
-            final String lastMove = game.makeLogicMove();
-            //final String lastMove = "North";
+            final String lastMove = game.makeLogicMove();            
             return lastMove;
             
-        } catch(Exception e) {
+        } catch(Exception e) { 
             
         } // End of the try catch //
         
         // On the event of any error, return North
-        return "North";
+        return defaultMakeMove();
+    }
+    
+    /**
+     * Make the default move.
+     * 
+     * @return
+     */
+    public static String defaultMakeMove() {
+    
+        final int x = Map.MyX();
+        final int y = Map.MyY();
+        final List<String> validMoves = new ArrayList<String>();
+        
+        if (!Map.IsWall(x, y - 1)) {
+            validMoves.add("North");
+        }
+        if (!Map.IsWall(x+1, y)) {
+            validMoves.add("East");
+        }
+        if (!Map.IsWall(x,y+1)) {
+            validMoves.add("South");
+        }
+        if (!Map.IsWall(x-1,y)) {
+            validMoves.add("West");
+        }
+        
+        if (validMoves.size() == 0) {
+            return "North"; // Hopeless. Might as well go North!
+        } else {
+            final Random rand = new Random();
+            int whichMove = rand.nextInt(validMoves.size());
+            return validMoves.get(whichMove);
+        } // End of the if - else //
     }
 
     /////////////////////////////////////////////
