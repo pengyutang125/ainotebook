@@ -128,7 +128,25 @@ public class GLBot implements IBot {
         this.thoughts.add(moveThought);
     }
     public void addMessages(final String msg) {
-        this.addMessages(msg);
+        this.messages.add(msg);
+    }
+    
+    public boolean validateOtherMove(final IBot theOtherBot, final Move move) {
+        
+        // For an invalid other bot, that is OK, return true.
+        if (theOtherBot == null) {
+            return true;
+        }
+        
+        final List<Move> stack = theOtherBot.getMoves().getMoves();
+        if (stack.contains(move)) {
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_OTHER_PLAYER;
+            this.addMessages("!!! WARNING: Other Player at this location");
+            return false;
+        }
+        return true;
+        
     }
     
     public boolean validateMove(final Stack<Move> stack, final Move move) {
@@ -139,6 +157,11 @@ public class GLBot implements IBot {
         
         final MoveThought thought = new MoveThought(move.getX(), move.getY(), move);
         this.thoughts.add(thought);
+        
+        if (!validateOtherMove(this.getOtherBot(), move)) {
+            thought.setThoughtOnMove("- BadMove, enemy player has moved there");
+            return false;
+        }
         
         if (stack.contains(move)) {
             this.moveScoreChecksForAvg += 1.0;
@@ -269,7 +292,7 @@ public class GLBot implements IBot {
             validMovesLeft++;
         }
         if (wb) {
-            this.score += IMove.POS_VALID_MOVE;
+            this.score += IMove.POS_VALID_MOVE;            
             this.moveScoreChecksForAvg += 1.0;
             validMovesList.add(west);
             validMovesLeft++;

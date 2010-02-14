@@ -187,24 +187,27 @@ public class AIBotScoreMoves extends GLBot {
         if (this.getVerbose()) {
             System.out.println(scores);
         }
-        if (this.getMoves().size() <= 4) {
+        if (this.getMoves().size() <= 3) {
             super.makeLogicMove();
             return;
         }
         
-        if (this.getMoves().size() == 12) {
+        if (this.getMoves().size() == 30) {
+            this.addMessages("-5000-AI: using default move, on 30 clause");
             super.makeLogicMove();
             return;
         }
          
-        final int randomMoveFlag = random.nextInt(6);
+        final int randomMoveFlag = random.nextInt(13);
         if (randomMoveFlag == 1) {
+            this.addMessages("-4000-AI: using default move, random case");
             super.makeLogicMove();
             return;
         }
         
         final Move lastMove = this.getLastMoveNull();
         if (lastMove == null) {
+            this.addMessages("-3000-AI: using default move, last move null");
             // Revert back to the default move
             super.makeLogicMove();
             return;
@@ -225,17 +228,24 @@ public class AIBotScoreMoves extends GLBot {
         if (this.getVerbose()) {
             System.out.println(scoreMap);
         }
-        
+                        
         // Get the first entry
-        final Map.Entry<Double, Move> highestMoveEntry = scoreMap.entrySet().iterator().next();        
-        final Move highestMove = highestMoveEntry.getValue();        
+        final Map.Entry<Double, Move> highestMoveEntry = scoreMap.entrySet().iterator().next();
+        final Move highestMove = highestMoveEntry.getValue();
+        if (highestMoveEntry.getKey().doubleValue() < 0) {
+            this.addMessages("-1000-AI: using default move, invalid score");
+            super.makeLogicMove();
+            return;            
+        } // End of the if - else //
         
         // We have our high value move, validate it.
         final Stack<Move> stackMoves = (Stack<Move>) this.getMoves().getMoves();
         if (!this.validateMove(stackMoves, highestMove)) {
+            this.addMessages("-2000-AI: using default move, invalid move");
             super.makeLogicMove();
             return;
         }
+        
         this.makeMove(highestMove);
         
     }
