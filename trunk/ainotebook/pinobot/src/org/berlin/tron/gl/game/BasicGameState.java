@@ -57,9 +57,7 @@ public class BasicGameState extends UpdateStateTask implements GameWidget {
     public void updateState() {
 
         synchronized (this.basicBoard) {
-            
-            GLWalls.appWallSet(this.basicBoard);
-            
+                        
             // Continue to normal game state update //
             basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
             basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);

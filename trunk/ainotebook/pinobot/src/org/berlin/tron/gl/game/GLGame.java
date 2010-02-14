@@ -20,8 +20,9 @@ public class GLGame {
         int sizex = basicBoard.getNumCols();
         int sizey = basicBoard.getNumRows();
         
-        this.bot1.makeMove(new Move(0, 0));
-        this.bot2.makeMove(new Move(sizex-1, sizey-1));
+        // Init position
+        this.bot1.makeMove(new Move(2, 2));
+        this.bot2.makeMove(new Move(sizex-2, sizey-2));
     }
     
     public void stepGame() {
