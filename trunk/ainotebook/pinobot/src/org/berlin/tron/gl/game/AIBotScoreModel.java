@@ -39,78 +39,64 @@
  */
 package org.berlin.tron.gl.game;
 
-public interface IBot {
-            
-    public static final String VERS = "0.1";
+public class AIBotScoreModel {
+
+    private double scoreNorth = 0;
+    private double scoreSouth = 0;
+    private double scoreEast  = 0;
+    private double scoreWest  = 0;
+    
+    public String toString() {
+        return "Scores - n=" + this.scoreNorth + " s=" + this.scoreSouth + " e=" + this.scoreEast + " w=" + this.scoreWest;
+    }
     
     /**
-     * @return the moves
+     * @return the scoreNorth
      */
-    public IBotMoves getMoves();        
-        
+    public double getScoreNorth() {
+        return scoreNorth;
+    }
     /**
-     * @param moves the moves to set
+     * @param scoreNorth the scoreNorth to set
      */
-    public void setMoves(IBotMoves moves);
-
-    public void makeMove(final Move move);
-    
-    public void printMoves();
-        
-    public ITronBoard getBoard();
-    
-    public void makeLogicMove();
-    
-    public Move getLastMove();
-    public Move getLastMoveNull();
-    
-    public Move checkValidMoves();
-
-    public Move getOtherBotPos();
-    
-    public void setOtherBot(IBot otherBot);
-    
-    public IBot getOtherBot();
-         
-    public boolean isUnableToMakeMove();
-    
-    public void setUnableToMakeMove(boolean unableToMakeMove);
-        
-    public boolean isDead();
-
+    public void setScoreNorth(double scoreNorth) {
+        this.scoreNorth = scoreNorth;
+    }
     /**
-     * @param dead the dead to set
+     * @return the scoreSouth
      */
-    public void setDead(boolean dead);
-    
-    public String getName();        
-
+    public double getScoreSouth() {
+        return scoreSouth;
+    }
     /**
-     * @param name the name to set
+     * @param scoreSouth the scoreSouth to set
      */
-    public void setName(String name);
-    
-    public String getCauseDeath();
-    public void setCauseDeath(String causeDeath);
-    
-    public double getScore();    
-
+    public void setScoreSouth(double scoreSouth) {
+        this.scoreSouth = scoreSouth;
+    }
     /**
-     * @param score the score to set
+     * @return the scoreEast
      */
-    public void setScore(double score);
-    
-    public void incScore(double score);
-    
-    public double getPerMoveScore();
-
+    public double getScoreEast() {
+        return scoreEast;
+    }
     /**
-     * @param moveScore the moveScore to set
+     * @param scoreEast the scoreEast to set
      */
-    public void setPerMoveScore(double moveScore);
+    public void setScoreEast(double scoreEast) {
+        this.scoreEast = scoreEast;
+    }
+    /**
+     * @return the scoreWest
+     */
+    public double getScoreWest() {
+        return scoreWest;
+    }
+    /**
+     * @param scoreWest the scoreWest to set
+     */
+    public void setScoreWest(double scoreWest) {
+        this.scoreWest = scoreWest;
+    }
     
-    public void addThoughts(final MoveThought moveThought);
-     
-    public void addMessages(final String msg);
-    
-} // End of the Class //
+}

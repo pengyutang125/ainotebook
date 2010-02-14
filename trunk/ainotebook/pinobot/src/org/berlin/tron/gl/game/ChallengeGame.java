@@ -46,8 +46,9 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     private IBotMoves movesOtherPlayer   = new BotMoves();
     
     private ITronBoard tronBoard;
+    private IBot player1SmartAI;
     private IBot player1ai;
-    private IBot player2ai;
+    private IBot player2ai;    
     
     private boolean readyForLogic = false;
     private boolean verbose = false;
@@ -55,33 +56,53 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     public void init(final int width, final int height) {
         
         this.tronBoard = new TronBoard(width, height);
+        
+        // Player 1 and 2 are the default bots //
+        // Also create an AI bot
         player1ai = new GLBot(this.tronBoard);
         player2ai = new GLBot(this.tronBoard); 
         player1ai.setOtherBot(player2ai);
         player2ai.setOtherBot(player1ai);
         
+        // Create the AI bot
+        // The AI bot can be used for better rules,
+        // we can still fall on the advice of the player1 bot.
+        this.player1SmartAI = AIBotBuilder.buildBotScoreMoves(this.tronBoard);
+    }
+    
+    public boolean botReadyForLogic(final IBot botCheck) {
+        if (botCheck == null) {
+            return false;
+        }
+        
+        return ((botCheck.getMoves().size() >= 1)
+                    && (this.challengeMove.size() >= 1));
     }
     
     public String makeLogicMove() {
          
-        this.readyForLogic = ((this.player1ai.getMoves().size() >= 1)
-                && (this.challengeMove.size() >= 1));
+        this.readyForLogic = this.botReadyForLogic(this.player1ai);
                                 
         if (!this.readyForLogic) {
             return "North";
         }
         
         try {
+            
+            final String smartMove = safeSmartBotMakeLogicMove();
+            if (smartMove != null) {
+                return smartMove;
+            }
+            
+            // Default to the player1 default AI.
             if (this.player1ai != null) {
-
                 this.player1ai.makeLogicMove();
                 final Move lastMove = this.player1ai.getLastMove();
                 if (lastMove == null) {
                     return "North";
                 } else {
                     return lastMove.getDirection();
-                } // End of the if - else //
-                
+                } // End of the if - else //                
             } // End of the if - check for player 1 //
             
         } catch(Exception e) {
@@ -89,6 +110,39 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         }
         return "North";
     }
+    
+    /**
+     * Smart bot can return null on invalid input.
+     * 
+     * @return
+     */
+    public String smartBotMakeLogicMove() {
+        this.readyForLogic = this.botReadyForLogic(this.player1SmartAI);
+        if (!this.readyForLogic) {
+            return null;
+        }
+        
+        if (this.player1SmartAI == null) {
+            return null;
+        }
+        
+        this.player1SmartAI.makeLogicMove();
+        final Move lastMove = this.player1SmartAI.getLastMove();
+        if (lastMove == null) {
+            return null;
+        }        
+        return lastMove.getDirection();
+    }
+    
+    public String safeSmartBotMakeLogicMove() {
+        try {
+            return this.smartBotMakeLogicMove();
+        } catch(Exception e) {
+            
+        }
+        return null; 
+    }
+    
     
     public void findWalls(final int x, final int y) {
         
@@ -110,6 +164,8 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     public void checkInitPlayerPos(final Move initMove, final Move otherPlayerMove) {
         if (this.player1ai.getMoves().size() == 0) {
             this.player1ai.makeMove(initMove);
+            this.player1SmartAI.makeMove(initMove);
+            ((AIBotScoreMoves) this.player1SmartAI).initCloneAttrs();
         } // End of the if //
         
         if (this.player2ai.getMoves().size() == 0) {

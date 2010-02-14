@@ -39,78 +39,67 @@
  */
 package org.berlin.tron.gl.game;
 
-public interface IBot {
-            
-    public static final String VERS = "0.1";
+
+/**
+ * Based on an input starting bot, build another bot with
+ * similar attributes.
+ * 
+ * @author BerlinBrown
+ *
+ */
+public class AIBotBuilder {
+    
+    public static final int MAX_SCORE_CHECK_DEPTH = 20;
+    
+    private final IBot startingBot;
+    
+    private boolean dead = false;
+    private boolean canMakeMove = true;
+    
+    private IBot otherBot;
+    private Move otherBotPos;
+    
+    private String name;   
+    private ITronBoard board;
+    
+    public AIBotBuilder(final IBot startingBot) {
+        this.startingBot = startingBot;
+    }
+    
+    public AIBotBuilder withOtherBot() { 
+        this.otherBot = this.startingBot.getOtherBot();
+        this.otherBotPos = this.startingBot.getOtherBotPos();
+        return this;
+    }
+    
+    public AIBotBuilder withBotAttrs() {
+        this.dead = this.startingBot.isDead();
+        this.canMakeMove = this.startingBot.isUnableToMakeMove();
+        this.name = this.startingBot.getName() + "-clone";
+        return this;
+    }
     
     /**
-     * @return the moves
+     * Transfer the builder attributes into the new object.
+     * @return
      */
-    public IBotMoves getMoves();        
-        
-    /**
-     * @param moves the moves to set
-     */
-    public void setMoves(IBotMoves moves);
-
-    public void makeMove(final Move move);
+    public IBot build() {
+        if (startingBot == null) {
+            return null;
+        }
+        final IBot newBot = new GLBot(this.startingBot.getBoard());
+        newBot.setDead(this.dead);
+        newBot.setOtherBot(this.otherBot);        
+        newBot.setName(this.name);      
+        return newBot;
+    }
     
-    public void printMoves();
-        
-    public ITronBoard getBoard();
+    public static AIBotScoreMoves buildBotScoreMoves(final ITronBoard basicBoard) {
+       
+        // Create four bots for use with the bot scorer
+        return new AIBotScoreMoves(basicBoard, MAX_SCORE_CHECK_DEPTH);
+                    
+                            
+    }
     
-    public void makeLogicMove();
-    
-    public Move getLastMove();
-    public Move getLastMoveNull();
-    
-    public Move checkValidMoves();
-
-    public Move getOtherBotPos();
-    
-    public void setOtherBot(IBot otherBot);
-    
-    public IBot getOtherBot();
-         
-    public boolean isUnableToMakeMove();
-    
-    public void setUnableToMakeMove(boolean unableToMakeMove);
-        
-    public boolean isDead();
-
-    /**
-     * @param dead the dead to set
-     */
-    public void setDead(boolean dead);
-    
-    public String getName();        
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name);
-    
-    public String getCauseDeath();
-    public void setCauseDeath(String causeDeath);
-    
-    public double getScore();    
-
-    /**
-     * @param score the score to set
-     */
-    public void setScore(double score);
-    
-    public void incScore(double score);
-    
-    public double getPerMoveScore();
-
-    /**
-     * @param moveScore the moveScore to set
-     */
-    public void setPerMoveScore(double moveScore);
-    
-    public void addThoughts(final MoveThought moveThought);
-     
-    public void addMessages(final String msg);
-    
-} // End of the Class //
+} // End of the Class//

@@ -40,11 +40,32 @@
 package org.berlin.tron.gl.game;
 
 public interface IMove {
-  
+         
     public static final String NORTH = "North";
     public static final String SOUTH = "South";
     public static final String EAST  = "East";
     public static final String WEST  = "West";
+        
+    public static final double NEG_THOUGHT_MOVE_PREV_SCORE = -3.0;
+    public static final double NEG_THOUGHT_MOVE_SCORE      = -2.0;    
+    public static final double NEG_THOUGHT_MOVE_WALL_SCORE = -1.0;
+    
+    /**
+     * If we are getting close to players, then this is a bad move.
+     */
+    public static final double NEG_THOUGHT_MOVE_PLAYER     = -10.0;
+    
+    public static final double NEG_THOUGHT_ONLY_ONE_MOVE   = -20.0;
+    
+    public static final double NEG_NO_MOVES                = -100.0;
+    
+    public static final double POS_VALID_MOVE              =  15.0;
+    
+    public static final double NEG_LOOK_ERR                =  -60.0;
+    
+    public static final double NEG_LOOK_NO_FIND_ERR        =  -50.0;
+    
+    public static final double POS_FIND                    =   70.0;
     
     /**
      * @return the x
