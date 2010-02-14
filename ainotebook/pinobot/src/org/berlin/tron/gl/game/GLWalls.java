@@ -39,15 +39,20 @@
  */
 package org.berlin.tron.gl.game;
 
+import java.util.Random;
+
 public class GLWalls {
 
+    private static final Random random = new Random();
+    
     public static void appWallSet(final ITronBoard board) {
-        wallSet1(board);
+        wallSetRandomMiddle(board);
+        wallSetBounds(board);
     }
     
     public static void wallSet1(final ITronBoard board) {
         
-        board.setBoardVal(ITronBoard.WALL, 4, 2);
+        board.setBoardVal(ITronBoard.WALL, 4, 3);
         board.setBoardVal(ITronBoard.WALL, 4, 3);
         board.setBoardVal(ITronBoard.WALL, 4, 4);
         board.setBoardVal(ITronBoard.WALL, 4, 5);
@@ -66,6 +71,68 @@ public class GLWalls {
         board.setBoardVal(ITronBoard.WALL, 4, 2);
         board.setBoardVal(ITronBoard.WALL, 4, 3);
         board.setBoardVal(ITronBoard.WALL, 4, 4);
+    }
+    
+    public static void wallSetRandomMed(final ITronBoard board) {
+     
+        final int w = board.getNumCols();
+        final int h = board.getNumRows();        
+        
+        for (int j = 3; j < (w-2); j++) {
+            for (int i = 3; i < (h-2); i++) {                
+                final int chk = random.nextInt(10);
+                if (chk == 1) {
+                    board.setBoardVal(ITronBoard.WALL, i, j);
+                }                
+            }
+        } // End of the for //        
+    }
+    
+    public static void wallSetRandomHigh(final ITronBoard board) {
+     
+
+        final int w = board.getNumCols();
+        final int h = board.getNumRows();        
+        
+        for (int j = 3; j < (w-2); j++) {
+            for (int i = 3; i < (h-2); i++) {                
+                final int chk = random.nextInt(7);
+                if (chk == 1) {
+                    board.setBoardVal(ITronBoard.WALL, i, j);
+                }                
+            }
+        } // End of the for //  
+    }
+    
+    public static void wallSetRandomMiddle(final ITronBoard board) {       
+
+        final int w = board.getNumCols();
+        final int h = board.getNumRows();        
+        
+        for (int j = 6; j < (w-8); j++) {
+            for (int i = 6; i < (h-8); i++) {                
+                final int chk = random.nextInt(8);
+                if (chk == 1) {
+                    board.setBoardVal(ITronBoard.WALL, i, j);
+                }                
+            }
+        } // End of the for //  
+    }
+    
+    public static void wallSetBounds(final ITronBoard board) {
+        final int w = board.getNumCols();
+        final int h = board.getNumRows();
+        
+        for (int j = 4; j < (w-5); j++) {                                            
+            board.setBoardVal(ITronBoard.WALL, 5, j);                                           
+        } // End of the for //        
+        for (int j = 6; j < (w-8); j++) {                                            
+            board.setBoardVal(ITronBoard.WALL, w-5, j);                                           
+        } // End of the for //
+        
+        for (int i = 6; i < (w-12); i++) {
+            board.setBoardVal(ITronBoard.WALL, i, h-12);
+        }
     }
     
 } // End of the method //
