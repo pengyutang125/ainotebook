@@ -71,5 +71,12 @@ public interface IMove {
      * @param direction the direction to set
      */
     public void setDirection(String direction);
-            
+
+    public double getScore();
+
+    /**
+     * @param score the score to set
+     */
+    public void setScore(double score);
+    
 } // End of the Interface //
