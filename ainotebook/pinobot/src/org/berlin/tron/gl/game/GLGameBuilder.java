@@ -49,10 +49,12 @@ public class GLGameBuilder {
     
     public GLGame build() {
         
-        final IBot bot1 = new GLBot(this.board.getBoard());
+        //final IBot bot1 = new GLBot(this.board.getBoard());
+        final IBot bot1 = AIBotBuilder.buildBotScoreMoves(this.board.getBoard());
         final IBot bot2 = new GLBot(this.board.getBoard());        
         bot1.setOtherBot(bot2);
         bot2.setOtherBot(bot1);
+        ((AIBotScoreMoves) bot1).initCloneAttrs();
         return new GLGame(this.board, bot1, bot2);
     }
     

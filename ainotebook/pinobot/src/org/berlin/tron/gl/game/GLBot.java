@@ -44,6 +44,13 @@ import java.util.List;
 import java.util.Random;
 import java.util.Stack;
 
+/**
+ * Default google challenge AI bot.  Search for a valid mode.
+ * This bot can also be used for checking valid moves and scoring them.
+ * 
+ * @author BerlinBrown
+ *
+ */
 public class GLBot implements IBot {
 
     public static final Random sysRand = new Random(System.currentTimeMillis());
@@ -63,10 +70,17 @@ public class GLBot implements IBot {
     private List<String> messages = new ArrayList<String>();
     private List<MoveThought> thoughts = new ArrayList<MoveThought>();
     
+    private double score = 0.0;
+    /**
+     * See perMove score methods.
+     */
+    private double moveScore = 0.0;
+    private double moveScoreChecksForAvg = 0.0;
+    
     /**
      * Enable or disable debugging messages.
      */
-    private boolean verbose = true;
+    private boolean verbose = false;
     
     /**
      * Main constructor for Bot.
@@ -78,7 +92,7 @@ public class GLBot implements IBot {
     }
     
     public String toString() {
-        return "#{Bot-" + this.getName() + " dead?=" + this.isDead() + " move?=" + (!this.isUnableToMakeMove()) + " cause-death=" + this.getCauseDeath() + "}";
+        return "#{Bot-" + this.getName() + " score=" + this.getScore() + " dead?=" + this.isDead() + " move?=" + (!this.isUnableToMakeMove()) + " cause-death=" + this.getCauseDeath() + "}";
     }
     
     /**
@@ -110,28 +124,50 @@ public class GLBot implements IBot {
         return board;
     }
     
+    public void addThoughts(final MoveThought moveThought) {
+        this.thoughts.add(moveThought);
+    }
+    public void addMessages(final String msg) {
+        this.addMessages(msg);
+    }
+    
     public boolean validateMove(final Stack<Move> stack, final Move move) {
+        
+        if (stack.size() == 0) {
+            return false;
+        }
         
         final MoveThought thought = new MoveThought(move.getX(), move.getY(), move);
         this.thoughts.add(thought);
+        
         if (stack.contains(move)) {
-            thought.setThoughtOnMove("- BadMove, I already moved there");
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_PREV_SCORE;
+            thought.setThoughtOnMove("- BadMove, I already moved there - " + this.score);
             return false;
         }        
         if (move.getX() < 0) {
-            thought.setThoughtOnMove("- BadMove, less than board size X");
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_SCORE;
+            thought.setThoughtOnMove("- BadMove, less than board size X - " + this.score);
             return false;
         }        
         if (move.getY() < 0) {
-            thought.setThoughtOnMove("- BadMove, less than board size Y");
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_SCORE;
+            thought.setThoughtOnMove("- BadMove, less than board size Y - " + this.score);
             return false;
         }
         if (move.getX() >= this.board.getNumCols()) {
-            thought.setThoughtOnMove("- BadMove, greater than board size X");
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_SCORE;
+            thought.setThoughtOnMove("- BadMove, greater than board size X - " + this.score);
             return false;
         }        
         if (move.getY() >= this.board.getNumRows()) {
-            thought.setThoughtOnMove("- BadMove, greater than board size Y");
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_SCORE;
+            thought.setThoughtOnMove("- BadMove, greater than board size Y - " + this.score);
             return false;
         }
         
@@ -148,11 +184,15 @@ public class GLBot implements IBot {
         final int y = newMove.getY();
         final byte type = this.getBoard().getBoardVal(x, y);
         if (type == ITronBoard.WALL) {
-            moveThought.setThoughtOnMove("- BadMove, might hit a wall");
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_WALL_SCORE;
+            moveThought.setThoughtOnMove("- BadMove, might hit a wall - " + this.score);
             return false;
         } 
         if ((type == ITronBoard.PLAYER1) || (type == ITronBoard.PLAYER2)) {
-            moveThought.setThoughtOnMove("- BadMove, might myself or another player");
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_PLAYER;
+            moveThought.setThoughtOnMove("- BadMove, might myself or another player - " + this.score);
             return false;
         }
         return true;
@@ -161,7 +201,7 @@ public class GLBot implements IBot {
     public Move getLastMove() {
         
         final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
-        final Move lastMove = stack.peek();
+        final Move lastMove = (stack.size() == 0) ? null : stack.peek();
         if (lastMove == null) {
             // Ideally the last move shouldn't be null.
             return new Move(-1, -1);
@@ -169,13 +209,33 @@ public class GLBot implements IBot {
         return lastMove;
     }
     
-    public Move checkValidMovesRaw() {
-        
+    /**
+     * Get Last Move, but allow for null.
+     * 
+     * @return
+     */
+    public Move getLastMoveNull() {
         final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
-        final Move lastMove = stack.peek();
+        final Move lastMove = (stack.size() == 0) ? null : stack.peek();
         if (lastMove == null) {
             // Ideally the last move shouldn't be null.
-            return new Move(0, 0);
+            return null;
+        } // End of the if  //
+        return lastMove;
+    }
+    
+    /**
+     * Check for empty squares.
+     * 
+     * @return
+     */
+    public List<Move> checkValidMovesRaw() {
+        
+        final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
+        final Move lastMove = (stack.size() == 0) ? null : stack.peek();
+        if (lastMove == null) {
+            // Ideally the last move shouldn't be null.
+            return null;
         } // End of the if  //
         
         final List<Move> validMovesList = new ArrayList<Move>();
@@ -191,38 +251,75 @@ public class GLBot implements IBot {
         
         int validMovesLeft = 0;
         if (nb) {
+            this.score += IMove.POS_VALID_MOVE;
+            this.moveScoreChecksForAvg += 1.0;
             validMovesList.add(north);
             validMovesLeft++;
         }
         if (sb) {
+            this.score += IMove.POS_VALID_MOVE;
+            this.moveScoreChecksForAvg += 1.0;
             validMovesList.add(south);
             validMovesLeft++;
         }
         if (eb) {
+            this.score += IMove.POS_VALID_MOVE;
+            this.moveScoreChecksForAvg += 1.0;
             validMovesList.add(east);
             validMovesLeft++;
         }
         if (wb) {
+            this.score += IMove.POS_VALID_MOVE;
+            this.moveScoreChecksForAvg += 1.0;
             validMovesList.add(west);
             validMovesLeft++;
         }
-        this.messages.add("Message: (movesleft=" + validMovesLeft + ") Direction Check - " + nb + " " + sb + " " + eb + " " + wb + " // " + east);
-        
-        // Add to the queue //
-        if (validMovesList.size() == 0) {
-            this.messages.add("+ Message: [return my move] size is zero, returning north");
-            return north;
-        } else if (validMovesList.size() == 1) {
-            this.messages.add("+ Message: [return my move] size is one, first");
-            return validMovesList.get(0);
-        } else {
-            final int sel = random.nextInt(validMovesList.size());
-            return validMovesList.get(sel);
-        } // End of if - else //        
+                
+        // The move score is the score over the average number of checks. 
+        this.moveScoreChecksForAvg = (this.moveScoreChecksForAvg <= 0) ? 1.0 : this.moveScoreChecksForAvg;
+        this.moveScore = this.score / this.moveScoreChecksForAvg;        
+        this.messages.add("Message: (movesleft=" + validMovesLeft + ") Direction Check - " 
+                + nb + " " + sb + " " + eb + " " + wb + " // " + this.score + " //chks=" + this.moveScore);        
+        return validMovesList;
     }
     
+    /**
+     * CHeck the valid moves.
+     */
     public Move checkValidMoves() {
-        final Move rawMove = this.checkValidMovesRaw();
+        
+        final List<Move> validMovesList = this.checkValidMovesRaw();
+        Move rawMove = new Move(0, 0);
+        
+        if (validMovesList == null) {
+            this.messages.add("+ Message: valid move = " + rawMove);
+            return rawMove;
+        }
+        // Add to the queue //
+        if (validMovesList.size() == 0) {
+            this.score += IMove.NEG_NO_MOVES;
+            this.moveScoreChecksForAvg += 1.0;
+            // Invalid state 
+            this.messages.add("+ Message: [return my move] size is zero, returning null");
+            // Move north
+            // !IMPORTANT! - may throw nullpointer, not check last move
+            rawMove = this.getLastMove().incy();
+            
+        } else if (validMovesList.size() == 1) {
+            
+            this.score += IMove.NEG_THOUGHT_ONLY_ONE_MOVE;
+            this.moveScoreChecksForAvg += 1.0;
+            this.messages.add("+ Message: [return my move] size is one, first - " + this.moveScore);
+            rawMove = validMovesList.get(0);
+            
+        } else {
+            
+            this.messages.add("+ Message: [return my move] " + this.moveScore);
+            final int sel = random.nextInt(validMovesList.size());
+            rawMove = validMovesList.get(sel);
+            
+        } // End of if - else //     
+                
         this.messages.add("+ Message: valid move = " + rawMove);
         return rawMove;
     }
@@ -251,6 +348,9 @@ public class GLBot implements IBot {
         this.board.printBoard();
     }
     
+    /**
+     * Make a logic move basd on the alternatives.
+     */
     public void makeLogicMove() {
      
         this.printAIMap();
@@ -354,6 +454,46 @@ public class GLBot implements IBot {
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
+    }
+
+    /**
+     * @return the score
+     */
+    public double getScore() {
+        return score;
+    }
+
+    /**
+     * @param score the score to set
+     */
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public void incScore(double score) {
+        this.score += score;
+    }
+
+    
+    /**
+     * @return the moveScore
+     */
+    public double getPerMoveScore() {
+        return moveScore;
+    }
+
+    /**
+     * @param moveScore the moveScore to set
+     */
+    public void setPerMoveScore(double moveScore) {
+        this.moveScore = moveScore;
+    }
+
+    /**
+     * @param unableToMakeMove the unableToMakeMove to set
+     */
+    public void setUnableToMakeMove(boolean unableToMakeMove) {
+        this.unableToMakeMove = unableToMakeMove;
     }
     
 } // End of the Class //
