@@ -51,7 +51,7 @@ import org.berlin.tron.gl.game.ITronBoard;
 import org.berlin.tron.gl.game.Move;
 
 /**
- * My Tron Bot
+ * My Tron Bot.  Main entr point into the google AI challenge.
  * 
  * @author BerlinBrown
  *
@@ -64,6 +64,12 @@ class MyTronBot {
     
     private static final IChallengeGame game = new ChallengeGame(); 
     
+    /**
+     * Method findWalls.
+     * @param curGame IChallengeGame
+     * @param width int
+     * @param height int
+     */
     public static void findWalls(IChallengeGame curGame, final int width, final int height) {
         
         for (int j = 0; j < height; j++) {
@@ -80,7 +86,7 @@ class MyTronBot {
     
     /**
      * Static Make Move 
-     * @return
+     * @return String
      */
     public static String MakeMove() {
         
@@ -115,7 +121,7 @@ class MyTronBot {
     /**
      * Make the default move.
      * 
-     * @return
+     * @return String
      */
     public static String defaultMakeMove() {
     
@@ -151,6 +157,10 @@ class MyTronBot {
     // with the contest tournament engine.
     //
     /////////////////////////////////////////////
+    /**
+     * Method main.
+     * @param args String[]
+     */
     public static void main(String[] args) {
         
         while (true) {

@@ -39,6 +39,8 @@
  */
 package org.berlin.tron.gl.game;
 
+/**
+ */
 public class ChallengeGame implements IChallengeGame, GameWidget {
     
     private IBotMoves challengeMove      = new BotMoves();
@@ -53,6 +55,12 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     private boolean readyForLogic = false;
     private boolean verbose = false;
     
+    /**
+     * Method init.
+     * @param width int
+     * @param height int
+     * @see org.berlin.tron.gl.game.IChallengeGame#init(int, int)
+     */
     public void init(final int width, final int height) {
         
         this.tronBoard = new TronBoard(width, height);
@@ -70,6 +78,11 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         this.player1SmartAI = AIBotBuilder.buildBotScoreMoves(this.tronBoard);
     }
     
+    /**
+     * Method botReadyForLogic.
+     * @param botCheck IBot
+     * @return boolean
+     */
     public boolean botReadyForLogic(final IBot botCheck) {
         if (botCheck == null) {
             return false;
@@ -79,6 +92,11 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
                     && (this.challengeMove.size() >= 1));
     }
     
+    /**
+     * Method makeLogicMove.
+     * @return String
+     * @see org.berlin.tron.gl.game.IChallengeGame#makeLogicMove()
+     */
     public String makeLogicMove() {
          
         this.readyForLogic = this.botReadyForLogic(this.player1ai);
@@ -114,7 +132,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     /**
      * Smart bot can return null on invalid input.
      * 
-     * @return
+     * @return String
      */
     public String smartBotMakeLogicMove() {
         this.readyForLogic = this.botReadyForLogic(this.player1SmartAI);
@@ -134,6 +152,10 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         return lastMove.getDirection();
     }
     
+    /**
+     * Method safeSmartBotMakeLogicMove.
+     * @return String
+     */
     public String safeSmartBotMakeLogicMove() {
         try {
             return this.smartBotMakeLogicMove();
@@ -144,6 +166,12 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     }
     
     
+    /**
+     * Method findWalls.
+     * @param x int
+     * @param y int
+     * @see org.berlin.tron.gl.game.IChallengeGame#findWalls(int, int)
+     */
     public void findWalls(final int x, final int y) {
         
         if (this.challengeMove.size() > 0) {
@@ -155,12 +183,24 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         } // End of the If //        
     }
     
+    /**
+     * Method checkInit.
+     * @param width int
+     * @param height int
+     * @see org.berlin.tron.gl.game.IChallengeGame#checkInit(int, int)
+     */
     public void checkInit(final int width, final int height) {
         if (this.challengeMove.size() == 0) {
             this.init(width, height);
         } // End of the if /
     }
     
+    /**
+     * Method checkInitPlayerPos.
+     * @param initMove Move
+     * @param otherPlayerMove Move
+     * @see org.berlin.tron.gl.game.IChallengeGame#checkInitPlayerPos(Move, Move)
+     */
     public void checkInitPlayerPos(final Move initMove, final Move otherPlayerMove) {
         if (this.player1ai.getMoves().size() == 0) {
             this.player1ai.makeMove(initMove);
@@ -173,12 +213,19 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         }
     }
     
+    /**
+     * Method addChallengeMove.
+     * @param challenge Move
+     * @see org.berlin.tron.gl.game.IChallengeGame#addChallengeMove(Move)
+     */
     public void addChallengeMove(final Move challenge) {
         this.challengeMove.makeMove(challenge);
     }       
     
     /**
      * Add a move for the current player.
+     * @param currentPlayer Move
+     * @see org.berlin.tron.gl.game.IChallengeGame#addCurrentMove(Move)
      */
     public void addCurrentMove(final Move currentPlayer) {
         this.tronBoard.setBoardVal(ITronBoard.PLAYER1, currentPlayer.getX(), currentPlayer.getY());
@@ -187,6 +234,8 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     
     /**
      * Add a move for the other player
+     * @param otherPlayer Move
+     * @see org.berlin.tron.gl.game.IChallengeGame#addOtherMove(Move)
      */
     public void addOtherMove(final Move otherPlayer) {
         this.tronBoard.setBoardVal(ITronBoard.PLAYER2, otherPlayer.getX(), otherPlayer.getY());
@@ -196,24 +245,28 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     
     /**
      * @return the movesCurrentPlayer
+     * @see org.berlin.tron.gl.game.IChallengeGame#getMovesCurrentPlayer()
      */
     public IBotMoves getMovesCurrentPlayer() {
         return movesCurrentPlayer;
     }
     /**
      * @param movesCurrentPlayer the movesCurrentPlayer to set
+     * @see org.berlin.tron.gl.game.IChallengeGame#setMovesCurrentPlayer(IBotMoves)
      */
     public void setMovesCurrentPlayer(IBotMoves movesCurrentPlayer) {
         this.movesCurrentPlayer = movesCurrentPlayer;
     }
     /**
      * @return the movesOtherPlayer
+     * @see org.berlin.tron.gl.game.IChallengeGame#getMovesOtherPlayer()
      */
     public IBotMoves getMovesOtherPlayer() {
         return movesOtherPlayer;
     }
     /**
      * @param movesOtherPlayer the movesOtherPlayer to set
+     * @see org.berlin.tron.gl.game.IChallengeGame#setMovesOtherPlayer(IBotMoves)
      */
     public void setMovesOtherPlayer(IBotMoves movesOtherPlayer) {
         this.movesOtherPlayer = movesOtherPlayer;
@@ -221,6 +274,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
 
     /**
      * @return the verbose
+     * @see org.berlin.tron.gl.game.GameWidget#getVerbose()
      */
     public boolean getVerbose() {
         return verbose;
@@ -228,6 +282,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
 
     /**
      * @param verbose the verbose to set
+     * @see org.berlin.tron.gl.game.GameWidget#setVerbose(boolean)
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;

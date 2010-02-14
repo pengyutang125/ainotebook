@@ -53,23 +53,39 @@ public class Move implements IMove {
     private String direction = "North";
     private double score = 0.0;
     
+    /**
+     * Constructor for Move.
+     * @param x int
+     * @param y int
+     */
     public Move(final int x, final int y) {
         this.x = x;
         this.y = y;
         this.moveTimeMs = System.currentTimeMillis();
     }
     
+    /**
+     * Constructor for Move.
+     * @param x int
+     * @param y int
+     * @param direction String
+     */
     public Move(final int x, final int y, final String direction) {
         this(x, y);
         this.direction = direction;
     }
     
+    /**
+     * Method toString.
+     * @return String
+     */
     public String toString() {
         return "${Move x=" + this.x + " y=" + this.y + " dir=" + this.direction + " [" + this.moveTimeMs + "]}";
     }
 
     /**
      * @return the x
+     * @see org.berlin.tron.gl.game.IMove#getX()
      */
     public int getX() {
         return x;
@@ -77,24 +93,45 @@ public class Move implements IMove {
 
     /**
      * @return the y
+     * @see org.berlin.tron.gl.game.IMove#getY()
      */
     public int getY() {
         return y;
     }
     
+    /**
+     * Method incx.
+     * @return Move
+     * @see org.berlin.tron.gl.game.IMove#incx()
+     */
     public Move incx() {
         this.direction = EAST;
         return new Move(this.x + 1, this.y, direction);
     }
+    /**
+     * Method incy.
+     * @return Move
+     * @see org.berlin.tron.gl.game.IMove#incy()
+     */
     public Move incy() {
         this.direction = SOUTH;
         return new Move(this.x, this.y + 1, direction);
     }
     
+    /**
+     * Method decx.
+     * @return Move
+     * @see org.berlin.tron.gl.game.IMove#decx()
+     */
     public Move decx() {
         this.direction = WEST;
         return new Move(this.x - 1, this.y, direction);
     }
+    /**
+     * Method decy.
+     * @return Move
+     * @see org.berlin.tron.gl.game.IMove#decy()
+     */
     public Move decy() {
         this.direction = NORTH;
         return new Move(this.x, this.y - 1, direction);        
@@ -102,6 +139,11 @@ public class Move implements IMove {
     
     ///////////////////////////////////////////////////////
     
+    /**
+     * Method equals.
+     * @param obj Object
+     * @return boolean
+     */
     public boolean equals(Object obj) {
         
         if (obj == null) {
@@ -120,6 +162,7 @@ public class Move implements IMove {
     /**
      * Create hashcode when this object is used as
      * a key with map to void collisions.
+     * @return int
      */ 
     public int hashCode() {
         
@@ -131,6 +174,7 @@ public class Move implements IMove {
 
     /**
      * @return the moveTimeMs
+     * @see org.berlin.tron.gl.game.IMove#getMoveTimeMs()
      */
     public long getMoveTimeMs() {
         return moveTimeMs;
@@ -138,6 +182,7 @@ public class Move implements IMove {
 
     /**
      * @return the direction
+     * @see org.berlin.tron.gl.game.IMove#getDirection()
      */
     public String getDirection() {
         return direction;
@@ -145,6 +190,7 @@ public class Move implements IMove {
 
     /**
      * @param direction the direction to set
+     * @see org.berlin.tron.gl.game.IMove#setDirection(String)
      */
     public void setDirection(String direction) {
         this.direction = direction;
@@ -152,6 +198,7 @@ public class Move implements IMove {
 
     /**
      * @return the score
+     * @see org.berlin.tron.gl.game.IMove#getScore()
      */
     public double getScore() {
         return score;
@@ -159,6 +206,7 @@ public class Move implements IMove {
 
     /**
      * @param score the score to set
+     * @see org.berlin.tron.gl.game.IMove#setScore(double)
      */
     public void setScore(double score) {
         this.score = score;

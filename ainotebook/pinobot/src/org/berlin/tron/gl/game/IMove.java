@@ -39,6 +39,8 @@
  */
 package org.berlin.tron.gl.game;
 
+/**
+ */
 public interface IMove {
          
     public static final String NORTH = "North";
@@ -79,22 +81,50 @@ public interface IMove {
      */
     public int getY();
     
+    /**
+     * Method incx.
+     * @return Move
+     */
     public Move incx();
     
+    /**
+     * Method incy.
+     * @return Move
+     */
     public Move incy();
     
+    /**
+     * Method decx.
+     * @return Move
+     */
     public Move decx();
     
+    /**
+     * Method decy.
+     * @return Move
+     */
     public Move decy();
     
+    /**
+     * Method getMoveTimeMs.
+     * @return long
+     */
     public long getMoveTimeMs();
     
+    /**
+     * Method getDirection.
+     * @return String
+     */
     public String getDirection();
     /**
      * @param direction the direction to set
      */
     public void setDirection(String direction);
 
+    /**
+     * Method getScore.
+     * @return double
+     */
     public double getScore();
 
     /**

@@ -41,6 +41,11 @@ package org.berlin.tron.gl.game;
 
 import java.util.List;
 
+/**
+ * Basic bot.
+ * 
+ * @author Berlin Brown
+ */
 public interface IBot {
             
     public static final String VERS = "0.1";
@@ -55,29 +60,79 @@ public interface IBot {
      */
     public void setMoves(IBotMoves moves);
 
+    /**
+     * Method makeMove.
+     * @param move Move
+     */
     public void makeMove(final Move move);
     
+    /**
+     * Method printMoves.
+     */
     public void printMoves();
         
+    /**
+     * Method getBoard.
+     * @return ITronBoard
+     */
     public ITronBoard getBoard();
     
+    /**
+     * Method makeLogicMove.
+     */
     public void makeLogicMove();
     
+    /**
+     * Method getLastMove.
+     * @return Move
+     */
     public Move getLastMove();
+    /**
+     * Method getLastMoveNull.
+     * @return Move
+     */
     public Move getLastMoveNull();
     
+    /**
+     * Method checkValidMoves.
+     * @return Move
+     */
     public Move checkValidMoves();
 
+    /**
+     * Method getOtherBotPos.
+     * @return Move
+     */
     public Move getOtherBotPos();
     
+    /**
+     * Method setOtherBot.
+     * @param otherBot IBot
+     */
     public void setOtherBot(IBot otherBot);
     
+    /**
+     * Method getOtherBot.
+     * @return IBot
+     */
     public IBot getOtherBot();
          
+    /**
+     * Method isUnableToMakeMove.
+     * @return boolean
+     */
     public boolean isUnableToMakeMove();
     
+    /**
+     * Method setUnableToMakeMove.
+     * @param unableToMakeMove boolean
+     */
     public void setUnableToMakeMove(boolean unableToMakeMove);
         
+    /**
+     * Method isDead.
+     * @return boolean
+     */
     public boolean isDead();
 
     /**
@@ -85,6 +140,10 @@ public interface IBot {
      */
     public void setDead(boolean dead);
     
+    /**
+     * Method getName.
+     * @return String
+     */
     public String getName();        
 
     /**
@@ -92,9 +151,21 @@ public interface IBot {
      */
     public void setName(String name);
     
+    /**
+     * Method getCauseDeath.
+     * @return String
+     */
     public String getCauseDeath();
+    /**
+     * Method setCauseDeath.
+     * @param causeDeath String
+     */
     public void setCauseDeath(String causeDeath);
     
+    /**
+     * Method getScore.
+     * @return double
+     */
     public double getScore();    
 
     /**
@@ -102,8 +173,16 @@ public interface IBot {
      */
     public void setScore(double score);
     
+    /**
+     * Method incScore.
+     * @param score double
+     */
     public void incScore(double score);
     
+    /**
+     * Method getPerMoveScore.
+     * @return double
+     */
     public double getPerMoveScore();
 
     /**
@@ -111,10 +190,22 @@ public interface IBot {
      */
     public void setPerMoveScore(double moveScore);
     
+    /**
+     * Method addThoughts.
+     * @param moveThought MoveThought
+     */
     public void addThoughts(final MoveThought moveThought);
      
+    /**
+     * Method addMessages.
+     * @param msg String
+     */
     public void addMessages(final String msg);
     
+    /**
+     * Method getMessages.
+     * @return List<String>
+     */
     public List<String> getMessages();
     
 } // End of the Class //

@@ -68,16 +68,29 @@ public class TronBoard implements ITronBoard, GameWidget {
     
     private Random random = new Random(); 
     
+    /**
+     * Constructor for TronBoard.
+     * @param sizex int
+     * @param sizey int
+     */
     public TronBoard(final int sizex, final int sizey) {
         this.sizex = sizex;
         this.sizey = sizey;
         this.board = new byte [sizex * sizey];
     }
     
+    /**
+     * Method toString.
+     * @return String
+     */
     public String toString() {
         return "TronBoard: size=" + this.sizex + " obj=" + super.toString();
     }
     
+    /**
+     * Method initRandom.
+     * @see org.berlin.tron.gl.game.ITronBoard#initRandom()
+     */
     public void initRandom() {
         try {
             //this.random = SecureRandom.getInstance("SHA1PRNG");
@@ -87,6 +100,13 @@ public class TronBoard implements ITronBoard, GameWidget {
         }
     }
     
+    /**
+     * Method savePoint.
+     * @param type byte
+     * @param x int
+     * @param y int
+     * @see org.berlin.tron.gl.game.ITronBoard#savePoint(byte, int, int)
+     */
     public void savePoint(final byte type, final int x, final int y) {
         if (type != EMPTY) {
             final Move point = new Point(x, y);            
@@ -99,6 +119,11 @@ public class TronBoard implements ITronBoard, GameWidget {
     /**
      * Ensure that a bot cannot end up on a wall or other player.
      * He must be dead and not render on top of another object.
+     * @param onMoveType byte
+     * @param bot IBot
+     * @param x int
+     * @param y int
+     * @return boolean
      */
     public boolean validateBoardMove(final byte onMoveType, final IBot bot, final int x, final int y) {
         
@@ -122,6 +147,12 @@ public class TronBoard implements ITronBoard, GameWidget {
         return true;
     }
           
+    /**
+     * Method marshalMoves.
+     * @param type byte
+     * @param bot IBot
+     * @see org.berlin.tron.gl.game.ITronBoard#marshalMoves(byte, IBot)
+     */
     public void marshalMoves(final byte type, final IBot bot) {
         
         if (bot == null) {
@@ -151,6 +182,12 @@ public class TronBoard implements ITronBoard, GameWidget {
         this.printPoints();
     }
     
+    /**
+     * Method setRandomObject.
+     * @param x int
+     * @param y int
+     * @see org.berlin.tron.gl.game.ITronBoard#setRandomObject(int, int)
+     */
     public void setRandomObject(final int x, final int y) {
         
         synchronized(this.board) {
@@ -167,6 +204,10 @@ public class TronBoard implements ITronBoard, GameWidget {
         }
     }
     
+    /**
+     * Method makeRandomBoard.
+     * @see org.berlin.tron.gl.game.ITronBoard#makeRandomBoard()
+     */
     public void makeRandomBoard() {        
         for (int i = 0; i < sizey; i++) {            
             for (int j = 0; j < sizex; j++) {                
@@ -175,6 +216,10 @@ public class TronBoard implements ITronBoard, GameWidget {
         } // End of the For //
     }
     
+    /**
+     * Method clearBoard.
+     * @see org.berlin.tron.gl.game.ITronBoard#clearBoard()
+     */
     public void clearBoard() {
         
         synchronized(this.board) {
@@ -186,6 +231,10 @@ public class TronBoard implements ITronBoard, GameWidget {
         }
     }
 
+    /**
+     * Method printBoard.
+     * @see org.berlin.tron.gl.game.ITronBoard#printBoard()
+     */
     public void printBoard() {
         
         if (!this.getVerbose()) {
@@ -212,6 +261,7 @@ public class TronBoard implements ITronBoard, GameWidget {
     
     /**
      * @return the board
+     * @see org.berlin.tron.gl.game.ITronBoard#getBoard()
      */
     public byte [] getBoard() {
         synchronized(this.board) {
@@ -219,6 +269,13 @@ public class TronBoard implements ITronBoard, GameWidget {
         }
     }
 
+    /**
+     * Method setBoardVal.
+     * @param type byte
+     * @param x int
+     * @param y int
+     * @see org.berlin.tron.gl.game.ITronBoard#setBoardVal(byte, int, int)
+     */
     public void setBoardVal(final byte type, final int x, final int y) {
         synchronized(this.board) {
             this.savePoint(type, x, y);
@@ -226,20 +283,40 @@ public class TronBoard implements ITronBoard, GameWidget {
         }
     }
     
+    /**
+     * Method getBoardVal.
+     * @param x int
+     * @param y int
+     * @return byte
+     * @see org.berlin.tron.gl.game.ITronBoard#getBoardVal(int, int)
+     */
     public byte getBoardVal(final int x, final int y) {
         synchronized(this.board) {
             return this.board[(y * sizey) + x];
         }
     }
             
+    /**
+     * Method getNumRows.
+     * @return int
+     * @see org.berlin.tron.gl.game.ITronBoard#getNumRows()
+     */
     public int getNumRows() {
         return sizey;
     }
     
+    /**
+     * Method getNumCols.
+     * @return int
+     * @see org.berlin.tron.gl.game.ITronBoard#getNumCols()
+     */
     public int getNumCols() {
         return sizex;
     }
 
+    /**
+     * Method printPoints.
+     */
     public void printPoints() {
         if (!this.getVerbose()) {
             return;
@@ -252,6 +329,7 @@ public class TronBoard implements ITronBoard, GameWidget {
 
     /**
      * @return the verbose
+     * @see org.berlin.tron.gl.game.GameWidget#getVerbose()
      */
     public boolean getVerbose() {
         return verbose;
@@ -259,6 +337,7 @@ public class TronBoard implements ITronBoard, GameWidget {
 
     /**
      * @param verbose the verbose to set
+     * @see org.berlin.tron.gl.game.GameWidget#setVerbose(boolean)
      */
     public void setVerbose(boolean verbose) {
         this.verbose = verbose;
