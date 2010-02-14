@@ -39,9 +39,33 @@
  */
 package org.berlin.tron.gl.game;
 
-public interface GameWidget {
+public class GLWalls {
 
-    public void setVerbose(final boolean b);
-    public boolean getVerbose();
-            
+    public static void appWallSet(final ITronBoard board) {
+        wallSet1(board);
+    }
+    
+    public static void wallSet1(final ITronBoard board) {
+        
+        board.setBoardVal(ITronBoard.WALL, 4, 2);
+        board.setBoardVal(ITronBoard.WALL, 4, 3);
+        board.setBoardVal(ITronBoard.WALL, 4, 4);
+        board.setBoardVal(ITronBoard.WALL, 4, 5);
+        board.setBoardVal(ITronBoard.WALL, 4, 6);
+        board.setBoardVal(ITronBoard.WALL, 4, 7);
+        board.setBoardVal(ITronBoard.WALL, 4, 8);
+        
+        board.setBoardVal(ITronBoard.WALL, 5, 6);
+        board.setBoardVal(ITronBoard.WALL, 6, 6);
+        board.setBoardVal(ITronBoard.WALL, 7, 6);
+        board.setBoardVal(ITronBoard.WALL, 8, 6);        
+        
+    }
+    
+    public static void wallSet2(final ITronBoard board) {
+        board.setBoardVal(ITronBoard.WALL, 4, 2);
+        board.setBoardVal(ITronBoard.WALL, 4, 3);
+        board.setBoardVal(ITronBoard.WALL, 4, 4);
+    }
+    
 }

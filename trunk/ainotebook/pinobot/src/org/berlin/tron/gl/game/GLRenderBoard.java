@@ -64,9 +64,9 @@ public class GLRenderBoard {
             final float N_X, final float N_Y, 
             final float xwidth, final float yheight) {
                 
-        this.sizeX = N_X;
-        this.sizeY = N_Y;
-        this.xwidth = xwidth;
+        this.sizeX   = N_X;
+        this.sizeY   = N_Y;
+        this.xwidth  = xwidth;
         this.yheight = yheight;
                 
     }
@@ -93,36 +93,13 @@ public class GLRenderBoard {
         
         final ITronBoard board = new TronBoard((int) sizeX, (int) sizeY);
         board.clearBoard();
-        wallSet2(board);
+        GLWalls.appWallSet(board);
         this.board = board;
         System.out.println("Tron Board At Create!");
         System.out.println(this.board);
         this.buildGame();
     }
-    
-    public static void wallSet1(final ITronBoard board) {
-        
-        board.setBoardVal(ITronBoard.WALL, 4, 2);
-        board.setBoardVal(ITronBoard.WALL, 4, 3);
-        board.setBoardVal(ITronBoard.WALL, 4, 4);
-        board.setBoardVal(ITronBoard.WALL, 4, 5);
-        board.setBoardVal(ITronBoard.WALL, 4, 6);
-        board.setBoardVal(ITronBoard.WALL, 4, 7);
-        board.setBoardVal(ITronBoard.WALL, 4, 8);
-        
-        board.setBoardVal(ITronBoard.WALL, 5, 6);
-        board.setBoardVal(ITronBoard.WALL, 6, 6);
-        board.setBoardVal(ITronBoard.WALL, 7, 6);
-        board.setBoardVal(ITronBoard.WALL, 8, 6);        
-        
-    }
-    
-    public static void wallSet2(final ITronBoard board) {
-        board.setBoardVal(ITronBoard.WALL, 4, 2);
-        board.setBoardVal(ITronBoard.WALL, 4, 3);
-        board.setBoardVal(ITronBoard.WALL, 4, 4);
-    }
-    
+           
     public void buildGame() {
         
         final GLGameBuilder builder = new GLGameBuilder(this);
