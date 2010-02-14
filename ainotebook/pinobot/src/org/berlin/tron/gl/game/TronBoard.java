@@ -137,8 +137,7 @@ public class TronBoard implements ITronBoard, GameWidget {
             invalidMove = lastBotMove;
         }
         // Continue to setting moves
-        final IBotMoves moves = bot.getMoves();
-        System.out.println("--->>>");
+        final IBotMoves moves = bot.getMoves();        
         bot.printMoves();
         for (Move curmove : moves.getMoves()) {            
             final int x = curmove.getX();

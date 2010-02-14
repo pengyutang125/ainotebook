@@ -85,7 +85,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
             } // End of the if - check for player 1 //
             
         } catch(Exception e) {
-            e.printStackTrace();
+            
         }
         return "North";
     }
