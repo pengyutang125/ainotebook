@@ -518,5 +518,12 @@ public class GLBot implements IBot {
     public void setUnableToMakeMove(boolean unableToMakeMove) {
         this.unableToMakeMove = unableToMakeMove;
     }
+
+    /**
+     * @return the messages
+     */
+    public List<String> getMessages() {
+        return messages;
+    }
     
 } // End of the Class //

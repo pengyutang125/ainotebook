@@ -39,6 +39,8 @@
  */
 package org.berlin.tron.gl.game;
 
+import java.util.List;
+
 public interface IBot {
             
     public static final String VERS = "0.1";
@@ -112,5 +114,7 @@ public interface IBot {
     public void addThoughts(final MoveThought moveThought);
      
     public void addMessages(final String msg);
+    
+    public List<String> getMessages();
     
 } // End of the Class //

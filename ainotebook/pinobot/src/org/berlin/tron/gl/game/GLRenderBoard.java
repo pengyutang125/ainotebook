@@ -58,7 +58,7 @@ public class GLRenderBoard {
     
     private float glSize     = 1.0f;
     private float halfGlSize = 0.5f;
-    private float padding    = 0.019f;
+    private float padding    = 0.011f;
             
     public GLRenderBoard(                      
             final float N_X, final float N_Y, 

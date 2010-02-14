@@ -170,7 +170,7 @@ public class AIBotScoreMoves extends GLBot {
      */
     @Override
     public void makeLogicMove() {
-                
+
         this.printThoughts();
         this.printMessages();
         
@@ -192,13 +192,13 @@ public class AIBotScoreMoves extends GLBot {
             return;
         }
         
-        if (this.getMoves().size() == 30) {
+        if (this.getMoves().size() == 26) {
             this.addMessages("-5000-AI: using default move, on 30 clause");
             super.makeLogicMove();
             return;
         }
          
-        final int randomMoveFlag = random.nextInt(13);
+        final int randomMoveFlag = random.nextInt(16);
         if (randomMoveFlag == 1) {
             this.addMessages("-4000-AI: using default move, random case");
             super.makeLogicMove();
@@ -228,26 +228,51 @@ public class AIBotScoreMoves extends GLBot {
         if (this.getVerbose()) {
             System.out.println(scoreMap);
         }
-                        
-        // Get the first entry
-        final Map.Entry<Double, Move> highestMoveEntry = scoreMap.entrySet().iterator().next();
+        
+        final boolean validScoreCheck = this.makeLogicMoveAIValidateScores(scoreMap);
+        if (!validScoreCheck) {
+            // If on the valid case, the move has already been made            
+            super.makeLogicMove();
+            return;
+        } // End of if //
+    }
+    
+    public boolean makeLogicMoveAIValidateScores(final LinkedHashMap<Double, Move> scoreMap) {
+        
+        if (scoreMap == null) {
+            return false;
+        }
+            
+        // Get the first entry        
+        // Select the first valid case
+        for (int i = 0; i < 2; i++) {
+            final boolean res = makeLogicMoveAIValidateScore(scoreMap.entrySet().iterator().next());
+            if (res) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean makeLogicMoveAIValidateScore(final Map.Entry<Double, Move> highestMoveEntry) {
+        if (highestMoveEntry == null) {
+            return false;
+        }
         final Move highestMove = highestMoveEntry.getValue();
         if (highestMoveEntry.getKey().doubleValue() < 0) {
-            this.addMessages("-1000-AI: using default move, invalid score");
-            super.makeLogicMove();
-            return;            
+            this.addMessages("-1000-AI: using default move, invalid score");            
+            return false;            
         } // End of the if - else //
         
         // We have our high value move, validate it.
         final Stack<Move> stackMoves = (Stack<Move>) this.getMoves().getMoves();
         if (!this.validateMove(stackMoves, highestMove)) {
-            this.addMessages("-2000-AI: using default move, invalid move");
-            super.makeLogicMove();
-            return;
+            this.addMessages("-2000-AI: using default move, invalid move - attempt=" + highestMove);            
+            return false;
         }
-        
+        this.addMessages("+5000-AI: valid move");
         this.makeMove(highestMove);
-        
+        return true;
     }
     
     public double scoreDirection(final IBot botDirection) {
