@@ -67,6 +67,8 @@ public interface IMove {
     
     public static final double POS_FIND                    =   70.0;
     
+    public static final double NEG_OTHER_PLAYER           =  -30.0;
+    
     /**
      * @return the x
      */
