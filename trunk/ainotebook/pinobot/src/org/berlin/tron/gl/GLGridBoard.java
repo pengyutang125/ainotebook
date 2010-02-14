@@ -59,8 +59,9 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
     
     /**
      * Number of spots on the board.
+     * !IMPORTANT! - key value for determining the GL board size.
      */
-    private static final float DEFAULT_N = 10.0f;
+    private static final float DEFAULT_N = 30.0f;
     
     private GLU glu = new GLU();
     private GLRenderBoard board;
@@ -164,6 +165,7 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
     }
     
     public void renderXYAxis(final GL gl, final float x1, final float x2, final float y1, final float y2) {
+        
         // Render the XY Axis
         final float edgeOver = 0.07f;
         gl.glColor3f(0.9f, 0.6f, 0.6f);
