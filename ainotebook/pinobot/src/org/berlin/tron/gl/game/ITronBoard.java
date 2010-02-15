@@ -41,7 +41,7 @@
 package org.berlin.tron.gl.game;
 
 
-public interface ITronBoard {
+public interface ITronBoard extends GameWidget {
     
     public static final String VERS = "0.1";
     
@@ -64,6 +64,11 @@ public interface ITronBoard {
     public void printBoard();  
     public byte [] getBoard();        
     
-    public void clearBoard();
+    public void clearBoard();    
+    public void printScores();
+    
+    public boolean basicValidateMove(final byte curType, final int x, final int y, final int curX, final int curY);
+    public boolean basicValidateMove(final byte curType, final int x, final int y);
+    public boolean basicValidateBounds(final byte curType, final int x, final int y);
     
 } // End of the Method //

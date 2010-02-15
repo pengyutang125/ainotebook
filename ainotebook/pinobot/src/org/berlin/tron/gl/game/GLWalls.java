@@ -48,6 +48,7 @@ public class GLWalls {
     public static void appWallSet(final ITronBoard board) {
         wallSetRandomMiddle(board);
         wallSetBounds(board);
+        randomEnemy(board);
     }
     
     public static void wallSet1(final ITronBoard board) {
@@ -133,6 +134,21 @@ public class GLWalls {
         for (int i = 6; i < (w-12); i++) {
             board.setBoardVal(ITronBoard.WALL, i, h-12);
         }
+    }
+    
+    public static void randomEnemy(final ITronBoard board) {
+        
+        final int w = board.getNumCols();
+        final int h = board.getNumRows();        
+        
+        for (int j = 3; j < (w-5); j++) {
+            for (int i = 3; i < (h-5); i++) {                
+                final int chk = random.nextInt(10);
+                if (chk == 1) {
+                    board.setBoardVal(ITronBoard.PLAYER2, i, j);
+                }                
+            }
+        } // End of the for //
     }
     
 } // End of the method //

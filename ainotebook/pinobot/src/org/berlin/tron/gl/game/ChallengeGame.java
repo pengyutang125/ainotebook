@@ -75,7 +75,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         // Create the AI bot
         // The AI bot can be used for better rules,
         // we can still fall on the advice of the player1 bot.
-        this.player1SmartAI = AIBotBuilder.buildBotScoreMoves(this.tronBoard);
+        this.player1SmartAI = AIBotBuilder.buildBotOrder(this.tronBoard);
     }
     
     /**
@@ -204,8 +204,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     public void checkInitPlayerPos(final Move initMove, final Move otherPlayerMove) {
         if (this.player1ai.getMoves().size() == 0) {
             this.player1ai.makeMove(initMove);
-            this.player1SmartAI.makeMove(initMove);
-            ((AIBotScoreMoves) this.player1SmartAI).initCloneAttrs();
+            this.player1SmartAI.makeMove(initMove);            
         } // End of the if //
         
         if (this.player2ai.getMoves().size() == 0) {
