@@ -76,7 +76,9 @@ public class BotMoves implements IBotMoves, GameWidget {
      * @see org.berlin.tron.gl.game.IBotMoves#makeMove(Move)
      */
     public void makeMove(final Move move) {
-        this.moves.push(move);
+        synchronized(move) {
+            this.moves.push(move);
+        }
     }
     
     /**

@@ -56,7 +56,7 @@ import java.util.Stack;
  * @author BerlinBrown
  *
  */
-public class TronBoard implements ITronBoard, GameWidget {
+public class TronBoard implements ITronBoard {
     
     private List<Move> points = new Stack<Move>();
     
@@ -101,7 +101,9 @@ public class TronBoard implements ITronBoard, GameWidget {
     }
     
     /**
-     * Method savePoint.
+     * Save point is also used with setboard val, to map a move/point
+     * to a board coordinate.
+     * 
      * @param type byte
      * @param x int
      * @param y int
@@ -246,13 +248,13 @@ public class TronBoard implements ITronBoard, GameWidget {
                 
                 final byte p = this.board[(j * sizey) + i];
                 if (p == PLAYER1) {
-                    System.out.print("[#-x=" + i + " y=" + j + "],");
+                    System.out.print("[# x=" + i + " y=" + j + "],");
                 } else if (p == PLAYER2) {
-                    System.out.print("[+-x=" + i + " y=" + j + "],");                    
+                    System.out.print("[+ x=" + i + " y=" + j + "],");                    
                 } else if (p == WALL) {   
-                    System.out.print("[x-x=" + i + " y=" + j + "],");
+                    System.out.print("[@ x=" + i + " y=" + j + "],");
                 } else {
-                    System.out.print("[.-x=" + i + " y=" + j + "],");                    
+                    System.out.print("[. x=" + i + " y=" + j + "],");                    
                 } // End of the if - else //                
             } // End of the for //
             System.out.println();
@@ -281,6 +283,95 @@ public class TronBoard implements ITronBoard, GameWidget {
             this.savePoint(type, x, y);
             this.board[(y * sizey) + x] = type;
         }
+    }
+    
+    /**
+     * Validate if this move for this particular player is valid or not.
+     * ignore if you are on your own square. 
+     * 
+     * @param curType
+     * @param x
+     * @param y
+     * @param curX
+     * @param curY
+     * @return
+     */
+    public boolean basicValidateMove(final byte curType, final int x, final int y, final int curX, final int curY) {
+        
+        // If you are a wall, Walls can be placed anywhere
+        if (curType == WALL) {
+            return true;
+        }            
+        
+        // If out of bounds, invalid
+        if ((x < 0) || (y < 0)
+            || (x >= this.getNumCols()) || (y >= this.getNumRows())) {            
+            return false;
+            
+        } // End of the if
+        
+        // If board is empty at this spot, it is valid
+        final byte type = getBoardVal(x, y);
+        final boolean playerPos = ((type == PLAYER1) || (type == PLAYER2));
+        if (type == EMPTY) {
+            return true;
+        }        
+        if (playerPos && (x == curX) && (y == curY) && (type == curType)) {
+            return true;
+        } // End of the if //
+        
+        return false;
+    }
+    
+    public boolean basicValidateBounds(final byte curType, final int x, final int y) {
+        // If you are a wall, Walls can be placed anywhere
+        if (curType == WALL) {
+            return true;
+        } 
+     
+        // If out of bounds, invalid
+        if ((x < 0) || (y < 0)
+            || (x >= this.getNumCols()) || (y >= this.getNumRows())) {            
+            return false;
+            
+        } // End of the if
+        return true;
+    }
+    
+    /**
+     * Validate if this move for this particular player is valid or not.
+     * ignore if you are on your own square. 
+     * 
+     * @param curType
+     * @param x
+     * @param y
+     * @param curX
+     * @param curY
+     * @return
+     */
+    public boolean basicValidateMove(final byte curType, final int x, final int y) {
+        // If you are a wall, Walls can be placed anywhere
+        if (curType == WALL) {
+            return true;
+        }            
+        
+        // If out of bounds, invalid
+        if ((x < 0) || (y < 0)
+            || (x >= this.getNumCols()) || (y >= this.getNumRows())) {            
+            return false;
+            
+        } // End of the if
+        
+        // If board is empty at this spot, it is valid
+        final byte type = getBoardVal(x, y);
+        if (type == EMPTY) {
+            return true;
+        }
+        final boolean playerPos = ((type == PLAYER1) || (type == PLAYER2));
+        if (playerPos && (type != curType)) {
+            return false;
+        }
+        return false;
     }
     
     /**
@@ -325,6 +416,17 @@ public class TronBoard implements ITronBoard, GameWidget {
         for (Move curmove : this.points) {
             System.out.println(curmove);
         }
+    }
+    
+    public void printScores() {
+        
+        if (!this.getVerbose()) {
+            return;
+        }        
+        System.out.println("<Scores> size=");
+        for (Move curmove : this.points) {
+            System.out.format("[%10.4f %s]\n", curmove.getScore(), curmove);
+        }        
     }
 
     /**

@@ -94,12 +94,20 @@ public class AIBotBuilder {
         return newBot;
     }
     
-    public static AIBotScoreMoves buildBotScoreMoves(final ITronBoard basicBoard) {
+    public static IBot buildBotScoreMoves(final ITronBoard basicBoard) {
        
         // Create four bots for use with the bot scorer
         return new AIBotScoreMoves(basicBoard, MAX_SCORE_CHECK_DEPTH);
                     
                             
+    }
+    
+    public static IBot buildBotOrder(final ITronBoard basicBoard) {
+        return new AIBotFavorOrder(basicBoard);
+    }
+    
+    public static IBot buildBotMinMax(final ITronBoard basicBoard) {
+        return new AIBotMinMax(basicBoard);
     }
     
 } // End of the Class//

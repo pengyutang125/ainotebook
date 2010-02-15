@@ -376,7 +376,7 @@ public class GLBot implements IBot {
             this.score += IMove.NEG_NO_MOVES;
             this.moveScoreChecksForAvg += 1.0;
             // Invalid state 
-            this.messages.add("+ Message: [return my move] size is zero, returning null");
+            this.messages.add("+ Message: ERR [return my move] size is zero, looking for a north move");
             // Move north
             // !IMPORTANT! - may throw nullpointer, not check last move
             rawMove = this.getLastMove().incy();
@@ -390,14 +390,23 @@ public class GLBot implements IBot {
             
         } else {
             
-            this.messages.add("+ Message: [return my move] " + this.moveScore);
-            final int sel = random.nextInt(validMovesList.size());
-            rawMove = validMovesList.get(sel);
+            this.messages.add("+ Message: [return my move] " + this.moveScore);            
+            rawMove = checkValidMovesFirst(validMovesList);
             
         } // End of if - else //     
                 
         this.messages.add("+ Message: valid move = " + rawMove);
         return rawMove;
+    }
+    
+    public Move checkValidMovesRandom(final List<Move> validMovesList) {
+        final int sel = random.nextInt(validMovesList.size());
+        final Move rawMove = validMovesList.get(sel);
+        return rawMove;
+    }    
+    
+    public Move checkValidMovesFirst(final List<Move> validMovesList) {
+        return validMovesList.get(0);
     }
     
     /**
