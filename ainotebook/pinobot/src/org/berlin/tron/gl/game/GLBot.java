@@ -165,17 +165,25 @@ public class GLBot implements IBot {
      */
     public boolean validateOtherMove(final IBot theOtherBot, final Move move) {
         
+        System.err.println("-------- " + theOtherBot);
+        
         // For an invalid other bot, that is OK, return true.
         if (theOtherBot == null) {
             return true;
         }
         
-        final List<Move> stack = theOtherBot.getMoves().getMoves();
-        if (stack.contains(move)) {
+        final List<Move> enemyStack = theOtherBot.getMoves().getMoves();
+        if (enemyStack.contains(move)) {
+            
+            System.err.println("-------- ANOTHER MOVE FALSE");
+            
             this.moveScoreChecksForAvg += 1.0;
             this.score += IMove.NEG_OTHER_PLAYER;
             this.addMessages("!!! WARNING: Other Player at this location");
             return false;
+        } else {
+            System.err.println("-------- no move -> " + ((Stack)enemyStack).peek());
+            System.err.println("-------- player attempt move -- " + move);
         }
         return true;
         
@@ -197,7 +205,7 @@ public class GLBot implements IBot {
         this.thoughts.add(thought);
         
         if (!validateOtherMove(this.getOtherBot(), move)) {
-            thought.setThoughtOnMove("- BadMove, enemy player has moved there");
+            thought.setThoughtOnMove("8699 - BadMove, enemy player has moved there");
             return false;
         }
         
@@ -313,8 +321,8 @@ public class GLBot implements IBot {
         } // End of the if  //
         
         final List<Move> validMovesList = new ArrayList<Move>();
-        final Move north = lastMove.incy();
-        final Move south = lastMove.decy();
+        final Move north = lastMove.decy();
+        final Move south = lastMove.incy();
         final Move east  = lastMove.incx();      
         final Move west  = lastMove.decx();
         
@@ -379,7 +387,7 @@ public class GLBot implements IBot {
             this.messages.add("+ Message: ERR [return my move] size is zero, looking for a north move");
             // Move north
             // !IMPORTANT! - may throw nullpointer, not check last move
-            rawMove = this.getLastMove().incy();
+            rawMove = this.getLastMove().decy();
             
         } else if (validMovesList.size() == 1) {
             
@@ -419,7 +427,7 @@ public class GLBot implements IBot {
         }
         
         for (String msg : this.messages) {           
-            System.out.println(msg);            
+            System.err.println(msg);            
         }
     }
     
@@ -462,7 +470,7 @@ public class GLBot implements IBot {
         } else {                       
             this.unableToMakeMove = true;            
             //  Just move north //
-            this.makeMove(this.getLastMove().incy());
+            this.makeMove(this.getLastMove().decy());
         } // End of the if //        
     }
 

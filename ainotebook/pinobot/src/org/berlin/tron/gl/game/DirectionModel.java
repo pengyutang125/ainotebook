@@ -57,18 +57,18 @@ public class DirectionModel {
     public DirectionModel(final int x, final int y) {
         
         final Move curMove = new Move(x, y);
-        this.north = curMove.incy();
-        this.south = curMove.decy();
+        this.north = curMove.decy();
+        this.south = curMove.incy();
         this.east  = curMove.incx();
         this.west  = curMove.decx();       
         final Move tmp_ne = curMove.incx();                
         final Move tmp_se = curMove.incx();
         final Move tmp_nw = curMove.decx();
         final Move tmp_sw = curMove.decx();        
-        this.north_east = tmp_ne.incy();
-        this.south_east = tmp_se.decy();
-        this.north_west = tmp_nw.incy();
-        this.south_west = tmp_sw.decy();        
+        this.north_east = tmp_ne.decy();
+        this.south_east = tmp_se.incy();
+        this.north_west = tmp_nw.decy();
+        this.south_west = tmp_sw.incy();        
     }
     
     public String toString() {
