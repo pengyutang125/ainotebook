@@ -75,7 +75,8 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         // Create the AI bot
         // The AI bot can be used for better rules,
         // we can still fall on the advice of the player1 bot.
-        this.player1SmartAI = AIBotBuilder.buildBotOrder(this.tronBoard);
+        this.player1SmartAI = AIBotBuilder.buildBotMinMax(this.tronBoard);
+        this.player1SmartAI.setOtherBot(player2ai);
     }
     
     /**

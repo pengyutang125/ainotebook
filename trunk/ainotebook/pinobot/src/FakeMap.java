@@ -46,7 +46,11 @@ public class FakeMap {
 
     // The opponent's X location.
     public static int OpponentX() {
-        return (int) random.nextInt(width-1);
+        int val = (int) random.nextInt(width-1);
+        System.out.println("--->");
+        System.out.println(val);
+        System.out.println();
+        return val;
     }
 
     // The opponent's Y location.

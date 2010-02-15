@@ -65,6 +65,12 @@ public class FunctionalScoreMoves implements GameWidget {
     
     private List<Move> prevMoveList = new ArrayList<Move>();
     
+    // Check if any path is marked invalid.
+    private boolean invalidNorth = false;
+    private boolean invalidSouth = false;
+    private boolean invalidEast = false;
+    private boolean invalidWest = false;
+    
     public FunctionalScoreMoves(final int depth, final ITronBoard board, final int x, final int y, final byte type) {       
         this.board = board;
         this.x = x;
@@ -81,6 +87,11 @@ public class FunctionalScoreMoves implements GameWidget {
         }
         
         if (!this.board.basicValidateBounds(this.type, moveX, moveY)) {         
+            return lastScore;
+        }
+        
+        /////////////////////////////////////////
+        if (!this.board.basicValidateMove(this.type, moveX, moveY)) {
             return lastScore;
         }
                         
@@ -133,7 +144,8 @@ public class FunctionalScoreMoves implements GameWidget {
      * @return the verbose
      */
     public boolean getVerbose() {
-        return verbose;
+        //return verbose;
+        return false;
     }
 
     /**

@@ -51,7 +51,9 @@ import java.util.Stack;
  *
  */
 public class AIBotMinMax extends GLBot {
-       
+    
+    private byte type = ITronBoard.PLAYER1;
+    
     public AIBotMinMax(final ITronBoard basicBoard) {
         
         super(basicBoard);                      
@@ -79,20 +81,26 @@ public class AIBotMinMax extends GLBot {
     public boolean makeLogicMoveAIValidateScore(final Map.Entry<Double, Move> highestMoveEntry) {
         
         if (highestMoveEntry == null) {
+            System.err.println("XXXX [invalid entry] ===>  " + highestMoveEntry);
             return false;
         }
         final Move highestMove = highestMoveEntry.getValue();
         if (highestMoveEntry.getKey().doubleValue() <= 1.0) {
-            this.addMessages("-1000-AI: using default move, invalid score");            
+            this.addMessages("-1000-AI: using default move, invalid score");     
+            System.err.println("XXXX [invalid entry] ===>  less than one " + highestMoveEntry);
             return false;            
         } // End of the if - else //
         
         // We have our high value move, validate it.
         final Stack<Move> stackMoves = (Stack<Move>) this.getMoves().getMoves();
         if (!this.validateMove(stackMoves, highestMove)) {
-            this.addMessages("-2000-AI: using default move, invalid move - attempt=" + highestMove);            
+            this.addMessages("-2000-AI: using default move, invalid move - attempt=" + highestMove);
+            
+            System.err.println("XXXX [invalid entry] ===>  not a valid move " + highestMoveEntry);
             return false;
         }
+        
+        System.err.println(" [ entry] ===>  valid move " + highestMoveEntry);
         this.addMessages("+5000-AI: valid move");
         this.makeMove(highestMove);
         return true;
@@ -105,10 +113,14 @@ public class AIBotMinMax extends GLBot {
      */
     @Override
     public void makeLogicMove() {
-
+        
+        this.setVerbose(false);
+        this.getBoard().setVerbose(false);
+        this.getBoard().printBoard();
+        
         this.printThoughts();
         this.printMessages();
-        
+                        
         // If dead, don't make a move //
         if (this.isDead()) {
             return;
@@ -127,21 +139,37 @@ public class AIBotMinMax extends GLBot {
         }
                         
         final FunctionalScoreAllMoves functionalScore = new FunctionalScoreAllMoves(100, this.getBoard(), 
-                lastMove.getX(), lastMove.getY(), ITronBoard.PLAYER1);
+                lastMove.getX(), lastMove.getY(), this.getType());
         functionalScore.setVerbose(this.getVerbose());
         
         final Map<Double, Move> scoreMap = functionalScore.scoreAll();
+        System.err.println(scoreMap);
+        System.err.println("My last move ===>" + this.getLastMove());
         if (this.getVerbose()) {
             System.out.println("Logic Move Score " + scoreMap);
             this.addMessages("+6000-AI: last score set = " + scoreMap);
-        }
-        
-        final boolean validScoreCheck = this.makeLogicMoveAIValidateScores(scoreMap);
+        }        
+        final boolean validScoreCheck = this.makeLogicMoveAIValidateScores(scoreMap);              
         if (!validScoreCheck) {
             // If on the valid case, the move has already been made            
             super.makeLogicMove();
             return;
         } // End of if //
+               
+    }
+
+    /**
+     * @return the type
+     */
+    public byte getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(byte type) {
+        this.type = type;
     }
        
         

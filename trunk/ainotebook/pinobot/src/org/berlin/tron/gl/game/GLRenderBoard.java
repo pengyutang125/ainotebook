@@ -158,6 +158,7 @@ public class GLRenderBoard {
         mass.setY(y);
         mass.setGlsize(glSize - this.padding);
         
+        // !IMPORTANT! - change bot color here.
         if (massType == ITronBoard.PLAYER1) {
             
             mass.setType(ITronBoard.PLAYER1);
@@ -166,12 +167,12 @@ public class GLRenderBoard {
         } else if (massType == ITronBoard.PLAYER2) {
             
             mass.setType(ITronBoard.PLAYER2);
-            mass.setColor(0.71f, 0.71f, 0.75f);
+            mass.setColor(0.71f, 0.41f, 0.75f);
             
         } else if (massType == ITronBoard.WALL) {
             
             mass.setType(ITronBoard.WALL);
-            mass.setColor(0.86f, 0.86f, 0.86f);
+            mass.setColor(0.46f, 0.56f, 0.56f);
             
         } // End of the if //
         return mass;

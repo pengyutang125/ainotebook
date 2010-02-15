@@ -213,8 +213,8 @@ public class AIBotScoreMoves extends GLBot {
             return;
         }
                         
-        final Move north = lastMove.incy();
-        final Move south = lastMove.decy();
+        final Move north = lastMove.decy();
+        final Move south = lastMove.incy();
         final Move east  = lastMove.incx();
         final Move west  = lastMove.decx();
         
