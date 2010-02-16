@@ -206,6 +206,35 @@ public class AIBotMinMax extends GLBot {
         }
         return true;
     }
+        
+    /**
+     * Based on the number of valid moves, select the first one.
+     * 
+     * @param validMovesList
+     * @return
+     */
+    @Override
+    public Move checkValidMovesFirst(final List<Move> validMovesList) {
+                        
+        final CalcFill calcFill = new CalcFill(this.getBoard(), this.getLastMove());              
+        final double e = calcFill.spaceEast();
+        final double w = calcFill.spaceWest();               
+        final double diff = Math.abs(w - e);
+        if (w > e && (diff < 0.25)) {                        
+            for (Move move : validMovesList) {
+                if (move.getDirection().startsWith("W")) {
+                    return move;
+                }
+            }            
+        } else {            
+            for (Move move : validMovesList) {
+                if (move.getDirection().startsWith("E")) {
+                    return move;
+                }
+            }
+        }
+        return validMovesList.get(0);
+    }
     
     /**
      * Test the default move, use to fall back on.
@@ -249,14 +278,22 @@ public class AIBotMinMax extends GLBot {
             this.addMessages("-9999-AI: no more moves left, making default");
             return;
         }
+       
+        final double halfDist      = Math.abs(this.calcBoardDistance()) * 0.75;
+        final double minDist       = Math.abs(this.calcEnemyDistance());
+        final boolean hasLongDist = (minDist > halfDist);
+        if (hasLongDist) {
+            super.makeLogicMove();
+            return;
+        }
+        
+        /////////////////////////////////////////
+        // Continue with logic moves
+        /////////////////////////////////////////
         
         if (!makeDistanceEnemy(forValidMovesList)) {            
             return;
         }
-                        
-        /////////////////////////////////////////
-        // Continue with logic moves
-        /////////////////////////////////////////
         
         final FunctionalScoreAllMoves functionalScore = 
         new FunctionalScoreAllMoves(100, this.getBoard(), lastMove.getX(), lastMove.getY(), this.getType());        
@@ -281,7 +318,7 @@ public class AIBotMinMax extends GLBot {
             return;
         } // End of if //
                
-    }
+    } // End of the Method //
 
     /**
      * @return the type
