@@ -39,54 +39,66 @@
  */
 package org.berlin.tron.gl.game;
 
-public class BasicGameState extends UpdateStateTask implements GameWidget {
+import java.util.ArrayList;
+import java.util.List;
 
-    private GLGame game;
-    private ITronBoard basicBoard;
-    private final IBot bot1;
-    private final IBot bot2;
-    private boolean verbose = false;
+/**
+ * Calculate the enemy distance.
+ * 
+ * @author BerlinBrown
+ *
+ */
+public class CalcEnemyDistance {
+
+    private final List<Move> moves;
+    private final Move currentMove;
     
-    public BasicGameState(final GLGame game, final GLRenderBoard board, final IBot bot1, final IBot bot2) {
-        super(board);
-        this.bot1 = bot1;
-        this.bot2 = bot2;
-        this.game = game;
+    public CalcEnemyDistance(final List<Move> movesCheck, final Move currentMove) {
+        this.moves = movesCheck;
+        this.currentMove = currentMove;
     }
-
-    public void updateState() {
-
-        synchronized (this.basicBoard) {
-                        
-            // Continue to normal game state update //
-            basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
-            basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
-            this.game.stepGame();
-            this.getGlRenderBoard().setBoard(basicBoard);
-        } // End of the block //
+    
+    public double calcMin() {
+        final BotMath math = new BotMath();
+        return math.min(this.calcDistanceAllMoves());
     }
-
-    @Override
-    public void run() {
-
-        if (this.getGlRenderBoard() != null) {
-
-            // If null, create a new basic board //
-            if (this.basicBoard == null) {
-                this.basicBoard = this.getGlRenderBoard().getBoard();
-            } else {
-                this.updateState();
-            } // End of the if - else //
-
-        } // End of Sync Block //
+    
+    public double calcMax() {
+        final BotMath math = new BotMath();
+        return math.max(this.calcDistanceAllMoves());
     }
-
-    public boolean getVerbose() {
-        return verbose;
+    
+    public List<Double> calcDistanceAllMoves() {
+        
+        if (this.moves == null) {
+            return new ArrayList<Double>();
+        }
+        
+        final List<Double> newList = new ArrayList<Double>();
+        for (Move move : this.moves) {
+            newList.add(new Double(this.calcDistance(move)));
+        }
+        return newList;
     }
-
-    public void setVerbose(boolean b) {
-        this.verbose = b;
+    
+    /**
+     * Calc distance for one point.
+     * 
+     * @param otherPoint
+     * @return
+     */
+    public double calcDistance(final Move otherPoint) {
+        
+        final double x = this.currentMove.getX();
+        final double y = this.currentMove.getY();
+        
+        final double x2 = otherPoint.getX();
+        final double y2 = otherPoint.getY();
+        
+        final double distx = Math.abs(x2 - x);
+        final double disty = Math.abs(y2 - y);
+        
+        return Math.sqrt((distx * distx) + (disty * disty));
     }
-
-} // End of the Class //
+    
+} // End of the class //

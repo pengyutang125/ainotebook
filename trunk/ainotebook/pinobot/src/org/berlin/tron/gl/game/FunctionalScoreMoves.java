@@ -60,16 +60,16 @@ public class FunctionalScoreMoves implements GameWidget {
     private int totalOperations = 0;
     private int maxOperations = -1;
     
-    private int maxDistX = 4;
-    private int maxDistY = 5;
+    private int maxDistX = 5;
+    private int maxDistY = 6;
     
     private List<Move> prevMoveList = new ArrayList<Move>();
     
     // Check if any path is marked invalid.
     private boolean invalidNorth = false;
     private boolean invalidSouth = false;
-    private boolean invalidEast = false;
-    private boolean invalidWest = false;
+    //private boolean invalidEast = false;
+    //private boolean invalidWest = false;
     
     public FunctionalScoreMoves(final int depth, final ITronBoard board, final int x, final int y, final byte type) {       
         this.board = board;
@@ -79,19 +79,81 @@ public class FunctionalScoreMoves implements GameWidget {
         this.depth = depth;
     }
     
+    /**
+     * Set if a direction is invalid.
+     * 
+     * @param moveX
+     * @param moveY
+     */
+    public void setInvalidDirection(final int moveX, final int moveY) {
+        final CheckDirection check = new CheckDirection(new Move(this.x, this.y), new Move(moveX, moveY));
+        
+        //if (check.isOtherEast()) {
+        //    this.invalidEast = true;
+        //} else if (check.isOtherWest()) {
+        //    this.invalidWest = true;
+        if (check.isOtherNorth()) {            
+            this.invalidNorth = true;
+        } else if (check.isOtherSouth()) {
+            this.invalidSouth = true;   
+        } // End of if - else //
+    }
+    
+    /**
+     * On false, this direction is invalid.
+     * 
+     * @param moveX
+     * @param moveY
+     * @return
+     */
+    public boolean checkInvalidDirection(final int moveX, final int moveY) {
+        
+        //final boolean hasInvalidBeenRun = this.invalidNorth || this.invalidSouth || this.invalidEast || this.invalidWest;
+        final boolean hasInvalidBeenRun = this.invalidNorth || this.invalidSouth;
+        if (!hasInvalidBeenRun) {
+            // valid case, no invalid direction has been found
+            return true;
+        }
+        
+        // Continue, check the move direction
+        final CheckDirection check = new CheckDirection(new Move(this.x, this.y), new Move(moveX, moveY));
+        //if (this.invalidEast && check.isOtherEast()) {
+        //    return false;
+            
+        //} else if (this.invalidWest && check.isOtherWest()) {
+        //    return false;
+            
+        if (this.invalidNorth && check.isOtherNorth()) {            
+            return false;
+            
+        } else if (this.invalidSouth && check.isOtherSouth()) {
+            return false;
+            
+        } // End of if - else //
+        
+        return true;
+    }
+    
     public double scoreMoves(final int curDepth, final double lastScore, final int moveX, final int moveY) {               
         
         totalOperations++;
         if (this.getVerbose()) {
-            System.out.println("FunctionalScoreMoves - op=" + totalOperations + " depth=" + curDepth + " score=" + lastScore + " x=" + moveX + " y=" + moveY);
+            System.err.println("FunctionalScoreMoves - op=" + totalOperations + " depth=" + curDepth + " score=" + lastScore + " x=" + moveX + " y=" + moveY);
         }
         
-        if (!this.board.basicValidateBounds(this.type, moveX, moveY)) {         
+        if (!this.board.basicValidateBounds(this.type, moveX, moveY)) {
+            //this.setInvalidDirection(moveX, moveY); 
             return lastScore;
         }
         
         /////////////////////////////////////////
         if (!this.board.basicValidateMove(this.type, moveX, moveY)) {
+            this.setInvalidDirection(moveX, moveY);
+            return lastScore;
+        }
+        
+        // Another check, check invalid
+        if (!checkInvalidDirection(moveX, moveY)) {
             return lastScore;
         }
                         
@@ -129,10 +191,10 @@ public class FunctionalScoreMoves implements GameWidget {
         myPointsList.add(around.getNorth());        
         myPointsList.add(around.getSouth());        
         myPointsList.add(around.getEast());        
-        myPointsList.add(around.getWest());               
+        myPointsList.add(around.getWest());          
         for (Move forNextPoint : myPointsList) {
             sumPointsScores += scoreMoves(curDepth + 1, (lastScore + theScoreCurPosResult), forNextPoint.getX(), forNextPoint.getY());
-        }               
+        } // End of the For //               
         return sumPointsScores;
     }
     

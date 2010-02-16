@@ -248,16 +248,16 @@ public class TronBoard implements ITronBoard {
                 
                 final byte p = this.board[(j * sizey) + i];
                 if (p == PLAYER1) {
-                    System.out.print("[# x=" + i + " y=" + j + "],");
+                    System.err.print("[# x=" + i + " y=" + j + "],");
                 } else if (p == PLAYER2) {
-                    System.out.print("[+ x=" + i + " y=" + j + "],");                    
+                    System.err.print("[+ x=" + i + " y=" + j + "],");                    
                 } else if (p == WALL) {   
-                    System.out.print("[@ x=" + i + " y=" + j + "],");
+                    System.err.print("[@ x=" + i + " y=" + j + "],");
                 } else {
-                    System.out.print("[. x=" + i + " y=" + j + "],");                    
+                    System.err.print("[. x=" + i + " y=" + j + "],");                    
                 } // End of the if - else //                
             } // End of the for //
-            System.out.println();
+            System.err.println();
         } // End of the For //
     }
     
@@ -412,9 +412,9 @@ public class TronBoard implements ITronBoard {
         if (!this.getVerbose()) {
             return;
         }
-        System.out.println("<Points on Board> size=" + this.points.size());
+        System.err.println("<Points on Board> size=" + this.points.size());
         for (Move curmove : this.points) {
-            System.out.println(curmove);
+            System.err.println(curmove);
         }
     }
     
@@ -423,9 +423,9 @@ public class TronBoard implements ITronBoard {
         if (!this.getVerbose()) {
             return;
         }        
-        System.out.println("<Scores> size=");
+        System.err.println("<Scores> size=");
         for (Move curmove : this.points) {
-            System.out.format("[%10.4f %s]\n", curmove.getScore(), curmove);
+            System.err.format("[%10.4f %s]\n", curmove.getScore(), curmove);
         }        
     }
 

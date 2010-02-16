@@ -82,7 +82,7 @@ public class BotSimpleDirection extends GLBot {
         } // End of the if //
         
         if (this.getVerbose()) {
-            System.out.println("Simple Direction Bot: move-size=" + listMoves.size() + " " + listMoves);
+            System.err.println("Simple Direction Bot: move-size=" + listMoves.size() + " " + listMoves);
         }
         
         // Check if the move is the direction
@@ -116,12 +116,12 @@ public class BotSimpleDirection extends GLBot {
         this.printThoughts();
         
         if (this.getVerbose()) {
-            System.out.println(">>> Simple Direction Bot: (" + this.dirCode + ")");
-            System.out.println("Simple Direction Bot: Number of Moves Made - " + this.getMoves().size() + " score=" + this.getScore());
+            System.err.println(">>> Simple Direction Bot: (" + this.dirCode + ")");
+            System.err.println("Simple Direction Bot: Number of Moves Made - " + this.getMoves().size() + " score=" + this.getScore());
         }
         final Move newMove = this.botSimpleMakeLogicMove();
         if (this.getVerbose()) {
-            System.out.println("Simple Direction Bot: " + newMove);
+            System.err.println("Simple Direction Bot: " + newMove);
         }
         if (newMove != null) {            
             this.setPerMoveScore(IMove.POS_FIND);

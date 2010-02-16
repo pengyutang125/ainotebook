@@ -97,7 +97,7 @@ public class BotMoves implements IBotMoves, GameWidget {
      */
     public void printMove(final Move move) {
         if (this.getVerbose()) {
-            System.out.println(move);
+            System.err.println(move);
         }
     }
     

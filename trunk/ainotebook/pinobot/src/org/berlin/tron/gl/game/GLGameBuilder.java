@@ -51,9 +51,12 @@ public class GLGameBuilder {
         
         //final IBot bot1 = new GLBot(this.board.getBoard());
         final IBot bot1 = AIBotBuilder.buildBotMinMax(this.board.getBoard());
-        //final IBot bot2 = new AIBotRandom(this.board.getBoard());        
-        final IBot bot2 = AIBotBuilder.buildBotMinMax(this.board.getBoard());
-        ((AIBotMinMax)bot2).setType(ITronBoard.PLAYER2);
+        
+        final IBot bot2 = new AIBotRandom(this.board.getBoard());        
+        //final IBot bot2 = AIBotBuilder.buildBotMinMax(this.board.getBoard());
+        //((AIBotMinMax)bot2).setType(ITronBoard.PLAYER2);
+        
+        // Set the bot //
         bot1.setOtherBot(bot2);
         bot2.setOtherBot(bot1);        
         return new GLGame(this.board, bot1, bot2);

@@ -207,5 +207,7 @@ public interface IBot {
      * @return List<String>
      */
     public List<String> getMessages();
+        
+    public double calcEnemyDistance();
     
 } // End of the Class //

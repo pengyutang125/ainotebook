@@ -48,7 +48,7 @@ public interface ITronBoard extends GameWidget {
     public static byte EMPTY   = 0;
     public static byte PLAYER1 = 127;
     public static byte PLAYER2 = 64;
-    public static byte WALL    = 64;
+    public static byte WALL    = 1;
     
     public int getNumRows();    
     public int getNumCols();     

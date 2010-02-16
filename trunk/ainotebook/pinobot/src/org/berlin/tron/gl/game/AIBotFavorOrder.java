@@ -76,7 +76,7 @@ public class AIBotFavorOrder extends GLBot {
         } 
         
         if (this.getVerbose()) {
-            System.out.println("Making logic move for aibotscorer - " + this.getMoves().size());
+            System.err.println("Making logic move for aibotscorer - " + this.getMoves().size());
         }
                         
         final Move lastMove = this.getLastMoveNull();
@@ -115,7 +115,9 @@ public class AIBotFavorOrder extends GLBot {
             this.makeMove(south);
             return;
         }
-                
+        
+        this.makeMove(this.dumbRandomMove());
+        return;        
     }
        
         

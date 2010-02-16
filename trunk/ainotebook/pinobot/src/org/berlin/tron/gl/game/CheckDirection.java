@@ -39,54 +39,47 @@
  */
 package org.berlin.tron.gl.game;
 
-public class BasicGameState extends UpdateStateTask implements GameWidget {
+public class CheckDirection {
 
-    private GLGame game;
-    private ITronBoard basicBoard;
-    private final IBot bot1;
-    private final IBot bot2;
-    private boolean verbose = false;
+    private final Move centerPoint;
+    private final Move point2;
     
-    public BasicGameState(final GLGame game, final GLRenderBoard board, final IBot bot1, final IBot bot2) {
-        super(board);
-        this.bot1 = bot1;
-        this.bot2 = bot2;
-        this.game = game;
+    public CheckDirection(final Move p1, final Move p2) {
+        this.centerPoint = p1;
+        this.point2 = p2;
     }
-
-    public void updateState() {
-
-        synchronized (this.basicBoard) {
-                        
-            // Continue to normal game state update //
-            basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
-            basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
-            this.game.stepGame();
-            this.getGlRenderBoard().setBoard(basicBoard);
-        } // End of the block //
+    
+    /**
+     * Is other point west of center.
+     * 
+     * @return
+     */
+    public boolean isOtherWest() {
+        if (this.point2.getX() < this.centerPoint.getX()) {
+            return true;
+        }
+        return false;
     }
-
-    @Override
-    public void run() {
-
-        if (this.getGlRenderBoard() != null) {
-
-            // If null, create a new basic board //
-            if (this.basicBoard == null) {
-                this.basicBoard = this.getGlRenderBoard().getBoard();
-            } else {
-                this.updateState();
-            } // End of the if - else //
-
-        } // End of Sync Block //
+    
+    public boolean isOtherEast() {
+        if (this.point2.getX() > this.centerPoint.getX()) {
+            return true;
+        }
+        return false;
     }
-
-    public boolean getVerbose() {
-        return verbose;
+    
+    public boolean isOtherNorth() {
+        if (this.point2.getY() < this.centerPoint.getY()) {
+            return true;
+        }
+        return false;
     }
-
-    public void setVerbose(boolean b) {
-        this.verbose = b;
+    
+    public boolean isOtherSouth() {
+        if (this.point2.getY() > this.centerPoint.getY()) {
+            return true;
+        }
+        return false;
     }
-
+    
 } // End of the Class //
