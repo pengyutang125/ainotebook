@@ -176,7 +176,7 @@ public class AIBotMinMax extends GLBot {
     
     public boolean makeDistanceEnemy(final List<Move> forValidMovesList) {
                 
-        final double halfDist      = Math.abs(this.calcBoardDistance()) * 0.34;
+        final double halfDist      = Math.abs(this.calcBoardDistance()) * 0.18;
         final double minDist       = Math.abs(this.calcEnemyDistance());
         final boolean hasShortDist = (minDist < halfDist);
                 
