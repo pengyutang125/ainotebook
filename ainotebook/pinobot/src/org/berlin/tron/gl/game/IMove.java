@@ -132,4 +132,11 @@ public interface IMove {
      */
     public void setScore(double score);
     
+    public double getEnemyDistance();
+
+    /**
+     * @param enemyDistance the enemyDistance to set
+     */
+    public void setEnemyDistance(double enemyDistance);
+    
 } // End of the Interface //

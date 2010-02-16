@@ -98,7 +98,7 @@ class MyTronBot {
             final int y = Map.MyY();            
             
             final int oppx = Map.OpponentX();
-            final int oppy = Map.OpponentX();
+            final int oppy = Map.OpponentY();            
             game.checkInitPlayerPos(new Move(x, y), new Move(oppx, oppy));
 
             final Move makeMoveModel = new ChallengeMoveModel(x, y);

@@ -132,7 +132,7 @@ public class AIBotScoreMoves extends GLBot {
         final double scoreWest  = scoreDirection(this.west);
         
         if (this.getVerbose()) {
-            System.out.println("Score All Directions : n=" + scoreNorth + " s=" + scoreSouth + " e=" + scoreEast + " w=" + scoreWest);                        
+            System.err.println("Score All Directions : n=" + scoreNorth + " s=" + scoreSouth + " e=" + scoreEast + " w=" + scoreWest);                        
         }
         
         final AIBotScoreModel scores = new AIBotScoreModel();
@@ -180,12 +180,12 @@ public class AIBotScoreMoves extends GLBot {
         } 
         
         if (this.getVerbose()) {
-            System.out.println("Making logic move for aibotscorer - " + this.getMoves().size());
+            System.err.println("Making logic move for aibotscorer - " + this.getMoves().size());
         }
         
         final AIBotScoreModel scores = scoreAllDirections();
         if (this.getVerbose()) {
-            System.out.println(scores);
+            System.err.println(scores);
         }
         if (this.getMoves().size() <= 3) {
             super.makeLogicMove();
@@ -226,7 +226,7 @@ public class AIBotScoreMoves extends GLBot {
         final LinkedHashMap<Double, Move> scoreMap = BotUtilityMap.sortMapByKey(map);
         
         if (this.getVerbose()) {
-            System.out.println(scoreMap);
+            System.err.println(scoreMap);
         }
         
         final boolean validScoreCheck = this.makeLogicMoveAIValidateScores(scoreMap);

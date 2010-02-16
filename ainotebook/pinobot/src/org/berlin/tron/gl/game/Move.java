@@ -52,6 +52,7 @@ public class Move implements IMove {
     private final long moveTimeMs;    
     private String direction = "North";
     private double score = 0.0;
+    private double enemyDistance = -1;
     
     /**
      * Constructor for Move.
@@ -80,7 +81,7 @@ public class Move implements IMove {
      * @return String
      */
     public String toString() {
-        return "${Move x=" + this.x + " y=" + this.y + " dir=" + this.direction + " [" + this.moveTimeMs + "]}";
+        return "${Move x=" + this.x + " y=" + this.y + " dir=" + this.direction + " [" + this.moveTimeMs + "]} $$" + this.enemyDistance + "$$";
     }
 
     /**
@@ -210,6 +211,20 @@ public class Move implements IMove {
      */
     public void setScore(double score) {
         this.score = score;
+    }
+
+    /**
+     * @return the enemyDistance
+     */
+    public double getEnemyDistance() {
+        return enemyDistance;
+    }
+
+    /**
+     * @param enemyDistance the enemyDistance to set
+     */
+    public void setEnemyDistance(double enemyDistance) {
+        this.enemyDistance = enemyDistance;
     }
     
 } // End of the Class //

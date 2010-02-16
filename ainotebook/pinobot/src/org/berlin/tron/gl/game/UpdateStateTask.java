@@ -28,7 +28,7 @@ public class UpdateStateTask extends TimerTask {
             
             this.lastRunEnd = System.currentTimeMillis();
             final long diff = this.lastRunEnd - this.lastRunStart;
-            System.out.println("Task Updated - " + diff);
+            System.err.println("Task Updated - " + diff);
             this.lastRunStart = this.lastRunEnd;
             
         } // End of the If //

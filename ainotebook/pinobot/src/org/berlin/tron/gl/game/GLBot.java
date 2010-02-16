@@ -164,9 +164,7 @@ public class GLBot implements IBot {
      * @return boolean
      */
     public boolean validateOtherMove(final IBot theOtherBot, final Move move) {
-        
-        System.err.println("-------- " + theOtherBot);
-        
+                        
         // For an invalid other bot, that is OK, return true.
         if (theOtherBot == null) {
             return true;
@@ -174,17 +172,12 @@ public class GLBot implements IBot {
         
         final List<Move> enemyStack = theOtherBot.getMoves().getMoves();
         if (enemyStack.contains(move)) {
-            
-            System.err.println("-------- ANOTHER MOVE FALSE");
-            
+                                 
             this.moveScoreChecksForAvg += 1.0;
             this.score += IMove.NEG_OTHER_PLAYER;
             this.addMessages("!!! WARNING: Other Player at this location");
             return false;
-        } else {
-            System.err.println("-------- no move -> " + ((Stack)enemyStack).peek());
-            System.err.println("-------- player attempt move -- " + move);
-        }
+        } 
         return true;
         
     }
@@ -199,22 +192,10 @@ public class GLBot implements IBot {
         
         if (stack.size() == 0) {
             return false;
-        }
-        
+        }        
         final MoveThought thought = new MoveThought(move.getX(), move.getY(), move);
         this.thoughts.add(thought);
-        
-        if (!validateOtherMove(this.getOtherBot(), move)) {
-            thought.setThoughtOnMove("8699 - BadMove, enemy player has moved there");
-            return false;
-        }
-        
-        if (stack.contains(move)) {
-            this.moveScoreChecksForAvg += 1.0;
-            this.score += IMove.NEG_THOUGHT_MOVE_PREV_SCORE;
-            thought.setThoughtOnMove("- BadMove, I already moved there - " + this.score);
-            return false;
-        }        
+                       
         if (move.getX() < 0) {
             this.moveScoreChecksForAvg += 1.0;
             this.score += IMove.NEG_THOUGHT_MOVE_SCORE;
@@ -240,7 +221,84 @@ public class GLBot implements IBot {
             return false;
         }
         
+        if (!validateOtherMove(this.getOtherBot(), move)) {
+            thought.setThoughtOnMove("8699 - BadMove, enemy player has moved there");
+            return false;
+        }
+        
+        if (stack.contains(move)) {
+            this.moveScoreChecksForAvg += 1.0;
+            this.score += IMove.NEG_THOUGHT_MOVE_PREV_SCORE;
+            thought.setThoughtOnMove("- BadMove, I already moved there - " + this.score);
+            return false;
+        }
+        
+        // Set the move distance from the enemy
+        move.setEnemyDistance(this.calcEnemyDistanceFromMove(move));
+        
         return this.checkRawMap(board.getBoard(), move, thought);               
+    }
+    
+    /**
+     * Additional check with enemy distance.
+     * 
+     * @param stack
+     * @param move
+     * @param minDist
+     * @return
+     */
+    public boolean validateMoveWithEnemyDist(final Stack<Move> stack, final Move move, final double minDist) {
+
+        final boolean prevValidateMove = validateMove(stack, move);
+        
+        // Ignore if no other bot //
+        if (this.getOtherBot() == null) {
+            return prevValidateMove;
+        }        
+        // If distance too small then invalidate.
+        final CalcEnemyDistance calc = new CalcEnemyDistance(this.getOtherBot().getMoves().getMoves(), this.getLastMove()); 
+        if (prevValidateMove && (calc.calcMin() < minDist)) {
+            return false;
+        }
+        return prevValidateMove;
+    }
+    
+    /**
+     * Return min distance.
+     */
+    public double calcEnemyDistance() {
+        try {
+            final CalcEnemyDistance calc = new CalcEnemyDistance(this.getOtherBot().getMoves().getMoves(), this.getLastMove());
+            return calc.calcMin();
+        } catch(Exception e) {
+            
+        }
+        return -1;
+    }
+    
+    /**
+     * Find the distance between two points on the map.
+     * 
+     * @return
+     */
+    public double calcBoardDistance() {
+        
+        final int w = this.getBoard().getNumCols();
+        final int h = this.getBoard().getNumRows();
+        return Math.sqrt((w * w) + (h * h));
+    }
+    
+    /**
+     * Return max distance.
+     */
+    public double calcEnemyDistanceFromMove(final Move move) {
+        try {                                   
+            final CalcEnemyDistance calc = new CalcEnemyDistance(this.getOtherBot().getMoves().getMoves(), move);
+            return calc.calcMin();
+        } catch(Exception e) {
+            
+        }
+        return -1;
     }
     
     /**
@@ -249,6 +307,7 @@ public class GLBot implements IBot {
      * @param newMove Move
      * @param moveThought MoveThought
      * @return boolean
+     * 
      */
     public boolean checkRawMap(final byte [] board, final Move newMove, final MoveThought moveThought) {
         
@@ -259,6 +318,7 @@ public class GLBot implements IBot {
         final int x = newMove.getX();
         final int y = newMove.getY();
         final byte type = this.getBoard().getBoardVal(x, y);
+        
         if (type == ITronBoard.WALL) {
             this.moveScoreChecksForAvg += 1.0;
             this.score += IMove.NEG_THOUGHT_MOVE_WALL_SCORE;
@@ -268,11 +328,12 @@ public class GLBot implements IBot {
         if ((type == ITronBoard.PLAYER1) || (type == ITronBoard.PLAYER2)) {
             this.moveScoreChecksForAvg += 1.0;
             this.score += IMove.NEG_THOUGHT_MOVE_PLAYER;
-            moveThought.setThoughtOnMove("- BadMove, might myself or another player - " + this.score);
+            moveThought.setThoughtOnMove("- 7001 - BadMove, might hit myself or another player - " + this.score);
             return false;
         }
         return true;
     }
+        
     
     /**
      * Method getLastMove.
@@ -307,6 +368,30 @@ public class GLBot implements IBot {
     }
     
     /**
+     * As opposed to using North in the invalid case,
+     * use a completely random move.
+     * 
+     * @return
+     */
+    public Move dumbRandomMove() {
+                        
+        final Stack<Move> stack = (Stack<Move>) this.moves.getMoves();        
+        final Move lastMove = (stack.size() == 0) ? null : stack.peek();
+        if (lastMove == null) {
+            // Ideally the last move shouldn't be null.
+            return new Move(0, 0);
+        } // End of the if  //
+        
+        final List<Move> validMovesList = new ArrayList<Move>();
+        validMovesList.add(lastMove.decy());
+        validMovesList.add(lastMove.incy());
+        validMovesList.add(lastMove.incx());      
+        validMovesList.add(lastMove.decx());
+        final int sel = random.nextInt(validMovesList.size());
+        return validMovesList.get(sel);
+    }
+    
+    /**
      * Check for empty squares.
      * 
      * @return List<Move>
@@ -324,8 +409,7 @@ public class GLBot implements IBot {
         final Move north = lastMove.decy();
         final Move south = lastMove.incy();
         final Move east  = lastMove.incx();      
-        final Move west  = lastMove.decx();
-        
+        final Move west  = lastMove.decx();        
         final boolean nb = validateMove(stack, north);
         final boolean sb = validateMove(stack, south);
         final boolean eb = validateMove(stack, east);
@@ -387,7 +471,7 @@ public class GLBot implements IBot {
             this.messages.add("+ Message: ERR [return my move] size is zero, looking for a north move");
             // Move north
             // !IMPORTANT! - may throw nullpointer, not check last move
-            rawMove = this.getLastMove().decy();
+            rawMove = this.dumbRandomMove();
             
         } else if (validMovesList.size() == 1) {
             
@@ -439,7 +523,7 @@ public class GLBot implements IBot {
             return;
         }
         for (MoveThought thought : this.thoughts) {
-            System.out.println(thought);
+            System.err.println(thought);
         }
     }
     
@@ -470,7 +554,7 @@ public class GLBot implements IBot {
         } else {                       
             this.unableToMakeMove = true;            
             //  Just move north //
-            this.makeMove(this.getLastMove().decy());
+            this.makeMove(this.dumbRandomMove());
         } // End of the if //        
     }
 
@@ -480,10 +564,13 @@ public class GLBot implements IBot {
      * @see org.berlin.tron.gl.game.IBot#getOtherBotPos()
      */
     public Move getOtherBotPos() {
+        
         if (this.getOtherBot() != null) {
-            final Stack<Move> stack = (Stack<Move>) this.getOtherBot().getMoves();
-            return stack.peek();
+            final IBotMoves otherMovesSet = this.getOtherBot().getMoves();
+            final Stack<Move> stackMoves = (Stack<Move>) otherMovesSet.getMoves();
+            return stackMoves.peek();
         }
+        
         return null;
     }
 

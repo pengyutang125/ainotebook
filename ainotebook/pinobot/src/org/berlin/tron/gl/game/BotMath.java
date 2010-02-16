@@ -39,54 +39,83 @@
  */
 package org.berlin.tron.gl.game;
 
-public class BasicGameState extends UpdateStateTask implements GameWidget {
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-    private GLGame game;
-    private ITronBoard basicBoard;
-    private final IBot bot1;
-    private final IBot bot2;
-    private boolean verbose = false;
+/**
+ * Basic math and statistic operations.
+ * 
+ * @author BerlinBrown
+ *
+ */
+public class BotMath {
+
+    public double min(final List<Double> vals) {
+        
+        if (vals == null) {
+            return 0;
+        }
+        if (vals.size() == 0) {
+            return vals.get(0);
+        }
+        
+        double min = Double.MAX_VALUE;
+        for (Double val : vals) {
+            if (val < min) {
+                min = val;
+            }
+        } // End of the for //
+        return min;
+    }
     
-    public BasicGameState(final GLGame game, final GLRenderBoard board, final IBot bot1, final IBot bot2) {
-        super(board);
-        this.bot1 = bot1;
-        this.bot2 = bot2;
-        this.game = game;
+    public double max(final List<Double> vals) {
+        
+        if (vals == null) {
+            return 0;
+        }
+        if (vals.size() == 0) {
+            return vals.get(0);
+        }
+        
+        double max = Double.MIN_VALUE;
+        for (Double val : vals) {
+            if (val > max) {
+                max = val;
+            }
+        } // End of the for //
+        return max;
     }
-
-    public void updateState() {
-
-        synchronized (this.basicBoard) {
-                        
-            // Continue to normal game state update //
-            basicBoard.marshalMoves(ITronBoard.PLAYER1, this.bot1);
-            basicBoard.marshalMoves(ITronBoard.PLAYER2, this.bot2);
-            this.game.stepGame();
-            this.getGlRenderBoard().setBoard(basicBoard);
-        } // End of the block //
+    
+    public double sum(final List<Double> vals) {
+        double sum = 0;
+        if (vals == null) {
+            return 0;
+        }
+        if (vals.size() == 0) {
+            return vals.get(0);
+        }
+        
+        for (Double val : vals) {
+            sum += val.doubleValue();
+        } // End of the for //
+        
+        return sum;
     }
-
-    @Override
-    public void run() {
-
-        if (this.getGlRenderBoard() != null) {
-
-            // If null, create a new basic board //
-            if (this.basicBoard == null) {
-                this.basicBoard = this.getGlRenderBoard().getBoard();
-            } else {
-                this.updateState();
-            } // End of the if - else //
-
-        } // End of Sync Block //
+    
+    public double sum(final Map<Double, Move> scoreMap) {
+        
+        double sum = 0;
+        if (scoreMap == null) {
+            return 0;
+        }        
+        
+        for (final Iterator<Map.Entry<Double, Move>> it = scoreMap.entrySet().iterator(); it.hasNext(); ) {
+            final Map.Entry<Double, Move> entry = it.next();            
+            sum += entry.getKey().doubleValue();
+        }
+                
+        return sum;
     }
-
-    public boolean getVerbose() {
-        return verbose;
-    }
-
-    public void setVerbose(boolean b) {
-        this.verbose = b;
-    }
-
+    
 } // End of the Class //

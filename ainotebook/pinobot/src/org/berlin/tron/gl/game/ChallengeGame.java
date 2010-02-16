@@ -47,8 +47,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
     private IBotMoves movesCurrentPlayer = new BotMoves();
     private IBotMoves movesOtherPlayer   = new BotMoves();
     
-    private ITronBoard tronBoard;
-    private IBot player1SmartAI;
+    private ITronBoard tronBoard;    
     private IBot player1ai;
     private IBot player2ai;    
     
@@ -67,16 +66,11 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
         
         // Player 1 and 2 are the default bots //
         // Also create an AI bot
-        player1ai = new GLBot(this.tronBoard);
-        player2ai = new GLBot(this.tronBoard); 
-        player1ai.setOtherBot(player2ai);
-        player2ai.setOtherBot(player1ai);
+        player1ai = AIBotBuilder.buildBotMinMax(this.tronBoard);
+        player2ai = new GLBot(this.tronBoard);
         
-        // Create the AI bot
-        // The AI bot can be used for better rules,
-        // we can still fall on the advice of the player1 bot.
-        this.player1SmartAI = AIBotBuilder.buildBotMinMax(this.tronBoard);
-        this.player1SmartAI.setOtherBot(player2ai);
+        player1ai.setOtherBot(player2ai);
+        player2ai.setOtherBot(player1ai);             
     }
     
     /**
@@ -136,17 +130,18 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
      * @return String
      */
     public String smartBotMakeLogicMove() {
-        this.readyForLogic = this.botReadyForLogic(this.player1SmartAI);
+        
+        this.readyForLogic = this.botReadyForLogic(this.player1ai);
         if (!this.readyForLogic) {
             return null;
         }
         
-        if (this.player1SmartAI == null) {
+        if (this.player1ai == null) {
             return null;
         }
         
-        this.player1SmartAI.makeLogicMove();
-        final Move lastMove = this.player1SmartAI.getLastMove();
+        this.player1ai.makeLogicMove();
+        final Move lastMove = this.player1ai.getLastMove();
         if (lastMove == null) {
             return null;
         }        
@@ -204,8 +199,7 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
      */
     public void checkInitPlayerPos(final Move initMove, final Move otherPlayerMove) {
         if (this.player1ai.getMoves().size() == 0) {
-            this.player1ai.makeMove(initMove);
-            this.player1SmartAI.makeMove(initMove);            
+            this.player1ai.makeMove(initMove);                   
         } // End of the if //
         
         if (this.player2ai.getMoves().size() == 0) {
@@ -238,9 +232,11 @@ public class ChallengeGame implements IChallengeGame, GameWidget {
      * @see org.berlin.tron.gl.game.IChallengeGame#addOtherMove(Move)
      */
     public void addOtherMove(final Move otherPlayer) {
-        this.tronBoard.setBoardVal(ITronBoard.PLAYER2, otherPlayer.getX(), otherPlayer.getY());
-        this.movesOtherPlayer.makeMove(otherPlayer);
-        this.player2ai.makeMove(otherPlayer);
+        synchronized(this.player2ai) {
+            this.tronBoard.setBoardVal(ITronBoard.PLAYER2, otherPlayer.getX(), otherPlayer.getY());
+            this.movesOtherPlayer.makeMove(otherPlayer);
+            this.player2ai.makeMove(otherPlayer);
+        } // End of Sync Block
     }
     
     /**
