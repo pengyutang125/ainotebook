@@ -465,6 +465,7 @@ public class GLBot implements IBot {
         }
         // Add to the queue //
         if (validMovesList.size() == 0) {
+            
             this.score += IMove.NEG_NO_MOVES;
             this.moveScoreChecksForAvg += 1.0;
             // Invalid state 
@@ -482,7 +483,7 @@ public class GLBot implements IBot {
             
         } else {
             
-            this.messages.add("+ Message: [return my move] " + this.moveScore);            
+            this.messages.add("+ 8833 Message: [return my move] " + this.moveScore);            
             rawMove = checkValidMovesFirst(validMovesList);
             
         } // End of if - else //     
@@ -497,6 +498,12 @@ public class GLBot implements IBot {
         return rawMove;
     }    
     
+    /**
+     * Based on the number of valid moves, select the first one.
+     * 
+     * @param validMovesList
+     * @return
+     */
     public Move checkValidMovesFirst(final List<Move> validMovesList) {
         return validMovesList.get(0);
     }
