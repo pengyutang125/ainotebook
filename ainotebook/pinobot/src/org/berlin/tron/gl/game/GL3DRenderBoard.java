@@ -39,10 +39,40 @@
  */
 package org.berlin.tron.gl.game;
 
+import javax.media.opengl.GL;
+
+import org.berlin.tron.gl.Mass;
+
+
 public class GL3DRenderBoard extends GLRenderBoard {
 
     public GL3DRenderBoard(float N_X, float N_Y, float xwidth, float yheight) {
         super(N_X, N_Y, xwidth, yheight);
     }
+
+    /**
+     * Method renderMass.
+     * @param gl GL
+     * @param mass Mass
+     */
+    public void renderMass(final GL gl, final Mass mass) {
+        
+        // Render The Mass //
+        gl.glPushMatrix();
+        gl.glBegin(GL.GL_QUADS);
+        gl.glColor3f(  mass.getR(), mass.getG(), mass.getB());
+        
+        final float withSmallerGLSize = mass.getGlsize() - this.getPadding();
+        
+        gl.glVertex3f(-withSmallerGLSize + mass.getX(),  0.01f,  withSmallerGLSize + mass.getY());
+        gl.glVertex3f( withSmallerGLSize + mass.getX(),  0.01f,  withSmallerGLSize + mass.getY());
+        gl.glVertex3f( withSmallerGLSize + mass.getX(),  0.01f, -withSmallerGLSize + mass.getY());
+        gl.glVertex3f(-withSmallerGLSize + mass.getX(),  0.01f, -withSmallerGLSize + mass.getY());
+        
+        gl.glEnd();
+        gl.glPopMatrix();
+    }    
+    
+    
 
 } // End of the Class //

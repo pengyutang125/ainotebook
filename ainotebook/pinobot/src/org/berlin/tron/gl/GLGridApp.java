@@ -47,6 +47,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
+import org.berlin.tron.gl.game.GL3DGridBoard;
+
 import com.sun.opengl.util.Animator;
 
 /**
@@ -78,9 +80,8 @@ public class GLGridApp extends JFrame {
         final BoxLayout layout = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);       
         this.getContentPane().setLayout(layout);
         this.add(text);
-        
-        final GLGridBoard gl = new GLGridBoard();
-        final GLCanvas canvas = gl.buildCanvas();
+                
+        final GLCanvas canvas = GL3DGridBoard.buildCanvas();
         final Animator animator = new Animator(canvas);
         
         this.add(canvas);
