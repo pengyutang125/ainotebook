@@ -186,20 +186,17 @@ public class GLBox implements GLEventListener, MouseListener, MouseMotionListene
         }
     }
 
-    @Override
     public void display(final GLAutoDrawable drawable) {
                 
         final GL gl = this.renderGLScene(drawable);               
         gl.glFlush();
     }
-
-    @Override
+    
     public void displayChanged(final GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
         
     }
     
 
-    @Override
     public void init(final GLAutoDrawable drawable) {
         
         final GL gl = drawable.getGL();
@@ -216,7 +213,6 @@ public class GLBox implements GLEventListener, MouseListener, MouseMotionListene
         gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);  // Really Nice Perspective Calculations
     }
 
-    @Override
     public void reshape(final GLAutoDrawable drawable, int x, int y, int width, int height) {
 
         final GL gl = drawable.getGL();
@@ -242,35 +238,28 @@ public class GLBox implements GLEventListener, MouseListener, MouseMotionListene
     // Continue to click events
     //
     /////////////////////////////////////////////////////////////////
-
-    @Override
+    
     public void mouseClicked(MouseEvent e) {               
     }
 
-    @Override
     public void mouseEntered(MouseEvent e) {        
     }
 
-    @Override
     public void mouseExited(MouseEvent e) {            
     }
 
-    @Override
     public void mousePressed(MouseEvent e) {
        
     }
 
-    @Override
     public void mouseReleased(MouseEvent e) {
         
     }
-
-    @Override
+    
     public void mouseDragged(MouseEvent arg0) {
   
     }
 
-    @Override
     public void mouseMoved(MouseEvent arg0) {
         
     }
