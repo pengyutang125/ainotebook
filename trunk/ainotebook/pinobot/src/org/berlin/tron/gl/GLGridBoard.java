@@ -74,7 +74,7 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
      * 
      * @param args
      */
-    public GLCanvas buildCanvas() {
+    public static GLCanvas buildCanvas() {
         
         GLCanvas canvas = new GLCanvas();
         canvas.addGLEventListener(new GLGridBoard());
@@ -287,5 +287,33 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
      */
     public void setGlu(GLU glu) {
         this.glu = glu;
+    }
+
+    /**
+     * @return the disableGrid
+     */
+    public boolean isDisableGrid() {
+        return disableGrid;
+    }
+
+    /**
+     * @param disableGrid the disableGrid to set
+     */
+    public void setDisableGrid(boolean disableGrid) {
+        this.disableGrid = disableGrid;
+    }
+
+    /**
+     * @return the disableAxis
+     */
+    public boolean isDisableAxis() {
+        return disableAxis;
+    }
+
+    /**
+     * @param disableAxis the disableAxis to set
+     */
+    public void setDisableAxis(boolean disableAxis) {
+        this.disableAxis = disableAxis;
     }
 } // End of the Class //

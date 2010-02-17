@@ -221,5 +221,19 @@ public class GLRenderBoard {
     public void setBoard(ITronBoard board) {
         this.board = board;
     }
+
+    /**
+     * @return the glSize
+     */
+    public float getGlSize() {
+        return glSize;
+    }
+
+    /**
+     * @return the padding
+     */
+    public float getPadding() {
+        return padding;
+    }
         
 } // End of the Class //

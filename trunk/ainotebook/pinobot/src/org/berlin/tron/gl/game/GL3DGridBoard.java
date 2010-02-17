@@ -41,11 +41,29 @@ package org.berlin.tron.gl.game;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCanvas;
 
 import org.berlin.tron.gl.GLGridBoard;
 
 public class GL3DGridBoard extends GLGridBoard {
-            
+    
+    public static final float axisHeight = 0.1f;
+
+    private float rtri  = 0.0f;
+    
+    /**
+     * Main
+     * 
+     * @param args
+     */
+    public static GLCanvas buildCanvas() {
+        
+        GLCanvas canvas = new GLCanvas();
+        canvas.addGLEventListener(new GL3DGridBoard());
+        canvas.setSize(GL_WIDTH, GL_HEIGHT);
+        return canvas;
+    }
+    
     @Override
     public void init(GLAutoDrawable drawable) {
 
@@ -56,15 +74,15 @@ public class GL3DGridBoard extends GLGridBoard {
         System.err.println("INIT GL IS: " + gl.getClass().getName());
         System.err.println("Chosen GLCapabilities: " + drawable.getChosenGLCapabilities());
         
-        this.setBoard(new GLRenderBoard(DEFAULT_N, DEFAULT_N, 4.4f, 4.4f));
+        this.setBoard(new GL3DRenderBoard(DEFAULT_N, DEFAULT_N, 4.4f, 4.4f));
         this.getBoard().calcGLSize();
         this.getBoard().makeBoard();
-        
+                        
         gl.setSwapInterval(1);
         
         gl.glShadeModel(GL.GL_SMOOTH);                            // Enables Smooth Color Shading
-        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);               // This Will Clear The Background Color 
-        gl.glClearDepth(1.0);                                  // Enables Clearing Of The Depth Buffer
+        gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);                  // This Will Clear The Background Color 
+        gl.glClearDepth(1.0);                                     // Enables Clearing Of The Depth Buffer
         gl.glEnable(GL.GL_DEPTH_TEST);                            // Enables Depth Testing
         gl.glDepthFunc(GL.GL_LEQUAL);                             // The Type Of Depth Test To Do
         gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);  // Really Nice Perspective Calculations
@@ -92,5 +110,112 @@ public class GL3DGridBoard extends GLGridBoard {
         gl.glLoadIdentity();
     }
     
+    public void renderBottomGrid(final GL gl) {
+        
+        gl.glBegin(GL.GL_QUADS);  
+        
+        gl.glColor3f(0.4f, 0.4f, 0.4f);
+                
+        gl.glVertex3f( 0.03f,  -0.1f,  0.03f);   // Top Right Of The Quad (Bottom)
+        gl.glVertex3f(-0.03f,  -0.1f,  0.03f);   // Top Left Of The Quad (Bottom)
+        gl.glVertex3f(-0.03f,  -0.1f, -0.03f);   // Bottom Left Of The Quad (Bottom)        
+        gl.glVertex3f( 0.03f,  -0.1f, -0.03f);   // Bottom Right Of The Quad (Bottom)
+        
+    }
     
+    /**
+     * Example quad:
+     * 
+     * <pre>
+     *   gl.glVertex3f(1.0f,  1.0f, -1.0f);   // Top Right Of The Quad (Right)
+     *   gl.glVertex3f(1.0f,  1.0f,  1.0f);    // Top Left Of The Quad (Right)
+     *   gl.glVertex3f(1.0f, -1.0f,  1.0f);   // Bottom Left Of The Quad (Right)
+     *   gl.glVertex3f(1.0f, -1.0f, -1.0f);  // Bottom Right Of The Quad (Right)
+     *  </pre>
+     */
+    @Override    
+    public void renderXYAxis(final GL gl, final float x1, final float x2, final float y1, final float y2) {
+        
+        // Render the XY Axis
+        final float edgeOver = 0.07f;
+        gl.glColor3f(0.9f, 0.6f, 0.6f);
+        
+        // axisHeight
+        
+        gl.glBegin(GL.GL_QUADS);  
+        gl.glVertex3f( 0.0f, axisHeight, y1 - edgeOver);
+        gl.glVertex3f( 0.0f, axisHeight, y2 + edgeOver);
+        gl.glVertex3f( 0.0f, -0.02f,     y2 + edgeOver);
+        gl.glVertex3f( 0.0f, -0.02f,     y1 - edgeOver);
+        gl.glEnd();
+                
+        gl.glColor3f(0.9f, 0.6f, 0.6f);        
+        gl.glBegin(GL.GL_QUADS);               
+        gl.glVertex3f( x2 + edgeOver,   axisHeight, 0.0f);
+        gl.glVertex3f( x1 - edgeOver,   axisHeight, 0.0f);
+        gl.glVertex3f( x1 - edgeOver,  -0.02f,      0.0f);
+        gl.glVertex3f( x2 + edgeOver,  -0.02f,      0.0f);
+        gl.glEnd();
+        
+        // End with white color
+        gl.glColor3f(1.0f, 1.0f, 1.0f);
+               
+    }
+    
+    @Override
+    public void display(GLAutoDrawable drawable) {
+
+        final GL gl = drawable.getGL();
+                
+        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT); // Clear and depth buffer bit
+        gl.glLoadIdentity(); // Reset The View
+        
+        // Move the entire scene outwards/away in the negative Z direction
+        // Move the scene down        
+        gl.glTranslatef( 0.3f, -0.45f, -3.0f);  // Scene position
+        gl.glRotatef(rtri + 160.0f, 0.0f, 1.0f, 0.0f);
+        
+        gl.glPushMatrix();
+        ///////////////////////////////////////////////////
+        // Define the width, height parameters:
+        
+        /////////////////////////////////////////
+        // For Render Along Y
+        /////////////////////////////////////////
+        final float NforX      =  DEFAULT_N;
+        final float lineYStart = -2.2f;
+        final float lineYEnd   =  2.2f;
+        final float xmin       = -2.2f;
+        final float xmax       =  2.2f;
+    
+        /////////////////////////////////////////
+        // For Render Along Y
+        /////////////////////////////////////////
+        final float N          =  DEFAULT_N;
+        final float lineXStart = -2.2f;
+        final float lineXEnd   =  2.2f;
+        final float ymin       = -2.2f;
+        final float ymax       =  2.2f;
+        
+        // Render the XY Axis lines
+        if (!this.isDisableAxis()) {
+            this.renderXYAxis(gl, lineXStart, lineXEnd, lineYStart, lineYEnd);
+        }
+        
+        this.getBoard().renderBoard(gl);
+                      
+        gl.glPopMatrix();
+                
+        bounds();        
+        gl.glFlush();
+    }
+    
+    public void bounds() {
+        if (rtri > 360.0f) {
+            rtri = 0.0f;
+        }
+        if (rtri < 0.0f) {
+            rtri = 360.0f;
+        }       
+    }
 } // End of the class //
