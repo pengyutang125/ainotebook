@@ -61,7 +61,7 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
      * Number of spots on the board.
      * !IMPORTANT! - key value for determining the GL board size.
      */
-    private static final float DEFAULT_N = 30.0f;
+    public static final float DEFAULT_N = 30.0f;
     
     private GLU glu = new GLU();
     private GLRenderBoard board;
@@ -259,5 +259,33 @@ public class GLGridBoard implements GLEventListener, MouseListener, MouseMotionL
     }
 
     public void mouseMoved(MouseEvent e) {
+    }
+
+    /**
+     * @return the board
+     */
+    public GLRenderBoard getBoard() {
+        return board;
+    }
+
+    /**
+     * @param board the board to set
+     */
+    public void setBoard(GLRenderBoard board) {
+        this.board = board;
+    }
+
+    /**
+     * @return the glu
+     */
+    public GLU getGlu() {
+        return glu;
+    }
+
+    /**
+     * @param glu the glu to set
+     */
+    public void setGlu(GLU glu) {
+        this.glu = glu;
     }
 } // End of the Class //
