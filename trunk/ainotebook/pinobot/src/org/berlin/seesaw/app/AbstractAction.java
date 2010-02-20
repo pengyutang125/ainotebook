@@ -37,7 +37,6 @@
  */
 package org.berlin.seesaw.app;
 
-
 public class AbstractAction implements ITeeterActionHandler {
 
     private final ITeeterWindow window;

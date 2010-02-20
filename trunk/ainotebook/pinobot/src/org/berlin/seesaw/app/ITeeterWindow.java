@@ -38,9 +38,6 @@
  */
 package org.berlin.seesaw.app;
 
-import javax.swing.JPanel;
-
-import org.berlin.pino.win.action.PinoAction;
 import org.berlin.seesaw.swing.ITeeterWidget;
 
 public interface ITeeterWindow extends ITeeterWidget {
@@ -50,6 +47,6 @@ public interface ITeeterWindow extends ITeeterWidget {
     /**
      * @param actionHandler the actionHandler to set
      */
-    public void setActionHandler(PinoAction actionHandler);
+    public void setActionHandler(ITeeterActionHandler actionHandler);
     
 } // End of the Class //
