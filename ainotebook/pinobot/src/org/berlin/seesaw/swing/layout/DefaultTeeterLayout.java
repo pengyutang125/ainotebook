@@ -62,8 +62,10 @@ public class DefaultTeeterLayout implements ITeeterLayout {
         constraints.gridy  = 0;
         constraints.gridx  = 0;
         // Specifies how to distribute extra horizontal space.
-        constraints.weightx = 0;
-        constraints.fill = GridBagConstraints.NONE;
+        constraints.weightx = 1;
+        constraints.weighty = 1;
+        constraints.fill = GridBagConstraints.BOTH;
+        
         
     }
     

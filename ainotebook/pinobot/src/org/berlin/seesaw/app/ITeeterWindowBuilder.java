@@ -43,6 +43,6 @@ public interface ITeeterWindowBuilder {
 
     public ITeeterWindow build();
     
-    public IBasicWindow getBasicWindow();
+    public ITeeterWindow getBasicWindow();
     
 } // End of the Class //
