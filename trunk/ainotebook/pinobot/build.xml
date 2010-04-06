@@ -25,7 +25,8 @@
 	</target>
 	
     <path id="classpath">
-    	<pathelement location="${lib.dir}" />     	    	    	        
+    	<pathelement location="${lib.dir}" />     	    	
+    	<pathelement location="${lib.dir}/antlr-2.7.7.jar" />
     	<pathelement location="${lib.dir}/jogl/jogl.jar" />
     	<pathelement location="${lib.dir}/jogl/gluegen-rt.jar" />
     	<pathelement location="${lib.dir}/jogl" />
