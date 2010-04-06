@@ -58,7 +58,7 @@ public class DefaultTeeterLayout implements ITeeterLayout {
         
         final Insets insets = new Insets(2, 2, 2, 2);
         constraints.insets = insets;
-        constraints.anchor = GridBagConstraints.WEST;
+        constraints.anchor = GridBagConstraints.NORTHWEST;
         constraints.gridy  = 0;
         constraints.gridx  = 0;
         // Specifies how to distribute extra horizontal space.

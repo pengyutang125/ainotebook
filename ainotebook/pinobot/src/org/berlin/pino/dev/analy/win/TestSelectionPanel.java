@@ -74,9 +74,9 @@ public class TestSelectionPanel extends TeeterPanel {
         panel.setPreferredSize(new Dimension(600, 200));
         
         ///////////////////////////////////////////////////
-        constraints.fill = GridBagConstraints.NONE;
-        constraints.anchor = GridBagConstraints.WEST;
-        constraints.weightx = 0;
+        constraints.fill    = GridBagConstraints.HORIZONTAL;
+        constraints.anchor  = GridBagConstraints.NORTHWEST;
+        constraints.weightx = 1;
         constraints.weighty = 0;
         
         this.getLayout().shiftDown();
@@ -84,9 +84,16 @@ public class TestSelectionPanel extends TeeterPanel {
         this.getLayout().shiftDown();
         
         panel.add(new JCheckBox("abcxxxxxxx", true), constraints);
+        this.getLayout().shiftDown();        
+        panel.add(new JCheckBox("abc", true), constraints);        
+        this.getLayout().shiftDown();
+        panel.add(new JCheckBox("abc-33", true), constraints);
+        this.getLayout().shiftDown();
+        panel.add(new JCheckBox("abc-33", true), constraints);
+        this.getLayout().shiftDown();
+        panel.add(new JCheckBox("abc-33", true), constraints);
         this.getLayout().shiftDown();
         
-        panel.add(new JCheckBox("abc", true), constraints);        
     }        
     
     /**
