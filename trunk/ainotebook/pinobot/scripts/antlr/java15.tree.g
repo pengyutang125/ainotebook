@@ -8,11 +8,17 @@
 header {
 package org.berlin.pino.dev.unittest.antlr;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.google.test.metric.Type;
-import com.google.test.metric.JavaType;
+import org.berlin.pino.dev.unittest.metric.antlr.CompilationUnitBuilder;
+import org.berlin.pino.dev.unittest.metric.antlr.JavaType;
+import org.berlin.pino.dev.unittest.metric.antlr.Type;
+
+import antlr.NoViableAltException;
+import antlr.RecognitionException;
+import antlr.collections.AST;
+import antlr.collections.impl.BitSet;
 
 }
 
@@ -242,11 +248,11 @@ ctorDef
 	;
 
 methodDecl
-	:	#(METHOD_DEF z:IDENT modifiers (ignore=typeParameters)? ignore=typeSpec methodHead)
+	:	#(METHOD_DEF z:modifiers (ignore=typeParameters)? ignore=typeSpec methodHead)
 	;
 
 methodDef
-	:	#(METHOD_DEF modifiers (ignore=typeParameters)? ignore=typeSpec methodHead (slist)?)
+	:	#(METHOD_DEF z:modifiers (ignore=typeParameters)? ignore=typeSpec methodHead (slist)?  )	   	
 	;
 
 variableDef
