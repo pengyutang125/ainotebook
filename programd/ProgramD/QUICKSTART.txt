@@ -1,0 +1,13 @@
+#######################################
+# Program D Readme
+#######################################
+
+From:
+http://www.aitools.org/Program_D
+
+=========================
+
+Quickstart:
+
+In windows, click on simple-gui-console.bat to invoke the GUI application and interact with the configured bots.
+

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<aiml version="1.0.1" xmlns="http://alicebot.org/2001/AIML-1.0.1"
+      xmlns:html="http://www.w3.org/1999/xhtml"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://alicebot.org/2001/AIML-1.0.1 http://aitools.org/aiml/schema/AIML.xsd">
+
+<!-- Free software (c) 2001 ALICE AI Foundation -->
+<!-- This program is open source code released under -->
+<!-- the terms of the GNU General Public License -->
+<!-- as published by the Free Software Foundation. -->
+
+
+<category>
+<pattern>TEST GET SEARCH</pattern>
+<template>
+<get name="search"/>
+</template>
+</category>
+
+<category>
+<pattern>SEARCH FOR *</pattern>
+<template>
+<think><set name="search"><star/></set></think>
+Which search engine would you like to use? Yahoo, Yahoo Auctions, or Ebay.
+</template>
+</category>
+
+<category>
+<pattern>YAHOO</pattern>
+<that>WHICH SEARCH ENGINE WOULD YOU LIKE TO USE *</that>
+<template>
+<srai>SEARCH YAHOO FOR <get name="search"/></srai>
+</template>
+</category>
+
+<category>
+<pattern>YAHOO AUCTIONS</pattern>
+<that>WHICH SEARCH ENGINE WOULD YOU LIKE TO USE *</that>
+<template>
+<srai>SEARCH YAHOO AUCTIONS FOR <get name="search"/></srai>
+</template>
+</category>
+
+<category>
+<pattern>EBAY</pattern>
+<that>WHICH SEARCH ENGINE WOULD YOU LIKE TO USE *</that>
+<template>
+<srai>SEARCH EBAY FOR <get name="search"/></srai>
+</template>
+</category>
+
+<category>
+<pattern>SEARCH YAHOO FOR *</pattern>
+<template>
+<html:script language="javascript"><![CDATA[window.open('http://search.yahoo.com/bin/search?p=<star/>', '_blank');]]></html:script> <srai>WEBDONE</srai>
+</template>
+</category>
+
+<category>
+<pattern>SEARCH YAHOO AUCTIONS FOR *</pattern>
+<template>
+<html:script language="javascript"><![CDATA[window.open('http://search.auctions.yahoo.com/search/auc?p=<star/>&alocale=0us&acc=us', '_blank');]]></html:script>
+ <srai>WEBDONE</srai>
+</template>
+</category>
+
+<category>
+<pattern>SEARCH EBAY FOR *</pattern>
+<template>
+<html:script language="javascript"><![CDATA[window.open('http://search.ebay.com/search/search.dll?MfcISAPICommand=GetResult&ht=1&SortProperty=MetaEndSort&query=<star/>', '_blank');]]></html:script>
+ <srai>WEBDONE</srai>
+</template>
+</category>
+
+<category>
+<pattern>WEBDONE</pattern>
+<template>
+There you go.
+</template>
+</category>
+
+<category>
+<pattern>SEARCH THE WEB FOR *</pattern>
+<template>
+<srai>SEARCH FOR <star/></srai>
+</template>
+</category>
+
+</aiml>
