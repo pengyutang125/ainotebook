@@ -1,0 +1,16 @@
+#############################
+# quick start
+#############################
+
+Jetty Web Servlet Container : 
+
+To launch jetty, double click on the start.jar file or
+at the command line, run the command below:
+
+java -jar start.jar
+
+Visit:
+
+webapps\programd 
+
+for the programd web application
