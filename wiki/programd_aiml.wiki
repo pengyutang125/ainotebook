@@ -53,6 +53,8 @@ http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/running_
 
 = Resources =
 
-http://aitools.org/Main_Page
+http://aitools.org/Main_Page 
+
 http://aitools.org/Getting_Started_with_Program_D
+
 http://aitools.org/Free_AIML_sets
