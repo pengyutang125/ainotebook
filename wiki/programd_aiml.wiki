@@ -25,4 +25,4 @@ the HOME\bin directory and click on the simple-gui-console.bat icon.
 
 The ProgramD GUI application should launch.
 
-http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/
+http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/programd_running.png
