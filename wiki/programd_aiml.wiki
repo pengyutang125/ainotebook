@@ -7,6 +7,8 @@ ProgramD is a fully functional AIML bot that is created with Java.  It supports 
 
 AIML, or Artificial Intelligence Markup Language, is an XML dialect for creating natural language software agents.
 
+When the AIML markup language is loaded for your bot, then you chat with the bot.  Once you become familiar with the AIML format, you can then build a simple personal assistant bot.  For Java developers, you may add Java keyword definitions or links to useful resources.
+
 = Quickstart =
 
 To use ProgramD, you can use the mirrored binary/source version provided on this site (programd*.zip) or visit 
@@ -48,3 +50,9 @@ Jetty is provided in the download.  It is configured for the programd webapp.  N
 http://localhost:8080/programd
 
 http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/running_jetty2.png
+
+= Resources =
+
+http://aitools.org/Main_Page
+http://aitools.org/Getting_Started_with_Program_D
+http://aitools.org/Free_AIML_sets
