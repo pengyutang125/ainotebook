@@ -40,3 +40,11 @@ http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/aiml_fil
 The AIML XML dialect looks like other pattern matching formats.  An input pattern is defined and the bot will respond with the matching output.
 
 http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/aiml_example.png
+
+= Running with jetty web servlet container =
+
+Jetty is provided in the download.  It is configured for the programd webapp.  Navigate to the PROGRAMD/jetty/jetty directory and invoke start.bat or java -jar start.jar.  Jetty will launch.  Use your web browser and navigate to:
+
+http://localhost:8080/programd
+
+http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/running_jetty2.png
