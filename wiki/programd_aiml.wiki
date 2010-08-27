@@ -15,7 +15,7 @@ To use ProgramD, you can use the mirrored binary/source version provided on this
 
 http://www.aitools.org/Program_D
 
-The version on this site includes jetty webserver configured with a programd instance.
+The version on this site includes jetty webserver configured with a programd web application.
 
 = Launch the GUI application =
 
