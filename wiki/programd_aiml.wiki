@@ -1,4 +1,5 @@
 #summary Using ProgramD AIML bot as a personal assistant
+#labels Featured
 
 = Introduction =
 
