@@ -16,3 +16,12 @@ The version on this site includes jetty webserver configured with a programd ins
 
 = Launch the GUI application =
 
+Navigate to:
+
+http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/launch_simple_gui.png
+
+the HOME\bin directory and click on the simple-gui-console.bat icon.
+
+The ProgramD GUI application should launch.
+
+http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/
