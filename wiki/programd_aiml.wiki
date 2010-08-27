@@ -35,7 +35,7 @@ At the prompt, enter the commands and dialog to interact with the bot.  I entere
 
 The bots are configured in the PROGRAMD/conf/bots.xml file.
 
-In the configured below, the ../aiml/alice/*.aiml and ../aiml/java/*.aiml  AIML files are loaded into the system.
+In the screenshot below, the ../aiml/alice/*.aiml and ../aiml/java/*.aiml  AIML files are loaded into the system.
 
 http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/aiml_files_bots.png 
 
