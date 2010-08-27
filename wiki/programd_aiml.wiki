@@ -26,3 +26,5 @@ the HOME\bin directory and click on the simple-gui-console.bat icon.
 The ProgramD GUI application should launch.
 
 http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/programd_running.png
+
+At the prompt, enter the commands and dialog to interact with the bot.  I entered "hello" and "java".
