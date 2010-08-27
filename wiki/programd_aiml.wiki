@@ -3,7 +3,7 @@
 
 = Introduction =
 
-ProgramD is a fully functional AIML bot that is implemented with Java.  It supports multiple bots, it is easy to configure and runs in a GUI application and also under a J2EE environment.  
+ProgramD is a fully functional AIML bot engine that is implemented with Java.  It supports multiple bots, it is easy to configure and runs in a GUI application and also under a J2EE environment.  
 
 AIML, or Artificial Intelligence Markup Language, is an XML dialect for creating natural language software agents.
 
