@@ -28,3 +28,11 @@ The ProgramD GUI application should launch.
 http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/programd_running.png
 
 At the prompt, enter the commands and dialog to interact with the bot.  I entered "hello" and "java".
+
+= Configure =
+
+The bots are configured in the PROGRAMD/conf/bots.xml file.
+
+In the configured below, the ../aiml/alice/*.aiml and ../aiml/java/*.aiml  AIML files are loaded into the system.
+
+http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/aiml_files_bots.png 
