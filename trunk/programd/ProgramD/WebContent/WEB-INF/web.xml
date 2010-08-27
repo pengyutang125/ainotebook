@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="ProgramD" version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
-	<display-name>Program D</display-name>
-    <welcome-file-list>
-        <welcome-file>TalkToBot</welcome-file>
-    </welcome-file-list>
+
+    <display-name>Program D</display-name>
+    
     <description>Bot hosting platform</description>
-    <!--Location of the Program D Core config.-->
+    
+    <!-- Location of the Program D Core config. -->
     <context-param>
     	<param-name>programd-core-config</param-name>
-    	<param-value>file:/var/programd/conf/core.xml</param-value>
+    	<!-- OLD approach for config <param-value>file:/var/programd/conf/core.xml</param-value> -->
+    	
+    	<param-value>var/conf/core.xml</param-value> 
     </context-param>
-	<!--JSP config-->
+    
+    <!-- JSP config -->
     <jsp-config>
         <taglib>
             <taglib-uri>http://java.sun.com/jstl/core</taglib-uri>
-            <taglib-location>WEB-INF/c.tld</taglib-location>
+            <taglib-location>c.tld</taglib-location>
         </taglib>
         <taglib>
             <taglib-uri>http://java.sun.com/jstl/core-rt</taglib-uri>
-            <taglib-location>WEB-INF/c-rt.tld</taglib-location>
-        </taglib>
-        <!--
-		<taglib>
-			<taglib-uri>http://aitools.org/programd/4.6/taglib/aiml</taglib-uri>
-			<taglib-location>/WEB-INF/aiml.tld</taglib-location>
-		</taglib>
-        -->
+            <taglib-location>c-rt.tld</taglib-location>
+        </taglib>        
+        <taglib>
+	    <taglib-uri>http://aitools.org/programd/4.6/taglib/aiml</taglib-uri>
+	    <taglib-location>aiml.tld</taglib-location>
+	</taglib>
     </jsp-config>
-    <!--Listeners-->
+    
+    <!-- Listeners -->
     <listener>
         <listener-class>org.aitools.programd.server.servlet.ProgramDContextListener</listener-class>
     </listener>
-    <!--Servlet Descriptors-->
+    
+    <!-- Servlet Descriptors -->
     <servlet>
         <servlet-name>TalkToBotServlet</servlet-name>
         <servlet-class>org.aitools.programd.server.servlet.TalkToBotServlet</servlet-class>
@@ -52,39 +55,26 @@
             <param-value>false</param-value>
         </init-param>
     </servlet>
-    <!--Servlet Mappings-->
+        
     <servlet-mapping>
         <servlet-name>TalkToBotServlet</servlet-name>
         <url-pattern>/TalkToBot</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>TalkToBotServlet</servlet-name>
+        <url-pattern>/index.html</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
         <servlet-name>dwr-invoker</servlet-name>
         <url-pattern>/dwr/*</url-pattern>
     </servlet-mapping>
-    <!--Application-Level Security-->
-    <!--
-    <security-role>
-        <role-name>User</role-name>
-    </security-role>
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Program D</web-resource-name>
-            <url-pattern>/pages/programd.css</url-pattern>
-            <url-pattern>/favicon.ico</url-pattern>
-        </web-resource-collection>
-    </security-constraint>
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>Program D</web-resource-name>
-            <url-pattern>/</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>User</role-name>
-        </auth-constraint>
-    </security-constraint>
-    <login-config>
-        <auth-method>BASIC</auth-method>
-        <realm-name>botmachine</realm-name>
-    </login-config>
-    -->
+    
+	<welcome-file-list>        
+        <welcome-file>index.jsp</welcome-file>   
+		<welcome-file>index.html</welcome-file>   
+		<welcome-file>TalkToBot</welcome-file>		   
+    </welcome-file-list>
+    	
+       
 </web-app>
