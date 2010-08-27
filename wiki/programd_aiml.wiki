@@ -1,0 +1,18 @@
+#summary Using ProgramD AIML bot as a personal assistant
+
+= Introduction =
+
+ProgramD is a fully functional AIML bot that is created with Java.  It supports multiple bots, it is easy to configure and runs in a GUI application and also under a J2EE environment.  
+
+AIML, or Artificial Intelligence Markup Language, is an XML dialect for creating natural language software agents.
+
+= Quickstart =
+
+To use ProgramD, you can use the mirrored binary/source version provided on this site (programd*.zip) or visit 
+
+http://www.aitools.org/Program_D
+
+The version on this site includes jetty webserver configured with a programd instance.
+
+= Launch the GUI application =
+
