@@ -120,6 +120,7 @@ goto end
   
   @rem Set LISTENER_LIBS to the location of your listener jars.
   @rem No warning is provided if they cannot be found (since they are optional).
+  
   set AIM_LISTENER_LIBS=%LIBS%\aim-listener\aim-listener.jar;%LIBS%\aim-listener\jaimbot-lib-1.4.jar
   set IRC_LISTENER_LIBS=%LIBS%\irc-listener\irc-listener.jar;%LIBS%\irc-listener\pircbot.jar
   set YAHOO_LISTENER_LIBS=%LIBS%\yahoo-listener\yahoo-listener.jar;%LIBS%\yahoo-listener\ymsg_network_v0_61.jar
