@@ -1,0 +1,9 @@
+1.2.1
+	- fixed whitespace handling in bot responses (it is now normalized before sending to IRC network)
+	- log messages from PircBot now go to the standard Program D logging apparatus
+
+1.2 - now using PircBot, and working!
+
+1.1 - sync with Program D 4.6 (but not presently working!)
+
+1.0 - First Release
