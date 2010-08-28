@@ -84,7 +84,8 @@
 <category>
 <pattern>SAY * IN SPANISH</pattern>
 <template>
-<javascript><![CDATA[     var word = '<star/>';
+<javascript>     
+     var word = '<star/>';
      var language = 'es'
      var _url = java.net.URL;
      var _connection = java.net.URLConnection;
@@ -116,14 +117,15 @@ language);
      
      _in.close();         
      _reply;
-]]></javascript>
+</javascript>
 </template>
 </category>
 
 <category>
 <pattern>SAY * IN GERMAN</pattern>
 <template>
-<javascript><![CDATA[     var word = '<star/>';
+<javascript>     
+     var word = '<star/>';
      var language = 'de'
      var _url = java.net.URL;
      var _connection = java.net.URLConnection;
@@ -155,14 +157,16 @@ language);
      
      _in.close();         
      _reply;
-]]></javascript>
+
+</javascript>
 </template>
 </category>
 
 <category>
 <pattern>SAY * IN FRENCH</pattern>
 <template>
-<javascript><![CDATA[     var word = '<star/>';
+<javascript>     
+     var word = '<star/>';
      var language = 'fr'
      var _url = java.net.URL;
      var _connection = java.net.URLConnection;
@@ -194,14 +198,15 @@ language);
      
      _in.close();         
      _reply;
-]]></javascript>
+</javascript>
 </template>
 </category>
 
 <category>
 <pattern>SAY * IN ITALIAN</pattern>
 <template>
-<javascript><![CDATA[     var word = '<star/>';
+<javascript>     
+     var word = '<star/>';
      var language = 'it'
      var _url = java.net.URL;
      var _connection = java.net.URLConnection;
@@ -233,14 +238,16 @@ language);
      
      _in.close();         
      _reply;
-]]></javascript>
+
+</javascript>
 </template>
 </category>
 
 <category>
 <pattern>SAY * IN JAPANESE</pattern>
 <template>
-<javascript><![CDATA[     var word = '<star/>';
+<javascript>     
+     var word = '<star/>';
      var language = 'ja'
      var _url = java.net.URL;
      var _connection = java.net.URLConnection;
@@ -272,7 +279,8 @@ language);
      
      _in.close();         
      _reply;
-]]></javascript>
+
+</javascript>
 </template>
 </category>
 
