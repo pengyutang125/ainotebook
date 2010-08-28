@@ -10,6 +10,7 @@
         <listeners href="listeners.xml"/>
         
         <learn>../aiml/alice/*.aiml</learn>
+        <learn>../aiml/alice_aaa/*.aiml</learn>
         <learn>../aiml/java/*.aiml</learn>
         
         <testing>
