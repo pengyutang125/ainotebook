@@ -1,1 +1,15 @@
-This directory is here to hold jars for the IRC listener.
+================================================================================
+SETUP:
+
+1.  Copy the "pircbot.jar" file from the "lib" subdirectory into the
+    "lib/irc-listener" subdirectory of your Program D installation.
+    
+2.  Copy the "irc-listener.jar" file from the "distib" subdirectory into the
+    "lib/irc-listener" subdirectory of your Program D installation.
+    
+3.  Open "conf/listeners.xml" from your Program D installation, and set the
+    listener to enabled="true".  Set the parameters to the correct
+    values, and start up!
+
+================================================================================
+
