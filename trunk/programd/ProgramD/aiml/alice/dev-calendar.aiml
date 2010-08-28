@@ -14,7 +14,7 @@
 <category>
 <pattern>WHAT IS THE DATE</pattern>
 <template>
-Today is <javascript><![CDATA[
+Today is <javascript>
      var t = new Date();
      var m = t.getMonth();
      var d = t.getDate();
@@ -84,7 +84,7 @@ case 11:
 
 dow + ", " + m + " " + d + ", " + y;
 
-]]></javascript>
+</javascript>
 </template>
 </category>
 
@@ -98,7 +98,7 @@ dow + ", " + m + " " + d + ", " + y;
 <category>
 <pattern>WHAT TIME IS IT</pattern>
 <template>
-The time is <javascript><![CDATA[
+The time is <javascript>
  var now = new java.util.Date()
  var hour = now.getHours()
  var minute = now.getMinutes()
@@ -117,7 +117,7 @@ hour = (hour == 0) ? 12 : hour
 if (minute < 10)
  minute = "0" + minute // do not parse this number!
 hour + ":" + minute + " " + ampm;
-]]></javascript>
+</javascript>
 </template>
 </category>
 

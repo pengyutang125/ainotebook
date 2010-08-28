@@ -14,7 +14,7 @@
 <category>
 <pattern>TELL BOT AGE</pattern>
 <template>I am 
-<javascript><![CDATA[
+<javascript>
 var now = new java.util.Date()
 var birth = new java.util.Date(bot("birthday"))
 var difference = now.getTime() - birth.getTime()
@@ -27,7 +27,8 @@ difference -= minutesDifference*1000*60
 var secondsDifference = Math.floor(difference/1000)
 daysDifference + " days, " + hoursDifference + " hours, " +
 minutesDifference + " minutes and " + secondsDifference + " seconds old."
-]]></javascript>
+
+</javascript>
 </template>
 </category>
 
@@ -90,7 +91,7 @@ minutesDifference + " minutes and " + secondsDifference + " seconds old."
 <category>
 <pattern>SELECT *</pattern>
 <template>
-<javascript><![CDATA[
+<javascript>
      var sql = '<star/>' 
 
      sql = "select " + sql;
@@ -119,7 +120,7 @@ minutesDifference + " minutes and " + secondsDifference + " seconds old."
      _connection.close();
      
      _buffer.toString();
-]]></javascript>
+</javascript>
 </template>
 </category>
 
