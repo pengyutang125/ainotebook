@@ -51,6 +51,10 @@ http://localhost:8080/programd
 
 http://ainotebook.googlecode.com/svn/trunk/programd/ProgramD/docs/media/running_jetty2.png
 
+= Download =
+
+http://code.google.com/p/ainotebook/downloads/detail?name=programd-4.6b-src.zip
+
 = Resources =
 
 http://aitools.org/Main_Page 
