@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<properties xmlns="http://aitools.org/programd/4.7/bot-configuration">
+      <!--This is an example properties set definition.-->
+      <property name="name" value="YourBot"/>
+      <property name="gender" value="bot-gender"/>
+      <property name="master" value="bot-master"/>
+      <property name="birthday" value="bot-birthday"/>
+      <property name="birthplace" value="bot-birthplace"/>
+      <property name="boyfriend" value="bot-boyfriend"/>
+      <property name="favoritebook" value="bot-favoritebook"/>
+      <property name="favoritecolor" value="bot-favoritecolor"/>
+      <property name="favoriteband" value="bot-favoriteband"/>
+      <property name="favoritefood" value="bot-favoritefood"/>
+      <property name="favoritesong" value="bot-favoritesong"/>
+      <property name="favoritemovie" value="bot-favoritemovie"/>
+      <property name="forfun" value="bot-forfun"/>
+      <property name="friends" value="bot-friends"/>
+      <property name="girlfriend" value="bot-girlfriend"/>
+      <property name="kindmusic" value="bot-kindmusic"/>
+      <property name="location" value="bot-location"/>
+      <property name="looklike" value="bot-looklike"/>
+      <property name="question" value="bot-question"/>
+      <property name="sign" value="bot-sign"/>
+      <property name="talkabout" value="bot-talkabout"/>
+      <property name="wear" value="bot-wear"/>
+      <property name="website" value="bot-website"/>
+      <property name="email" value="bot-email"/>
+      <property name="language" value="bot-language"/>
+</properties>
