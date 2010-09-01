@@ -121,7 +121,7 @@ GENERAL NOTES
     <!--<entry key="programd.nodemapper-implementation">org.aitools.programd.graph.ThreeOptimalNodemaster</entry>-->
     
     <!--The Multiplexor implementation to use. [String: org.aitools.programd.multiplexor.FlatFileMultiplexor]-->
-    <entry key="programd.multiplexor-implementation">org.aitools.programd.multiplexor.FlatFileMultiplexor</entry>
+    <!--  <entry key="programd.multiplexor-implementation">org.aitools.programd.multiplexor.FlatFileMultiplexor</entry> -->
     <entry key="programd.multiplexor-classname">org.aitools.programd.multiplexor.DBMultiplexor</entry>
     
     <!--The directory in which to save flat-file predicates (FFM only). [URL: /var/programd/ffm]-->
