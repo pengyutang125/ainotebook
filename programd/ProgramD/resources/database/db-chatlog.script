@@ -1,1 +1,10 @@
-create table chatlog (id int not null auto_increment primary key, timestamp timestamp, userid varchar(128), botid varchar(128), input text, response text);
+-- For mysql
+-- create table chatlog (id int not null auto_increment primary key, timestamp timestamp, userid varchar(128), botid varchar(128), input text, response text);
+
+-- For derby
+create table chatlog (id INTEGER NOT NULL GENERATED ALWAYS AS IDENTITY, 
+   timestamp timestamp, 
+    userid varchar(128), 
+    botid varchar(128), 
+    inputx varchar(1024), 
+    response varchar(1024));
