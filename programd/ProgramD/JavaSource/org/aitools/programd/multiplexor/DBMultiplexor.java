@@ -134,17 +134,20 @@ public class DBMultiplexor extends Multiplexor
             {
                 dbaRef.executeUpdate("update predicates set value = '" + encodedValue + "' where botid = '" + botid + "' and userid= '" + userid
                         + "' and name = '" + name + "'");
+                this.dbLogger.info("update predicates ... " + name);
             }
             else
             {
                 dbaRef.executeUpdate("insert into predicates (userid, botid, name, value) values ('" + userid + "', '" + botid + "' , '" + name
                         + "','" + encodedValue + "')");
+                this.dbLogger.info("insert into predicates ... " + name);
             }
             records.close();
             this.dbManager.returnDbaRef(dbaRef);
         }
         catch (SQLException e)
         {
+            e.printStackTrace();
             this.dbLogger.error("Database error: " + e);
         }
     }
