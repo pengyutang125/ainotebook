@@ -57,7 +57,7 @@ public class DBChatLogLayout extends SimpleLayout
         try
         {
             return String.format(
-                    "insert into chatlog (userid, botid, input, response) values ('%s', '%s', '%s', '%s')", URLEncoder
+                    "insert into chatlog (userid, botid, inputx, response) values ('%s', '%s', '%s', '%s')", URLEncoder
                             .encode(event.getUserID(), "utf-8"), URLEncoder.encode(event.getBotID(), "utf-8"),
                     URLEncoder.encode(event.getInput(), "utf-8"), URLEncoder.encode(event.getReply(), "utf-8"));
         }
