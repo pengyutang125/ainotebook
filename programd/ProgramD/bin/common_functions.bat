@@ -129,12 +129,16 @@ goto end
   @rem Set SQL_LIB to the location of your database driver.
   @rem No warning is provided if it cannot be found (since it is optional).
   set SQL_LIB=%LIBS%\mysql-connector-java-3.1.12-bin.jar
+  
+  @rem Add derby jar
+  set SQL_LIB2=%LIBS%\derby\derby.jar
 
   @rem Set JS_LIB to the location of the Rhino JavaScript interpreter.
   @rem No warning is provided if it cannot be found (since it is optional).
   set JS_LIB=%WEBLIBS%\js.jar
   
-  set OTHER_LIBS=%GETOPT_LIB%;%LOG4J_LIB%;%LISTENER_LIBS%;%SQL_LIB%;%JS_LIB%
+  set OTHER_LIBS=%GETOPT_LIB%;%LOG4J_LIB%;%LISTENER_LIBS%;%SQL_LIB%;%SQL_LIB2%;%JS_LIB%
+  echo %OTHER_LIBS%
 goto end
 
 
