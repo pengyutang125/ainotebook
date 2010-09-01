@@ -122,7 +122,7 @@ GENERAL NOTES
     
     <!--The Multiplexor implementation to use. [String: org.aitools.programd.multiplexor.FlatFileMultiplexor]-->
     <entry key="programd.multiplexor-implementation">org.aitools.programd.multiplexor.FlatFileMultiplexor</entry>
-    <!--<entry key="programd.multiplexor-classname">org.aitools.programd.multiplexor.DBMultiplexor</entry>-->
+    <entry key="programd.multiplexor-classname">org.aitools.programd.multiplexor.DBMultiplexor</entry>
     
     <!--The directory in which to save flat-file predicates (FFM only). [URL: /var/programd/ffm]-->
     <entry key="programd.multiplexor.ffm-dir">/var/programd/ffm</entry>
@@ -197,23 +197,29 @@ GENERAL NOTES
     -->
     
     <!--Typical mySQL configuration-->
+    <!--         
+    <entry key="programd.database.url">jdbc:mysql:///programdbot</entry>        
+    <entry key="programd.database.driver">com.mysql.jdbc.Driver</entry>            
+    <entry key="programd.database.connections">25</entry>        
+    <entry key="programd.database.user">programd</entry>       
+    <entry key="programd.database.password">yourpassword</entry>    
+   -->
     
-    <!--The URL of the database to use. [String: jdbc:mysql:///programdbot]-->
-    <entry key="programd.database.url">jdbc:mysql:///programdbot</entry>
+    <!--The URL of the database to use. [String: jdbc:mysql:///programdbot]-->    
+    <entry key="programd.database.url">jdbc:derby:programdbot;create=true</entry>
     
     <!--The database driver to use. [String: com.mysql.jdbc.Driver]-->
-    <entry key="programd.database.driver">com.mysql.jdbc.Driver</entry>    
+    <entry key="programd.database.driver">org.apache.derby.jdbc.EmbeddedDriver</entry>    
     
     <!--The maximum number of simultaneous connections to the database. [int: 25]-->
     <entry key="programd.database.connections">25</entry>
     
     <!--The username which with to access the database. [String: programd]-->
-    <entry key="programd.database.user">programd</entry>
+    <entry key="programd.database.user"></entry>
     
     <!--The password for the database. [String: yourpassword]-->
-    <entry key="programd.database.password">yourpassword</entry>
-    
-    
+    <entry key="programd.database.password"></entry>
+        
     <!--
     OTHER CONFIGURATION FILE LOCATIONS
     -->
