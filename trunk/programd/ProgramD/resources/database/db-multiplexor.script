@@ -1,2 +1,17 @@
-create table users (userid varchar(128), index userid (userid), password varchar(128), botid varchar(128));
-create table predicates (userid varchar(128), index userid (userid), botid varchar(128), name varchar(128), value blob);
+-- For Mysql
+-- create table users (userid varchar(128), index userid (userid), password varchar(128), botid varchar(128));
+-- create table predicates (userid varchar(128), index userid (userid), botid varchar(128), name varchar(128), value blob);
+
+create table users (
+  userid varchar(128),   
+  password varchar(128), 
+  botid varchar(128));
+CREATE INDEX UserIndex ON users(userid);
+
+create table predicates (userid varchar(128), 
+  botid varchar(128), 
+   name varchar(128), 
+   value blob);
+   
+ CREATE INDEX UserIndex2 ON predicates (userid);
+ 
