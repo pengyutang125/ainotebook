@@ -69,25 +69,31 @@ public class OctaneLang {
             for (;;) {
 
                 int ch = r.read();
+                boolean hasWhiteSpace = false;
                 while (isWhitespace(ch)) {
                     ch = r.read();
+                    hasWhiteSpace = true;
                 } // End of the while //
-
+                
+                if (hasWhiteSpace) {                   
+                    System.out.println("WHITESPACE [push space]");
+                    charStack.push((int) ' ');
+                }
+                
                 if (ch == -1) {
+                    
                     if (eofIsError) {
                         throw new Exception("EOF while reading");
                     }
                     return eofValue;
-                }
-
-                if (Character.isDigit(ch)) {
+                    
+                } else if (Character.isDigit(ch)) {
+                    
                     System.out.println("NUMBER FOUND == " + Character.digit(ch, 10));
                     charStack.push(Character.digit(ch, 10));
-                } 
-                
-                // Handle +/- for number and integer
-                if (ch == '+' || ch == '-') {
                     
+                } else if (ch == '+' || ch == '-') {
+                    // Handle +/- for number and integer
                     System.out.println("PLUS MINUS FOUND");
                     final int ch2 = r.read();
                     if (Character.isDigit(ch2)) {
@@ -141,6 +147,8 @@ public class OctaneLang {
                 System.out.println("PUSH RETURN ON STACK ==" + sum);
                 charStack.push(sum);
                 inputStack.clear();
+            } else if (' ' == chartok) {
+                System.out.println("WHITESPACE FOUND");
             } else {
                 inputStack.push(chartok);
             }
@@ -179,4 +187,4 @@ public class OctaneLang {
         
     }
 
-}
+} // End of the Class //
