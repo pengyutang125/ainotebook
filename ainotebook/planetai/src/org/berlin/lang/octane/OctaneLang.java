@@ -1,5 +1,38 @@
 /**
- * Berlin Brown
+ * Copyright (c) 2006-2010 Berlin Brown and botnode.com  All Rights Reserved
+ *
+ * http://www.opensource.org/licenses/bsd-license.php
+
+ * All rights reserved.
+
+ * Redistribution and use in source and binary forms, with or without modification,
+ * are permitted provided that the following conditions are met:
+
+ * * Redistributions of source code must retain the above copyright notice,
+ * this list of conditions and the following disclaimer.
+ * * Redistributions in binary form must reproduce the above copyright notice,
+ * this list of conditions and the following disclaimer in the documentation
+ * and/or other materials provided with the distribution.
+ * * Neither the name of the Botnode.com (Berlin Brown) nor
+ * the names of its contributors may be used to endorse or promote
+ * products derived from this software without specific prior written permission.
+
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+ * A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+ * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+ * LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+ * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+ * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ * 
+ * Test.java
+ * Sep 19, 2010
+ * bbrown
+ * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
 package org.berlin.lang.octane;
 
@@ -11,6 +44,9 @@ import java.io.PushbackReader;
 import java.io.Reader;
 import java.util.Collections;
 import java.util.Stack;
+
+import org.berlin.lang.octane.type.ONumber;
+import org.berlin.lang.octane.type.OType;
 
 /**
  * 
@@ -91,7 +127,9 @@ public class OctaneLang {
                     
                     System.out.println("NUMBER FOUND == " + Character.digit(ch, 10));
                     charStack.push(Character.digit(ch, 10));
-                    
+                } else if (ch == '.') {
+                    // Push the point
+                    charStack.push(ch);
                 } else if (ch == '+' || ch == '-') {
                     // Handle +/- for number and integer
                     System.out.println("PLUS MINUS FOUND");
@@ -129,31 +167,63 @@ public class OctaneLang {
                 : new LineNumberingPushbackReader(reader);
         
         final Stack<Integer> charStack = new Stack<Integer>();
+        final Stack<Integer> inputStack = new Stack<Integer>();
+        final Stack<Integer> doubleRightStack = new Stack<Integer>();
+        final Stack<OType> tokenStack = new Stack<OType>();
+        
         this.read(pushbackReader, charStack, false, EOF);          
         System.out.println(">>> Parsing: Reading Stack");
         
         Collections.reverse(charStack);        
-        final Stack<Integer> inputStack = new Stack<Integer>();
+        
+        boolean hasRightVal = false;
         while(!charStack.isEmpty()) {
             
             final int chartok = charStack.pop();                        
-            System.out.println("POPPING VALUE: " + chartok);            
-            if ('+' == chartok) {
-                System.out.println("PLUS FOUND!!!");
-                int sum = 0;
-                for (final Integer inputval : inputStack) {
-                    sum += inputval;
-                } // End of for
-                System.out.println("PUSH RETURN ON STACK ==" + sum);
-                charStack.push(sum);
-                inputStack.clear();
-            } else if (' ' == chartok) {
-                System.out.println("WHITESPACE FOUND");
-            } else {
-                inputStack.push(chartok);
-            }
+            System.out.println("PARSE: POPPING VALUE: " + chartok);
+            if (' ' == chartok) {
+                
+                // Whitespace operation:
+                // Read the input stack and clear
+                final StringBuilder buf = new StringBuilder(inputStack.size());
+                for (final int c : inputStack) {
+                    buf.append(String.valueOf(c));
+                }
+                if (buf.length() != 0) {
+                    if (doubleRightStack.size() != 0) {
+                        buf.append(".");
+                        for (final int rc : doubleRightStack) {                                                       
+                            buf.append(String.valueOf(rc));
+                        } // End of the for //
+                    } // End of the if - right
+                    
+                    final double num = Double.valueOf(buf.toString());
+                    System.out.println("PARSE: WHITESPACE FOUND {clearing stack} - " + inputStack.size() + " // " + num + " // " + hasRightVal);
+                    tokenStack.add(new ONumber(num));
+                } // End of if //
+                
+                // Clear the right value
+                hasRightVal = false;
+                inputStack.clear(); 
+                doubleRightStack.clear();
+                
+            } else if ('.' == chartok) {
+                hasRightVal = true;
+                doubleRightStack.clear();
+            } else {                                               
+                if (hasRightVal) {
+                    doubleRightStack.push(chartok);
+                } else {
+                    inputStack.push(chartok);
+                }
+            } // End of the if - else //
             
         } // End of for //
+        
+        System.out.println(">>>>>>>>>>>> Printing Tokens");
+        for (final OType token : tokenStack) {
+            System.out.println("$[token]" + token);
+        } // End of the for //
     }
 
     /**
