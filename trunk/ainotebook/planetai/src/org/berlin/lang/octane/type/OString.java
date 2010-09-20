@@ -29,21 +29,47 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
+ * Token.java
  * Sep 19, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
 package org.berlin.lang.octane.type;
 
-public class TypeConstants {
+/**
+ * @author bbrown
+ *
+ */
+public class OString implements OType {
 
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
+    private final String token;    
     
-    public static final int NUMBER  = 1;
-    public static final int TOKEN   = 2;
-    public static final int STRING  = 3;
-        
-} // End of Constants
+    public OString(final String tok) {
+        this.token = tok;
+    }
+    
+    /**
+     * @see org.berlin.lang.octane.type.OType#getType()
+     */
+    @Override
+    public int getType() {
+       return TypeConstants.STRING;
+    }
+
+    /**
+     * @see org.berlin.lang.octane.type.OType#getValue()
+     */
+    @Override
+    public Object getValue() {
+        return token;
+    }
+    
+    /**
+     * Return string rep.
+     */
+    public String toString() {
+        return "@{OType: type=" + this.getType() + " val=" + this.getValue() + "}";
+    }
+          
+    
+} // End of the Class 
