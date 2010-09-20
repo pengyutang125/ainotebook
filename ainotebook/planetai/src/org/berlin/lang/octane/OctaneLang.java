@@ -46,6 +46,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 import org.berlin.lang.octane.type.ONumber;
+import org.berlin.lang.octane.type.OString;
 import org.berlin.lang.octane.type.OType;
 import org.berlin.lang.octane.type.OWord;
 import org.berlin.lang.octane.type.TypeConstants;
@@ -83,7 +84,7 @@ public class OctaneLang {
      * @return
      */
     public static boolean isWhitespace(int ch) {
-        return Character.isWhitespace(ch) || ch == ',';
+        return Character.isWhitespace(ch) || ch == ',' || ch == '[' || ch == ']';
     }
 
     /**
@@ -97,7 +98,7 @@ public class OctaneLang {
             r.unread(ch);
         }
     }
-
+    
     /**
      * 
      * @param r
@@ -130,15 +131,14 @@ public class OctaneLang {
                     }
                     return eofValue;
                     
-                } else if (Character.isLetter(ch)) {                    
+                } else if (Character.isLetterOrDigit(ch)) {                    
                     charStack.push(ch);
-                    
-                } else if (Character.isDigit(ch)) {                                       
-                    charStack.push(ch);                   
-                } else if (ch == TypeConstants.POINT) {
+                } else if ((ch == TypeConstants.POINT) || (ch == TypeConstants.DOUBLE_QUOTE)) { 
                     // Push the point
-                    charStack.push(ch);
-                }
+                    charStack.push(ch);                               
+                } else {
+                    System.out.println("INVALID INPUT");
+                } // End of the if - else //
                 
             } // End of the for //
 
@@ -151,6 +151,52 @@ public class OctaneLang {
     }
 
     /**
+     * Whitespace found.
+     */
+    public void parseOnWhitespace(final Stack<Integer> charStack, final Stack<Integer> inputStack, final Stack<Integer> doubleRightStack, final Stack<OType> tokenStack) {
+                
+        boolean hasLetter = false;                
+        for (final int ci : inputStack) {                    
+            if ((ci != TypeConstants.POINT) && (!Character.isDigit(ci))) {
+                hasLetter = true;
+            } 
+        } // End of the for //
+        final boolean isNum = !hasLetter;                
+        if (isNum) {
+                final StringBuilder buf = new StringBuilder(inputStack.size());
+                for (final int rc : inputStack) {
+                    buf.append(String.valueOf(Character.digit(rc, 10)));
+                }
+                if (buf.length() != 0) {
+                    if (doubleRightStack.size() != 0) {
+                        buf.append(TypeConstants.POINT);
+                        for (final int rc : doubleRightStack) {                                                       
+                            buf.append(String.valueOf(Character.digit(rc, 10)));
+                        } // End of the for //
+                    } // End of the if - right
+                    
+                    final double num = Double.valueOf(buf.toString());                    
+                    tokenStack.add(new ONumber(num));
+                } // End of if //
+        } else {
+            
+            final StringBuilder buf = new StringBuilder(inputStack.size());
+            for (final int rc : inputStack) {
+                buf.append((char) rc);
+            }
+            if (buf.length() != 0) {
+                tokenStack.add(new OWord(buf.toString()));
+            }
+                                
+        } // End of the if - else //
+        
+        // Clear the right value        
+        inputStack.clear(); 
+        doubleRightStack.clear();        
+        
+    }
+    
+    /**    
      * 
      * @param reader
      * @param path
@@ -164,8 +210,8 @@ public class OctaneLang {
         
         final Stack<Integer> charStack = new Stack<Integer>();
         final Stack<Integer> inputStack = new Stack<Integer>();
-        final Stack<Integer> doubleRightStack = new Stack<Integer>();
-        final Stack<OType> tokenStack = new Stack<OType>();
+        final Stack<Integer> doubleRightStack = new Stack<Integer>();        
+        final Stack<OType>   tokenStack = new Stack<OType>();
         
         this.read(pushbackReader, charStack, false, EOF);          
         System.out.println(">>> Parsing: Reading Stack");
@@ -175,53 +221,27 @@ public class OctaneLang {
         boolean hasRightVal = false;
         while(!charStack.isEmpty()) {
             
-            final int chartok = charStack.pop();                        
-            System.out.println("PARSE: POPPING VALUE: " + chartok);
+            final int chartok = charStack.pop();                  
             
             if (TypeConstants.WHITESPACE == chartok) {
                 
-                boolean hasLetter = false;                
-                for (final int ci : inputStack) {                    
-                    if ((ci != TypeConstants.POINT) && (!Character.isDigit(ci))) {
-                        hasLetter = true;
-                    } 
-                } // End of the for //
-                final boolean isNum = !hasLetter;
-                
-                if (isNum) {
-                        final StringBuilder buf = new StringBuilder(inputStack.size());
-                        for (final int rc : inputStack) {
-                            buf.append(String.valueOf(Character.digit(rc, 10)));
-                        }
-                        if (buf.length() != 0) {
-                            if (doubleRightStack.size() != 0) {
-                                buf.append(TypeConstants.POINT);
-                                for (final int rc : doubleRightStack) {                                                       
-                                    buf.append(String.valueOf(Character.digit(rc, 10)));
-                                } // End of the for //
-                            } // End of the if - right
-                            
-                            final double num = Double.valueOf(buf.toString());
-                            System.out.println("PARSE: WHITESPACE FOUND {clearing stack} - " + inputStack.size() + " // " + num + " // " + hasRightVal);
-                            tokenStack.add(new ONumber(num));
-                        } // End of if //
-                } else {
-                    
-                    final StringBuilder buf = new StringBuilder(inputStack.size());
-                    for (final int rc : inputStack) {
-                        buf.append((char) rc);
-                    }
-                    if (buf.length() != 0) {
-                        tokenStack.add(new OWord(buf.toString()));
-                    }
-                                        
-                } // End of the if - else //
-                
-                // Clear the right value
+                parseOnWhitespace(charStack, inputStack, doubleRightStack, tokenStack);
                 hasRightVal = false;
-                inputStack.clear(); 
-                doubleRightStack.clear();
-            
+                
+            } else if (TypeConstants.DOUBLE_QUOTE == chartok) {
+                
+                final StringBuilder buf = new StringBuilder();
+                // Loop until next double quote is found
+                int tokforstr = -1;
+                while((TypeConstants.DOUBLE_QUOTE != tokforstr) && !charStack.isEmpty()) {                    
+                    tokforstr = charStack.pop();
+                    if (TypeConstants.DOUBLE_QUOTE != tokforstr) {
+                        buf.append((char) tokforstr);
+                    }
+                } // End of while //
+                
+                tokenStack.push(new OString(buf.toString()));
+                
             } else if (Character.isDigit(chartok)) {
                 if (hasRightVal) {                    
                     doubleRightStack.push(chartok);
@@ -275,7 +295,6 @@ public class OctaneLang {
 
         final FileInputStream f = new FileInputStream(filename);
         try {
-
             final File file = new File(filename);
             load(new InputStreamReader(f, "UTF-8"), file.getAbsolutePath(), file.getName());
 
