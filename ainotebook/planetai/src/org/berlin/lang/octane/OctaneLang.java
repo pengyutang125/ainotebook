@@ -47,6 +47,8 @@ import java.util.Stack;
 
 import org.berlin.lang.octane.type.ONumber;
 import org.berlin.lang.octane.type.OType;
+import org.berlin.lang.octane.type.OWord;
+import org.berlin.lang.octane.type.TypeConstants;
 
 /**
  * 
@@ -62,6 +64,11 @@ public class OctaneLang {
      */
     public static class ReaderException extends Exception {
 
+        /**
+         * Serial Version id. 
+         */
+        private static final long serialVersionUID = 1L;
+        
         final int line;
 
         public ReaderException(int line, Throwable cause) {
@@ -113,7 +120,7 @@ public class OctaneLang {
                 
                 if (hasWhiteSpace) {                   
                     System.out.println("WHITESPACE [push space]");
-                    charStack.push((int) ' ');
+                    charStack.push((int) TypeConstants.WHITESPACE);
                 }
                 
                 if (ch == -1) {
@@ -123,27 +130,16 @@ public class OctaneLang {
                     }
                     return eofValue;
                     
-                } else if (Character.isDigit(ch)) {
+                } else if (Character.isLetter(ch)) {                    
+                    charStack.push(ch);
                     
-                    System.out.println("NUMBER FOUND == " + Character.digit(ch, 10));
-                    charStack.push(Character.digit(ch, 10));
-                } else if (ch == '.') {
+                } else if (Character.isDigit(ch)) {                                       
+                    charStack.push(ch);                   
+                } else if (ch == TypeConstants.POINT) {
                     // Push the point
                     charStack.push(ch);
-                } else if (ch == '+' || ch == '-') {
-                    // Handle +/- for number and integer
-                    System.out.println("PLUS MINUS FOUND");
-                    final int ch2 = r.read();
-                    if (Character.isDigit(ch2)) {
-                        unread(r, ch2);                        
-                        System.out.println("NUMBER FOUND == [2] " + ch2);
-                    } else {
-                        unread(r, ch2);
-                    } // End of if - else //
-                    
-                    charStack.push(ch);
-                } // End of if, check plus minus            
-
+                }
+                
             } // End of the for //
 
         } catch (Exception e) {
@@ -181,47 +177,91 @@ public class OctaneLang {
             
             final int chartok = charStack.pop();                        
             System.out.println("PARSE: POPPING VALUE: " + chartok);
-            if (' ' == chartok) {
+            
+            if (TypeConstants.WHITESPACE == chartok) {
                 
-                // Whitespace operation:
-                // Read the input stack and clear
-                final StringBuilder buf = new StringBuilder(inputStack.size());
-                for (final int c : inputStack) {
-                    buf.append(String.valueOf(c));
-                }
-                if (buf.length() != 0) {
-                    if (doubleRightStack.size() != 0) {
-                        buf.append(".");
-                        for (final int rc : doubleRightStack) {                                                       
-                            buf.append(String.valueOf(rc));
-                        } // End of the for //
-                    } // End of the if - right
+                boolean hasLetter = false;                
+                for (final int ci : inputStack) {                    
+                    if ((ci != TypeConstants.POINT) && (!Character.isDigit(ci))) {
+                        hasLetter = true;
+                    } 
+                } // End of the for //
+                final boolean isNum = !hasLetter;
+                
+                if (isNum) {
+                        final StringBuilder buf = new StringBuilder(inputStack.size());
+                        for (final int rc : inputStack) {
+                            buf.append(String.valueOf(Character.digit(rc, 10)));
+                        }
+                        if (buf.length() != 0) {
+                            if (doubleRightStack.size() != 0) {
+                                buf.append(TypeConstants.POINT);
+                                for (final int rc : doubleRightStack) {                                                       
+                                    buf.append(String.valueOf(Character.digit(rc, 10)));
+                                } // End of the for //
+                            } // End of the if - right
+                            
+                            final double num = Double.valueOf(buf.toString());
+                            System.out.println("PARSE: WHITESPACE FOUND {clearing stack} - " + inputStack.size() + " // " + num + " // " + hasRightVal);
+                            tokenStack.add(new ONumber(num));
+                        } // End of if //
+                } else {
                     
-                    final double num = Double.valueOf(buf.toString());
-                    System.out.println("PARSE: WHITESPACE FOUND {clearing stack} - " + inputStack.size() + " // " + num + " // " + hasRightVal);
-                    tokenStack.add(new ONumber(num));
-                } // End of if //
+                    final StringBuilder buf = new StringBuilder(inputStack.size());
+                    for (final int rc : inputStack) {
+                        buf.append((char) rc);
+                    }
+                    if (buf.length() != 0) {
+                        tokenStack.add(new OWord(buf.toString()));
+                    }
+                                        
+                } // End of the if - else //
                 
                 // Clear the right value
                 hasRightVal = false;
                 inputStack.clear(); 
                 doubleRightStack.clear();
+            
+            } else if (Character.isDigit(chartok)) {
+                if (hasRightVal) {                    
+                    doubleRightStack.push(chartok);
+                } else {
+                    inputStack.push(chartok);                    
+                }                                
+            } else if (Character.isLetter(chartok)) {
                 
-            } else if ('.' == chartok) {
+                inputStack.push(chartok);
+                
+            } else if (TypeConstants.POINT == chartok) {
                 hasRightVal = true;
                 doubleRightStack.clear();
             } else {                                               
-                if (hasRightVal) {
-                    doubleRightStack.push(chartok);
-                } else {
-                    inputStack.push(chartok);
-                }
+                System.out.println("ELSE");
             } // End of the if - else //
             
         } // End of for //
         
         System.out.println(">>>>>>>>>>>> Printing Tokens");
+        Collections.reverse(tokenStack);
         for (final OType token : tokenStack) {
+            System.out.println("$[token]" + token);
+        } // End of the for //
+                
+        System.out.println(">>>>>>>>>>>> Parsing Tokens");
+        final Stack<OType> dataStack = new Stack<OType>(); 
+        while (!tokenStack.empty()) {
+            final OType token = tokenStack.pop();
+            if (token.getType() == TypeConstants.NUMBER) {
+                dataStack.push(token);
+            } else if (token.getType() == TypeConstants.TOKEN) {
+                System.out.println("PARSE FUNCTION");
+                final ONumber arg1 = (ONumber) dataStack.pop(); 
+                final ONumber arg2 = (ONumber) dataStack.pop();
+                dataStack.push(new ONumber((Double) arg1.getValue() + (Double) arg2.getValue())); 
+            }
+        } // End of the while //
+        
+        for (final OType token : dataStack) {
             System.out.println("$[token]" + token);
         } // End of the for //
     }
