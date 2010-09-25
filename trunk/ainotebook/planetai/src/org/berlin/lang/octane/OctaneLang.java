@@ -84,7 +84,7 @@ public class OctaneLang {
      * @return
      */
     public static boolean isWhitespace(int ch) {
-        return Character.isWhitespace(ch) || ch == ',' || ch == '[' || ch == ']';
+        return Character.isWhitespace(ch) || ch == ',' || ch == '{' || ch == '}';
     }
 
     /**
@@ -119,8 +119,7 @@ public class OctaneLang {
                     hasWhiteSpace = true;
                 } // End of the while //
                 
-                if (hasWhiteSpace) {                   
-                    System.out.println("WHITESPACE [push space]");
+                if (hasWhiteSpace) {
                     charStack.push((int) TypeConstants.WHITESPACE);
                 }
                 
@@ -132,9 +131,8 @@ public class OctaneLang {
                     return eofValue;
                     
                 } else if (Character.isLetterOrDigit(ch)) {                    
-                    charStack.push(ch);
-                } else if ((ch == TypeConstants.POINT) || (ch == TypeConstants.DOUBLE_QUOTE)) { 
-                    // Push the point
+                    charStack.push(ch);                    
+                } else if ((ch == TypeConstants.POINT) || (ch == TypeConstants.DOUBLE_QUOTE) || (ch == '_')) { 
                     charStack.push(ch);                               
                 } else {
                     System.out.println("INVALID INPUT");
@@ -153,7 +151,7 @@ public class OctaneLang {
     /**
      * Whitespace found.
      */
-    public void parseOnWhitespace(final Stack<Integer> charStack, final Stack<Integer> inputStack, final Stack<Integer> doubleRightStack, final Stack<OType> tokenStack) {
+    public void readOnWhitespace(final Stack<Integer> charStack, final Stack<Integer> inputStack, final Stack<Integer> doubleRightStack, final Stack<OType> tokenStack) {
                 
         boolean hasLetter = false;                
         for (final int ci : inputStack) {                    
@@ -195,19 +193,14 @@ public class OctaneLang {
         doubleRightStack.clear();        
         
     }
-    
-    /**    
+            
+    /**
      * 
-     * @param reader
-     * @param path
-     * @param filename
+     * @param pushbackReader
      */
-    public void load(final Reader reader, final String path, final String filename) throws Exception {
-
-        final Object EOF = new Object();
-        final LineNumberingPushbackReader pushbackReader = (reader instanceof LineNumberingPushbackReader) ? (LineNumberingPushbackReader) reader
-                : new LineNumberingPushbackReader(reader);
+    public void readCharStack(final LineNumberingPushbackReader pushbackReader) throws Exception {
         
+        final Object EOF = new Object();
         final Stack<Integer> charStack = new Stack<Integer>();
         final Stack<Integer> inputStack = new Stack<Integer>();
         final Stack<Integer> doubleRightStack = new Stack<Integer>();        
@@ -225,7 +218,7 @@ public class OctaneLang {
             
             if (TypeConstants.WHITESPACE == chartok) {
                 
-                parseOnWhitespace(charStack, inputStack, doubleRightStack, tokenStack);
+                readOnWhitespace(charStack, inputStack, doubleRightStack, tokenStack);
                 hasRightVal = false;
                 
             } else if (TypeConstants.DOUBLE_QUOTE == chartok) {
@@ -248,7 +241,7 @@ public class OctaneLang {
                 } else {
                     inputStack.push(chartok);                    
                 }                                
-            } else if (Character.isLetter(chartok)) {
+            } else if (Character.isLetter(chartok) || '_' == chartok) {
                 
                 inputStack.push(chartok);
                 
@@ -256,7 +249,7 @@ public class OctaneLang {
                 hasRightVal = true;
                 doubleRightStack.clear();
             } else {                                               
-                System.out.println("ELSE");
+                System.out.println(String.format("<OTHER CHARACTER  %s>", chartok));
             } // End of the if - else //
             
         } // End of for //
@@ -268,22 +261,23 @@ public class OctaneLang {
         } // End of the for //
                 
         System.out.println(">>>>>>>>>>>> Parsing Tokens");
-        final Stack<OType> dataStack = new Stack<OType>(); 
-        while (!tokenStack.empty()) {
-            final OType token = tokenStack.pop();
-            if (token.getType() == TypeConstants.NUMBER) {
-                dataStack.push(token);
-            } else if (token.getType() == TypeConstants.TOKEN) {
-                System.out.println("PARSE FUNCTION");
-                final ONumber arg1 = (ONumber) dataStack.pop(); 
-                final ONumber arg2 = (ONumber) dataStack.pop();
-                dataStack.push(new ONumber((Double) arg1.getValue() + (Double) arg2.getValue())); 
-            }
-        } // End of the while //
+        final OParser parser = new OParser();
+        parser.parse(tokenStack);
         
-        for (final OType token : dataStack) {
-            System.out.println("$[token]" + token);
-        } // End of the for //
+    }
+    
+    /**    
+     * 
+     * @param reader
+     * @param path
+     * @param filename
+     */
+    public void load(final Reader reader, final String path, final String filename) throws Exception {
+        
+        final LineNumberingPushbackReader pushbackReader = (reader instanceof LineNumberingPushbackReader) ? (LineNumberingPushbackReader) reader
+                : new LineNumberingPushbackReader(reader);
+        this.readCharStack(pushbackReader);
+        
     }
 
     /**

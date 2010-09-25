@@ -29,32 +29,30 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
- * Sep 19, 2010
+ * IOp.java
+ * Sep 25, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane.type;
+package org.berlin.lang.octane.sys;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.berlin.lang.octane.type.OType;
 
-public class TypeConstants {
-
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
+/**
+ * @author bbrown
+ *
+ */
+public interface IOp extends Visitor {
+      
+    public String doc();
     
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;
+    /**
+     * Execute.
+     */
+    public void execute();
     
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(1, "NUMBER");
-        TYPE_INFO.put(2, "WORD");
-        TYPE_INFO.put(3, "STRING");
-    }
-        
-} // End of Constants
+    public OType op(final OType... args);
+    
+    public boolean hasOperation(final VisitElement element);
+    
+} // End of the interface //

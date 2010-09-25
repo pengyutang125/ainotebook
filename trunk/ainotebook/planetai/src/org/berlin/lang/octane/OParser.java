@@ -29,32 +29,51 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
- * Sep 19, 2010
+ * OParser.java
+ * Sep 24, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane.type;
+package org.berlin.lang.octane;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Stack;
 
-public class TypeConstants {
+import org.berlin.lang.octane.sys.OMathFunctions;
+import org.berlin.lang.octane.type.ONumber;
+import org.berlin.lang.octane.type.OType;
+import org.berlin.lang.octane.type.TypeConstants;
 
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
-    
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;
-    
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(1, "NUMBER");
-        TYPE_INFO.put(2, "WORD");
-        TYPE_INFO.put(3, "STRING");
-    }
+/**
+ * @author bbrown
+ *
+ */
+public class OParser {
+
+    private final Stack<OType> dataStack = new Stack<OType>();
+            
+    /**
+     * 
+     * @param tokenStack
+     */
+    public void parse(final Stack<OType> tokenStack) {
         
-} // End of Constants
+        while (!tokenStack.empty()) {
+            
+            final OType token = tokenStack.pop();
+            if (token.getType() == TypeConstants.NUMBER) {
+                dataStack.push(token);
+            } else if (token.getType() == TypeConstants.WORD) {
+                System.out.println("PARSE FUNCTION");
+                final OMathFunctions math = new OMathFunctions(dataStack, token);
+                math.registerOps();
+                math.execute(token);
+            }
+        } // End of the while //
+        
+        for (final OType token : dataStack) {
+            System.out.println("$[data-stack-token]" + token);
+        } // End of the for //
+        
+    }    
+    
+} // End of the Class

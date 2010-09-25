@@ -29,32 +29,24 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
+ * Token.java
  * Sep 19, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
 package org.berlin.lang.octane.type;
 
-import java.util.HashMap;
-import java.util.Map;
-
-public class TypeConstants {
-
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
+/**
+ * @author bbrown
+ *
+ */
+public abstract class OBaseType implements OType {
     
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;
-    
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(1, "NUMBER");
-        TYPE_INFO.put(2, "WORD");
-        TYPE_INFO.put(3, "STRING");
+    /**
+     * Return string rep.
+     */
+    public String toString() {
+        return "@{OType: type=" + TypeConstants.TYPE_INFO.get(this.getType()) + " val=" + this.getValue() + "}";
     }
-        
-} // End of Constants
+              
+} // End of the Class 
