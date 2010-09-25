@@ -40,7 +40,7 @@ package org.berlin.lang.octane.type;
  * @author bbrown
  *
  */
-public class OWord implements OType {
+public class OWord  extends OBaseType {
 
     private final String token;    
     
@@ -53,7 +53,7 @@ public class OWord implements OType {
      */
     @Override
     public int getType() {
-       return TypeConstants.TOKEN;
+       return TypeConstants.WORD;
     }
 
     /**
@@ -62,14 +62,6 @@ public class OWord implements OType {
     @Override
     public Object getValue() {
         return token;
-    }
-    
-    /**
-     * Return string rep.
-     */
-    public String toString() {
-        return "@{OType: type=" + this.getType() + " val=" + this.getValue() + "}";
-    }
-          
+    }    
     
 } // End of the Class 

@@ -29,32 +29,41 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
- * Sep 19, 2010
+ * BaseOp.java
+ * Sep 25, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane.type;
+package org.berlin.lang.octane.sys;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Stack;
 
-public class TypeConstants {
+import org.berlin.lang.octane.type.OType;
 
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
-    
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;
-    
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(1, "NUMBER");
-        TYPE_INFO.put(2, "WORD");
-        TYPE_INFO.put(3, "STRING");
+/**
+ * @author bbrown
+ *
+ */
+public abstract class BaseOp implements IOp {
+
+    private final Stack<OType> dataStack;   
+
+    /**
+     * Data Stack.
+     */
+    public BaseOp(final Stack<OType> dataStack) {
+        this.dataStack = dataStack;
     }
-        
-} // End of Constants
+    
+    public Stack<OType> getDataStack() {
+        return dataStack;
+    }
+    
+    @Override
+    public void visit(final VisitElement element) {                
+        if (this.hasOperation(element)) {
+            this.execute();
+        }
+    }
+    
+} // End of the class //

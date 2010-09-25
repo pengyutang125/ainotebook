@@ -29,32 +29,37 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
- * Sep 19, 2010
+ * IOpHandler.java
+ * Sep 25, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane.type;
+package org.berlin.lang.octane.sys;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.berlin.lang.octane.type.OType;
 
-public class TypeConstants {
+/**
+ * @author bbrown
+ *
+ */
+public interface IOpHandler extends VisitElement {
 
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
+    /**
+     * Execute.
+     */
+    public void execute(final OType token);
     
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;
     
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(1, "NUMBER");
-        TYPE_INFO.put(2, "WORD");
-        TYPE_INFO.put(3, "STRING");
-    }
+    /**
+     * 
+     * @param handler
+     */
+    public void registerOp(final IOp handler);
+    
+    /**
+     * Register Ops.
+     */
+    public void registerOps();
         
-} // End of Constants
+    
+}

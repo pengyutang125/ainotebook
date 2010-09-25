@@ -36,7 +36,7 @@
  */
 package org.berlin.lang.octane.type;
 
-public class ONumber implements OType {
+public class ONumber extends OBaseType {
 
     private double value; 
     
@@ -54,11 +54,5 @@ public class ONumber implements OType {
         return TypeConstants.NUMBER;
     }
     
-    /**
-     * Return string rep.
-     */
-    public String toString() {
-        return "@{OType: type=" + this.getType() + " val=" + this.getValue() + "}";
-    }
-            
+          
 } // End of the Class //
