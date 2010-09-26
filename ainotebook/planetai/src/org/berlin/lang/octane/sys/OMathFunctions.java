@@ -100,11 +100,11 @@ public class OMathFunctions implements IOpHandler {
             
             @Override
             public void execute() {                 
-                final OType arg1 = dataStack.pop();
-                final OType arg2 = dataStack.pop();    
+                final OType arg1 = this.getDataStack().pop();
+                final OType arg2 = this.getDataStack().pop();    
                                 
                 final ONumber result = (ONumber) this.op((ONumber)arg1, (ONumber)arg2);
-                dataStack.push(result);                
+                this.getDataStack().push(result);                
             }            
             @Override
             public String doc() {
@@ -141,11 +141,11 @@ public class OMathFunctions implements IOpHandler {
             
             @Override
             public void execute() {                 
-                final OType arg1 = dataStack.pop();
-                final OType arg2 = dataStack.pop();    
+                final OType arg1 = this.getDataStack().pop();
+                final OType arg2 = this.getDataStack().pop();    
                                 
                 final ONumber result = (ONumber) this.op((ONumber)arg1, (ONumber)arg2);
-                dataStack.push(result);                
+                this.getDataStack().push(result);                
             }            
             @Override
             public String doc() {
@@ -182,11 +182,11 @@ public class OMathFunctions implements IOpHandler {
             
             @Override
             public void execute() {                 
-                final OType arg1 = dataStack.pop();
-                final OType arg2 = dataStack.pop();    
+                final OType arg1 = this.getDataStack().pop();
+                final OType arg2 =this.getDataStack().pop();    
                                 
                 final ONumber result = (ONumber) this.op((ONumber)arg1, (ONumber)arg2);
-                dataStack.push(result);                
+                this.getDataStack().push(result);                
             }            
             @Override
             public String doc() {
@@ -223,11 +223,11 @@ public class OMathFunctions implements IOpHandler {
             
             @Override
             public void execute() {                 
-                final OType arg1 = dataStack.pop();
-                final OType arg2 = dataStack.pop();    
+                final OType arg1 = this.getDataStack().pop();
+                final OType arg2 = this.getDataStack().pop();    
                                 
                 final ONumber result = (ONumber) this.op((ONumber)arg1, (ONumber)arg2);
-                dataStack.push(result);                
+                this.getDataStack().push(result);                
             }            
             @Override
             public String doc() {
