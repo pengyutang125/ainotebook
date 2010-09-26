@@ -44,6 +44,11 @@ public class MyBot {
         }
     }
 
+    /**
+     * Main entry point.
+     * 
+     * @param args
+     */
     public static void main(String[] args) {
         String line = "";
         String message = "";
