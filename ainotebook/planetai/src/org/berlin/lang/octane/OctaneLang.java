@@ -42,6 +42,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PushbackReader;
 import java.io.Reader;
+import java.net.URL;
 import java.util.Collections;
 import java.util.Stack;
 
@@ -324,6 +325,19 @@ public class OctaneLang {
     
     /**
      * 
+     * @param filename
+     * @throws Exception
+     */
+    public void loadFileResource(final String resfilepath) throws Exception {
+               
+        final URL url = this.getClass().getResource(resfilepath);
+        final InputStreamReader ins = new InputStreamReader(url.openStream());                        
+        this.load(ins, String.valueOf(url), String.valueOf(url));
+        
+    }
+    
+    /**
+     * 
      * @param args
      * @throws Exception
      */
@@ -331,7 +345,7 @@ public class OctaneLang {
         
         System.out.println(">>Running Octane Lang");
         final OctaneLang lang = new OctaneLang();
-        lang.loadFile("test1.oct");
+        lang.loadFile("src/org/berlin/planet/resources/octane/test1.oct");
         
     }
 

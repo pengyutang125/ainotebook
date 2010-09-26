@@ -7,7 +7,7 @@
     
  _date ( -- Return the Date ) 
  
- [ "Println Bitches" , "java.lang.Object" 1 "println"
+ [ "From Resource Directory" , "java.lang.Object" 1 "println"
     [ "out" "java.lang.System" _class _field ] ( <-- object System.out on stack )
         _invoke ] 
 
