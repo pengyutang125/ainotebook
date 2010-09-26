@@ -1,4 +1,14 @@
-  3.3 1.1 1.3 plus plus
-     
-     
+(/*********************************************************
+  *
+  * Example Octane Lang Program   
+  *
+  *********************************************************/)
+    
+ _date ( -- Return the Date ) 
+ 
+ [ "out" [ "java.lang.System" _class ] _field ]
+
+( -- End of Program )
+
+  
      
