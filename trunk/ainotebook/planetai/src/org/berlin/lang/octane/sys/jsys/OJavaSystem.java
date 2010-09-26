@@ -38,6 +38,7 @@ package org.berlin.lang.octane.sys.jsys;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Stack;
 
@@ -84,7 +85,9 @@ public class OJavaSystem implements ICallHandler {
      */
     public void registerCalls() {
         this.registerCall(this.createClassCall());
+        this.registerCall(this.createFieldCall());
         this.registerCall(this.createPrintFieldsCall());
+        this.registerCall(this.createJavaDateCall());
         registerOps = true;
     }   
         
@@ -97,11 +100,11 @@ public class OJavaSystem implements ICallHandler {
             @Override
             public void execute() {
                 
-                final OType arg1 = dataStack.pop();
+                final OType arg1 = this.getDataStack().pop();
                                                  
                 final OObject result = (OObject) this.op(arg1);
                 if (result != null) {
-                    dataStack.push(result);
+                    this.getDataStack().push(result);
                 }
             }            
             @Override
@@ -138,7 +141,7 @@ public class OJavaSystem implements ICallHandler {
             @Override
             public void execute() {
                 
-                final OType arg1 = dataStack.pop();                                                
+                final OType arg1 = this.getDataStack().pop();                                                
                 this.op(arg1);                
             }            
             @Override
@@ -156,7 +159,7 @@ public class OJavaSystem implements ICallHandler {
                 final Class<?> classobj = (Class<?>) objtype.getValue();
                 int i = 1;
                 for (final Field field : classobj.getFields()) {
-                    System.out.format("<Field for %d [%s]> %s%n", i, classobj, field);
+                    System.out.format("<Field for %d [%s]> [%s] [name=%s]%n", i, classobj, field, field.getName());
                     i++;
                 }
                 return null;
@@ -174,12 +177,13 @@ public class OJavaSystem implements ICallHandler {
             @Override
             public void execute() {
                 
-                final OType arg1 = dataStack.pop();
-                                                 
-                final OObject result = (OObject) this.op(arg1);
+                final OType arg1FieldClass = this.getDataStack().pop();
+                final OType arg2FieldAsString = this.getDataStack().pop();
+                                               
+                final OObject result = (OObject) this.op(arg1FieldClass, arg2FieldAsString);                
                 if (result != null) {
-                    dataStack.push(result);
-                }
+                    this.getDataStack().push(result);
+                }                
             }            
             @Override
             public String doc() {
@@ -191,21 +195,60 @@ public class OJavaSystem implements ICallHandler {
             }
             @Override
             public OType op(OType... args) {
+                                
+                final OType arg1FieldAsClass = (OObject) args[0];
+                final OString arg2FieldAsString = (OString) args[1];                
+                                
+                final Class<?> jclass = (Class<?>) arg1FieldAsClass.getValue();
+                final String fieldname = (String) arg2FieldAsString.getValue();
                 
-                final OString tokForClassName = (OString) args[0];
-                final String  strForClass = (String) tokForClassName.getValue();
-                try {
-                    final Object clz = Class.forName(strForClass);
-                    return new OObject(clz);
-                } catch (ClassNotFoundException e) {
-                    throw new IllegalStateException("Invalid class at java class op [err119] - classname=" + strForClass);
-                }                
+                try {                                    
+                    final Field field = jclass.getField(fieldname);
+                    // field.get: Returns the value of the field represented by this <code>Field</code>, on
+                    // the specified object. 
+                    try {
+                        return new OObject(field.get(jclass));
+                    } catch (IllegalArgumentException e) {
+                        throw new IllegalArgumentException("Illegal Argument for field [ERR213]");                        
+                    } catch (IllegalAccessException e) {
+                        throw new IllegalArgumentException("Illegal Argument for field [ERR213]");
+                    }
+                } catch (NoSuchFieldException e) {
+                    throw new IllegalStateException("No Such Field");
+                } // End of the try catch //
             }
     
         }; // Return   
     } // End of the method //  
     
- 
+    /**
+     * Create math op.
+     */
+    public ICall createJavaDateCall() {        
+        return new BaseCall(this.dataStack) {
+                                   
+            @Override
+            public void execute() {                                                                               
+                this.getDataStack().push(this.op(null));                
+            }            
+            @Override
+            public String doc() {
+                return "[ _date ]";
+            }
+            @Override
+            public boolean hasOperation(final VisitElement element) {                
+                return "_date".equals(element.getLastStackElement().getValue());
+            }
+            @Override
+            public OType op(OType... args) {
+                return new OObject(new Date());
+            }
+    
+        }; // Return   
+    } // End of the method // 
+    
+    
+    
     /**
      * Execute.
      */
