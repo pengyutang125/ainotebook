@@ -39,6 +39,7 @@ package org.berlin.lang.octane;
 import java.util.Stack;
 
 import org.berlin.lang.octane.sys.OMathFunctions;
+import org.berlin.lang.octane.sys.jsys.OJavaSystem;
 import org.berlin.lang.octane.type.ONumber;
 import org.berlin.lang.octane.type.OType;
 import org.berlin.lang.octane.type.TypeConstants;
@@ -62,11 +63,19 @@ public class OParser {
             final OType token = tokenStack.pop();
             if (token.getType() == TypeConstants.NUMBER) {
                 dataStack.push(token);
+            } else if (token.getType() == TypeConstants.STRING) {
+                dataStack.push(token);
             } else if (token.getType() == TypeConstants.WORD) {
+                
                 System.out.println("PARSE FUNCTION");
                 final OMathFunctions math = new OMathFunctions(dataStack, token);
+                final OJavaSystem javasys = new OJavaSystem(dataStack, token);
+                
                 math.registerOps();
                 math.execute(token);
+                
+                javasys.registerCalls();
+                javasys.execute(token);
             }
         } // End of the while //
         

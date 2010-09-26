@@ -29,44 +29,47 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
- * Sep 19, 2010
+ * BaseOp.java
+ * Sep 25, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane.type;
+package org.berlin.lang.octane.sys.jsys;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Stack;
+
+import org.berlin.lang.octane.sys.VisitElement;
+import org.berlin.lang.octane.type.OType;
 
 /**
- * 
  * @author bbrown
  *
  */
-public class TypeConstants {
+public abstract class BaseCall implements ICall {
 
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
-    
-    public static final char COMMENT_START = '(';
-    public static final char COMMENT_END   = ')';
-    
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;    
-    public static final int OBJECT  = 4;
-    
-    public static final int END = -1;
-    
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(NUMBER, "NUMBER");
-        TYPE_INFO.put(WORD, "WORD");
-        TYPE_INFO.put(STRING, "STRING");
-        TYPE_INFO.put(OBJECT, "OBJECT");
+    private final Stack<OType> dataStack;   
+
+    /**
+     * Data Stack.
+     */
+    public BaseCall(final Stack<OType> dataStack) {
+        this.dataStack = dataStack;
     }
-        
-} // End of Constants
+    
+    public Stack<OType> getDataStack() {
+        return dataStack;
+    }
+    
+    @Override
+    public void visit(final VisitElement element) {                
+        if (this.hasOperation(element)) {
+            this.execute();
+        }
+    }
+    
+    @Override
+    public String doc() {
+        return "[ no doc ]";
+    }
+    
+} // End of the class //

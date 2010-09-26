@@ -123,16 +123,24 @@ public class OctaneLang {
                     charStack.push((int) TypeConstants.WHITESPACE);
                 }
                 
-                if (ch == -1) {
-                    
+                if (TypeConstants.COMMENT_START == ch) {                                        
+                    // Loop until next end comment                    
+                    while((TypeConstants.COMMENT_END != ch) && (ch != TypeConstants.END)) {
+                        ch = r.read();                        
+                    } // End of while //                                        
+                }
+                
+                if (ch == TypeConstants.END) {                    
                     if (eofIsError) {
                         throw new Exception("EOF while reading");
                     }
                     return eofValue;
                     
-                } else if (Character.isLetterOrDigit(ch)) {                    
-                    charStack.push(ch);                    
-                } else if ((ch == TypeConstants.POINT) || (ch == TypeConstants.DOUBLE_QUOTE) || (ch == '_')) { 
+                } else if (Character.isLetterOrDigit(ch)) {  
+                    
+                    charStack.push(ch);
+                    
+                } else if ((ch == TypeConstants.POINT) || (ch == TypeConstants.DOUBLE_QUOTE) || (ch == '_')) {                   
                     charStack.push(ch);                               
                 } else {
                     System.out.println("INVALID INPUT");
@@ -233,8 +241,8 @@ public class OctaneLang {
                     }
                 } // End of while //
                 
-                tokenStack.push(new OString(buf.toString()));
-                
+                tokenStack.push(new OString(buf.toString()));                        
+                                
             } else if (Character.isDigit(chartok)) {
                 if (hasRightVal) {                    
                     doubleRightStack.push(chartok);
@@ -254,8 +262,11 @@ public class OctaneLang {
             
         } // End of for //
         
-        System.out.println(">>>>>>>>>>>> Printing Tokens");
+        System.out.println(">>>>>>>>>>>> Printing Tokens in TOKEN STACK <<");
         Collections.reverse(tokenStack);
+        // Copy the token stack stack to the history stack
+        final Stack<OType> historyTokenStack = (Stack<OType>) tokenStack.clone();        
+        
         for (final OType token : tokenStack) {
             System.out.println("$[token]" + token);
         } // End of the for //
@@ -296,7 +307,7 @@ public class OctaneLang {
             f.close();
         }
     }
-
+    
     /**
      * 
      * @param args

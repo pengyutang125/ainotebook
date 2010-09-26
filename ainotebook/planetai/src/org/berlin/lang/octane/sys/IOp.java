@@ -42,7 +42,7 @@ import org.berlin.lang.octane.type.OType;
  * @author bbrown
  *
  */
-public interface IOp extends Visitor {
+public interface IOp extends IBasicOp<OType> {
       
     public String doc();
     

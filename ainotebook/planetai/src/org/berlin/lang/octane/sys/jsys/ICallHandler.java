@@ -29,44 +29,37 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
- * Sep 19, 2010
+ * IOpHandler.java
+ * Sep 25, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane.type;
+package org.berlin.lang.octane.sys.jsys;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.berlin.lang.octane.sys.VisitElement;
+import org.berlin.lang.octane.type.OType;
 
 /**
- * 
  * @author bbrown
  *
  */
-public class TypeConstants {
+public interface ICallHandler extends VisitElement {
 
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
+    /**
+     * Execute.
+     */
+    public void execute(final OType token);
     
-    public static final char COMMENT_START = '(';
-    public static final char COMMENT_END   = ')';
     
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;    
-    public static final int OBJECT  = 4;
+    /**
+     * 
+     * @param handler
+     */
+    public void registerCall(final ICall handler);
     
-    public static final int END = -1;
+    /**
+     * Register Ops.
+     */
+    public void registerCalls();        
     
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(NUMBER, "NUMBER");
-        TYPE_INFO.put(WORD, "WORD");
-        TYPE_INFO.put(STRING, "STRING");
-        TYPE_INFO.put(OBJECT, "OBJECT");
-    }
-        
-} // End of Constants
+} // End of the class
