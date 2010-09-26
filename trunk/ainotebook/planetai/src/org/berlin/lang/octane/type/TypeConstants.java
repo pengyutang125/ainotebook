@@ -49,24 +49,28 @@ public class TypeConstants {
     public static final char WHITESPACE = ' ';
     public static final char POINT = '.';
     public static final char DOUBLE_QUOTE = '"';
+    public static final char COMMA_BREAK = ',';
     
     public static final char COMMENT_START = '(';
     public static final char COMMENT_END   = ')';
     
+    
     public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;    
+    public static final int WORD    = 2;    
+    public static final int STRING  = 3;        
     public static final int OBJECT  = 4;
+    public static final int BREAK   = 5;
     
     public static final int END = -1;
     
     public static final Map<Integer, String> TYPE_INFO;
     static {
         TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(NUMBER, "NUMBER");
-        TYPE_INFO.put(WORD, "WORD");
-        TYPE_INFO.put(STRING, "STRING");
-        TYPE_INFO.put(OBJECT, "OBJECT");
+        TYPE_INFO.put(NUMBER, "<NUMBER>");
+        TYPE_INFO.put(WORD,   "<WORD>");
+        TYPE_INFO.put(STRING, "<STRING>");
+        TYPE_INFO.put(OBJECT, "<OBJECT>");
+        TYPE_INFO.put(BREAK,  "<BREAK>");
     }
         
 } // End of Constants

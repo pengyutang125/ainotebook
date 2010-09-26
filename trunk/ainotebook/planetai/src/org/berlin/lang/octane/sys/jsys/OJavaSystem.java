@@ -88,6 +88,7 @@ public class OJavaSystem implements ICallHandler {
         this.registerCall(this.createFieldCall());
         this.registerCall(this.createPrintFieldsCall());
         this.registerCall(this.createJavaDateCall());
+        this.registerCall(new MethodInvokeCall(this.dataStack));
         registerOps = true;
     }   
         
@@ -200,8 +201,7 @@ public class OJavaSystem implements ICallHandler {
                 final OString arg2FieldAsString = (OString) args[1];                
                                 
                 final Class<?> jclass = (Class<?>) arg1FieldAsClass.getValue();
-                final String fieldname = (String) arg2FieldAsString.getValue();
-                
+                final String fieldname = (String) arg2FieldAsString.getValue();                
                 try {                                    
                     final Field field = jclass.getField(fieldname);
                     // field.get: Returns the value of the field represented by this <code>Field</code>, on
@@ -246,8 +246,6 @@ public class OJavaSystem implements ICallHandler {
     
         }; // Return   
     } // End of the method // 
-    
-    
     
     /**
      * Execute.

@@ -29,62 +29,39 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * OParser.java
- * Sep 24, 2010
+ * Token.java
+ * Sep 19, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane;
-
-import java.util.Stack;
-
-import org.berlin.lang.octane.sys.OMathFunctions;
-import org.berlin.lang.octane.sys.jsys.OJavaSystem;
-import org.berlin.lang.octane.type.OType;
-import org.berlin.lang.octane.type.TypeConstants;
+package org.berlin.lang.octane.type;
 
 /**
  * @author bbrown
  *
  */
-public class OParser {
+public class OBreak  extends OBaseType {
 
-    private final Stack<OType> dataStack = new Stack<OType>();
-            
+    private final String token;    
+    
+    public OBreak(final String tok) {
+        this.token = tok;
+    }
+    
     /**
-     * 
-     * @param tokenStack
+     * @see org.berlin.lang.octane.type.OType#getType()
      */
-    public void parse(final Stack<OType> tokenStack) {
-        
-        while (!tokenStack.empty()) {
-            
-            final OType token = tokenStack.pop();            
-            if (token.getType() == TypeConstants.NUMBER) {
-                dataStack.push(token);
-            } else if (token.getType() == TypeConstants.STRING) {
-                dataStack.push(token);
-            } else if (token.getType() == TypeConstants.BREAK) {
-                dataStack.push(token);
-                
-            } else if (token.getType() == TypeConstants.WORD) {
-                
-                System.out.println("PARSE FUNCTION");
-                final OMathFunctions math = new OMathFunctions(dataStack, token);
-                final OJavaSystem javasys = new OJavaSystem(dataStack, token);
-                
-                math.registerOps();
-                math.execute(token);
-                
-                javasys.registerCalls();
-                javasys.execute(token);
-            }
-        } // End of the while //
-        
-        for (final OType token : dataStack) {
-            System.out.println("$[data-stack-token]" + token);
-        } // End of the for //
-        
+    @Override
+    public int getType() {
+       return TypeConstants.BREAK;
+    }
+
+    /**
+     * @see org.berlin.lang.octane.type.OType#getValue()
+     */
+    @Override
+    public Object getValue() {
+        return token;
     }    
     
-} // End of the Class
+} // End of the Class 

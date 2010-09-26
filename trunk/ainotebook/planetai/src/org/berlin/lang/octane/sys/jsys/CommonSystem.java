@@ -29,62 +29,60 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * OParser.java
- * Sep 24, 2010
+ * CommonSystem.java
+ * Sep 26, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
-package org.berlin.lang.octane;
+package org.berlin.lang.octane.sys.jsys;
 
 import java.util.Stack;
 
-import org.berlin.lang.octane.sys.OMathFunctions;
-import org.berlin.lang.octane.sys.jsys.OJavaSystem;
+import org.berlin.lang.octane.sys.VisitElement;
+import org.berlin.lang.octane.type.OObject;
 import org.berlin.lang.octane.type.OType;
-import org.berlin.lang.octane.type.TypeConstants;
 
 /**
+ * Push common system calls on the stack.
+ * 
  * @author bbrown
  *
  */
-public class OParser {
+public class CommonSystem {
 
-    private final Stack<OType> dataStack = new Stack<OType>();
-            
-    /**
-     * 
-     * @param tokenStack
-     */
-    public void parse(final Stack<OType> tokenStack) {
-        
-        while (!tokenStack.empty()) {
-            
-            final OType token = tokenStack.pop();            
-            if (token.getType() == TypeConstants.NUMBER) {
-                dataStack.push(token);
-            } else if (token.getType() == TypeConstants.STRING) {
-                dataStack.push(token);
-            } else if (token.getType() == TypeConstants.BREAK) {
-                dataStack.push(token);
-                
-            } else if (token.getType() == TypeConstants.WORD) {
-                
-                System.out.println("PARSE FUNCTION");
-                final OMathFunctions math = new OMathFunctions(dataStack, token);
-                final OJavaSystem javasys = new OJavaSystem(dataStack, token);
-                
-                math.registerOps();
-                math.execute(token);
-                
-                javasys.registerCalls();
-                javasys.execute(token);
-            }
-        } // End of the while //
-        
-        for (final OType token : dataStack) {
-            System.out.println("$[data-stack-token]" + token);
-        } // End of the for //
-        
-    }    
+    private final Stack<OType> dataStack;
     
-} // End of the Class
+    public CommonSystem(final Stack<OType> dataStack) {
+        this.dataStack = dataStack;        
+    }
+    
+    /**
+     * Place system out on the stack
+     * "out" "java.lang.System" _class _field
+     */
+    public ICall createSysOutCall() {
+        
+        return new BaseCall(this.dataStack) {
+                                   
+            @Override
+            public void execute() {                      
+                this.getDataStack().push(new OObject("test"));
+            }            
+            @Override
+            public String doc() {
+                return "[ _sysout ]";
+            }
+            @Override
+            public boolean hasOperation(final VisitElement element) {                
+                return "_sysout".equals(element.getLastStackElement().getValue());
+            }
+            @Override
+            public OType op(OType... args) {                
+               return null;            
+            }    
+        }; // Return
+        
+    } // End of the method //
+     
+    
+}
