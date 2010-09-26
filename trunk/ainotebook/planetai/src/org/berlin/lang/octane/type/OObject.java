@@ -29,44 +29,40 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * 
- * Test.java
+ * Token.java
  * Sep 19, 2010
  * bbrown
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
 package org.berlin.lang.octane.type;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
- * 
  * @author bbrown
  *
  */
-public class TypeConstants {
+public class OObject extends OBaseType {
 
-    public static final char WHITESPACE = ' ';
-    public static final char POINT = '.';
-    public static final char DOUBLE_QUOTE = '"';
+    private final Object token;    
     
-    public static final char COMMENT_START = '(';
-    public static final char COMMENT_END   = ')';
-    
-    public static final int NUMBER  = 1;
-    public static final int WORD    = 2;
-    public static final int STRING  = 3;    
-    public static final int OBJECT  = 4;
-    
-    public static final int END = -1;
-    
-    public static final Map<Integer, String> TYPE_INFO;
-    static {
-        TYPE_INFO = new HashMap<Integer, String>();
-        TYPE_INFO.put(NUMBER, "NUMBER");
-        TYPE_INFO.put(WORD, "WORD");
-        TYPE_INFO.put(STRING, "STRING");
-        TYPE_INFO.put(OBJECT, "OBJECT");
+    public OObject(final Object tok) {
+        this.token = tok;
     }
-        
-} // End of Constants
+    
+    /**
+     * @see org.berlin.lang.octane.type.OType#getType()
+     */
+    @Override
+    public int getType() {
+       return TypeConstants.OBJECT;
+    }
+
+    /**
+     * @see org.berlin.lang.octane.type.OType#getValue()
+     */
+    @Override
+    public Object getValue() {
+        return token;
+    }
+      
+    
+} // End of the Class 
