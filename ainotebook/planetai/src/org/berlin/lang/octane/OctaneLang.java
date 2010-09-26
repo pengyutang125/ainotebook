@@ -45,6 +45,7 @@ import java.io.Reader;
 import java.util.Collections;
 import java.util.Stack;
 
+import org.berlin.lang.octane.type.OBreak;
 import org.berlin.lang.octane.type.ONumber;
 import org.berlin.lang.octane.type.OString;
 import org.berlin.lang.octane.type.OType;
@@ -84,7 +85,7 @@ public class OctaneLang {
      * @return
      */
     public static boolean isWhitespace(int ch) {
-        return Character.isWhitespace(ch) || ch == ',' || ch == '{' || ch == '}';
+        return Character.isWhitespace(ch) || ch == '[' || ch == ']';
     }
 
     /**
@@ -127,7 +128,10 @@ public class OctaneLang {
                     // Loop until next end comment                    
                     while((TypeConstants.COMMENT_END != ch) && (ch != TypeConstants.END)) {
                         ch = r.read();                        
-                    } // End of while //                                        
+                    } // End of while //
+                }
+                if ((ch == TypeConstants.COMMENT_END) || isWhitespace(ch))  {
+                    continue;
                 }
                 
                 if (ch == TypeConstants.END) {                    
@@ -140,10 +144,13 @@ public class OctaneLang {
                     
                     charStack.push(ch);
                     
-                } else if ((ch == TypeConstants.POINT) || (ch == TypeConstants.DOUBLE_QUOTE) || (ch == '_')) {                   
+                } else if ((ch == TypeConstants.POINT) 
+                        || (ch == TypeConstants.COMMA_BREAK)
+                        || (ch == TypeConstants.DOUBLE_QUOTE) 
+                        || (ch == '_')) {                   
                     charStack.push(ch);                               
                 } else {
-                    System.out.println("INVALID INPUT");
+                    System.out.println("INVALID INPUT ==>" + (char)ch);
                 } // End of the if - else //
                 
             } // End of the for //
@@ -197,11 +204,14 @@ public class OctaneLang {
         } // End of the if - else //
         
         // Clear the right value        
-        inputStack.clear(); 
-        doubleRightStack.clear();        
-        
+        clearReadStacks(inputStack, doubleRightStack);                      
     }
-            
+    
+    public void clearReadStacks(final Stack<Integer> instack, final Stack<Integer> rightstack) {
+        instack.clear();
+        rightstack.clear();
+    }
+    
     /**
      * 
      * @param pushbackReader
@@ -242,15 +252,20 @@ public class OctaneLang {
                 } // End of while //
                 
                 tokenStack.push(new OString(buf.toString()));                        
-                                
+                clearReadStacks(inputStack, doubleRightStack);
+                
             } else if (Character.isDigit(chartok)) {
                 if (hasRightVal) {                    
                     doubleRightStack.push(chartok);
                 } else {
                     inputStack.push(chartok);                    
                 }                                
-            } else if (Character.isLetter(chartok) || '_' == chartok) {
                 
+            } else if (TypeConstants.COMMA_BREAK == chartok) {                
+                tokenStack.push(new OBreak("<BREAK>"));
+                clearReadStacks(inputStack, doubleRightStack);
+                
+            } else if (Character.isLetter(chartok) || ('_' == chartok)) {                
                 inputStack.push(chartok);
                 
             } else if (TypeConstants.POINT == chartok) {
@@ -273,8 +288,7 @@ public class OctaneLang {
                 
         System.out.println(">>>>>>>>>>>> Parsing Tokens");
         final OParser parser = new OParser();
-        parser.parse(tokenStack);
-        
+        parser.parse(tokenStack);        
     }
     
     /**    
