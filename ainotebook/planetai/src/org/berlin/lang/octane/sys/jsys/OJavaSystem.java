@@ -229,7 +229,7 @@ public class OJavaSystem implements ICallHandler {
                                    
             @Override
             public void execute() {                                                                               
-                this.getDataStack().push(this.op(null));                
+                this.getDataStack().push(this.op((OType [])null));                
             }            
             @Override
             public String doc() {
