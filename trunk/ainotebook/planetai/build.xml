@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+<!-- Copyright (c) 2009 -->
+<!-- Code generated Ant Script -->
+<!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+<project name="Build File - Planet" default="compile" basedir=".">
+    
+    <property file="build.properties" /> 
+    <property name="build.dir"            value="${basedir}/target/java_octane_package" />
+    <property name="build.classes.dir"    value="${build.dir}/classes" />
+	
+    <property name="src.dir"              value="${basedir}/src" />
+    <property name="lib.dir"              value="${basedir}/lib" />
+	
+    <property name="upload.dir"           value="${basedir}/target/upload/java_octane_package" />
+	
+<!-- //// Begin Target //// -->    
+<target name="help" description="Initialization">
+            <tstamp/>
+            <echo>
+ Additional Targets and Usage:
+ -----------------
+ compile - to compile the source, use this target.  
+           To build the  complete release package, 
+           you must compile this manually.
+
+            	            	
+</echo>
+	<echo message="build.classes.dir:" />
+    <echo message="${build.classes.dir}" />
+	
+	<echo message="src.dir:" />
+	<echo message="${src.dir}" />
+</target>   
+    
+    <path id="classpath">       	     	
+    </path>
+
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Target: Prepare -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <target name="prepare" depends="help">
+        <mkdir dir="${build.dir}"/>
+    	<mkdir dir="${upload.dir}"/>
+        <mkdir dir="${build.classes.dir}"/>
+    </target>
+
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+    <!-- Target: Compile -->
+    <!-- ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; -->
+		    	
+	<target name="compile" depends="prepare">
+	        <javac deprecation="true"	                
+	                srcdir="${src.dir}"
+	                debug="true"
+	                destdir="${build.classes.dir}">
+	        	
+	        	<include name="**/*.java" />	        	        	            	                                	                  	           
+	            <classpath refid="classpath"/>
+	        </javac>
+    </target>
+	
+	<target name="clean">
+	    <delete dir="${build.dir}"/>	    
+	</target>
+	
+	<target name="fullclean">
+	    <delete dir="${build.dir}"/>        
+		<delete dir="${upload.dir}"/>
+    </target>
+		
+	<target name="create-flattened-upload" depends="compile" description="Create a flattened version of the upload package">
+	    <copy todir="${upload.dir}" flatten="true">
+	      <fileset dir="${src.dir}">
+	        <include name="**/*.java"/>
+	      </fileset>
+	    </copy>
+	    <copy todir="${upload.dir}" flatten="true">
+	        <fileset dir="${basedir}">
+	          <include name="**/*.oct"/>
+	        </fileset>
+	    </copy>		
+		
+		<!-- Do search replace on imports -->
+	    <replaceregexp match="import (static )?(?!java).*\.(.*)" replace="" byline="true">
+	      <fileset dir="${upload.dir}">
+	        <include name="**/*.java"/>
+	      </fileset>
+	    </replaceregexp>
+		
+		<!-- Do search replace on package -->
+	    <replaceregexp match="package(.*)" replace="" byline="true">
+	      <fileset dir="${upload.dir}">
+	        <include name="**/*.java"/>
+	      </fileset>
+	    </replaceregexp>
+		
+	    <javac srcdir="${upload.dir}" destdir="${upload.dir}" classpath="." debug="true" deprecation="true">
+	      <compilerarg value="-Xlint:unchecked"/>
+	      <include name="**/*.java"/>
+	    </javac>
+		
+	    <zip destfile="${upload.dir}/java_octane_upload.zip">
+	      <fileset dir="${upload.dir}">
+	        <include name="**/*.java"/>
+	      	<include name="**/*.oct"/>
+	      </fileset>
+	    </zip>
+			   
+	  </target>
+	
+</project>
