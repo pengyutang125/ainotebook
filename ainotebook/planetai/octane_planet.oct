@@ -1,0 +1,17 @@
+(/*********************************************************
+  *
+  * Example Octane Lang Program   
+  * Berlin Brown
+  *
+  *********************************************************/)
+    
+ _date ( -- Return the Date ) 
+ 
+ [ "From Resource Directory" , "java.lang.Object" 1 "println"
+    [ "out" "java.lang.System" _class _field ] ( <-- object System.out on stack )
+        _invoke ] 
+
+( -- End of Program )
+
+  
+     
