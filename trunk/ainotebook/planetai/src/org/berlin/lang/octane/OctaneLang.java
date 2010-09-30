@@ -58,6 +58,7 @@ import org.berlin.lang.octane.type.TypeConstants;
  * @author bbrown
  * 
  */
+@SuppressWarnings("unchecked")
 public class OctaneLang {
 
     /**
@@ -216,7 +217,7 @@ public class OctaneLang {
     /**
      * 
      * @param pushbackReader
-     */
+     */    
     public void readCharStack(final LineNumberingPushbackReader pushbackReader) throws Exception {
         
         final Object EOF = new Object();
@@ -281,6 +282,7 @@ public class OctaneLang {
         System.out.println(">>>>>>>>>>>> Printing Tokens in TOKEN STACK <<");
         Collections.reverse(tokenStack);
         // Copy the token stack stack to the history stack
+       
         final Stack<OType> historyTokenStack = (Stack<OType>) tokenStack.clone();        
         
         for (final OType token : tokenStack) {
