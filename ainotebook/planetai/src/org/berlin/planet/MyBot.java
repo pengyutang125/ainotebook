@@ -1,8 +1,7 @@
 package org.berlin.planet;
 
-import java.util.*;
-
 public class MyBot {
+    
     // The DoTurn function is where your code goes. The PlanetWars object
     // contains the state of the game, including information about all planets
     // and fleets that currently exist. Inside this function, you issue orders
@@ -51,7 +50,8 @@ public class MyBot {
      * 
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) {        
+                        
         String line = "";
         String message = "";
         int c;
