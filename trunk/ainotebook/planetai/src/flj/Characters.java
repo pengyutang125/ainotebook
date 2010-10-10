@@ -1,4 +1,4 @@
-
+package flj;
 
 /**
  * First-class functions on Characters.

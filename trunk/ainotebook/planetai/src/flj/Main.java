@@ -1,3 +1,4 @@
+package flj;
 
 import static java.lang.Class.forName;
 import static java.lang.System.exit;

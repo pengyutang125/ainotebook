@@ -34,6 +34,8 @@
  
  */
 
+package flj;
+
 public final class DemoChequeWrite {
     
   private DemoChequeWrite() {}

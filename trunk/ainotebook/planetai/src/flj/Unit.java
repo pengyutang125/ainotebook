@@ -33,7 +33,7 @@
 
  
  */
-
+package flj;
 
 /**
  * The unit type which has only one value.

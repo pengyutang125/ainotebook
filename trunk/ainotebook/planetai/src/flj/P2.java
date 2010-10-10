@@ -1,4 +1,4 @@
-
+package flj;
 
 /**
  * A product-2.

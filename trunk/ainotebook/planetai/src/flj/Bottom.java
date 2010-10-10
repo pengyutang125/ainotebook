@@ -34,6 +34,8 @@
  
  */
 
+package flj;
+
 /**
  * Represents the bottom _|_ value.
  *

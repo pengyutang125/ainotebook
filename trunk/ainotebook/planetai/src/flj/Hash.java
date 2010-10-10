@@ -34,6 +34,8 @@
  
  */
 
+package flj;
+
 /**
  * Produces a hash code for an object which should attempt uniqueness.
  *

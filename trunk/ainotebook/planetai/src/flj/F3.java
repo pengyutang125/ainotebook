@@ -1,4 +1,5 @@
 
+package flj;
 
 /**
  * A transformation function of arity-3 from <code>A</code>, <code>B</code> and <code>C</code> to

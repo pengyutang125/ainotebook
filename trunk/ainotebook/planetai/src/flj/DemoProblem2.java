@@ -1,3 +1,5 @@
+
+package flj;
 import static java.lang.System.out;
 
 /**

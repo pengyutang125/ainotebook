@@ -1,4 +1,5 @@
 
+package flj;
 
 /**
  * Find the largest prime factor of a composite number.

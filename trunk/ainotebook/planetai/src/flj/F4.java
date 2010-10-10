@@ -34,6 +34,8 @@
  
  */
 
+package flj;
+
 
 /**
  * A transformation function of arity-4 from <code>A</code>, <code>B</code>, <code>C</code> and

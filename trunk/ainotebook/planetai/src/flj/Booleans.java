@@ -1,4 +1,6 @@
 
+package flj;
+
 /**
  * Curried logical functions.
  *

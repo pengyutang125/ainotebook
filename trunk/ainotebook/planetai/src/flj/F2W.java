@@ -33,6 +33,7 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
  
  */
+package flj;
 
 /**
  * A wrapper for functions of arity 2, that decorates them with higher-order functions.
