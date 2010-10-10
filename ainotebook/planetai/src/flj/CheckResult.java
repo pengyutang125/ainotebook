@@ -34,6 +34,8 @@
  
  */
 
+package flj;
+
 import java.io.StringWriter;
 import java.io.PrintWriter;
 

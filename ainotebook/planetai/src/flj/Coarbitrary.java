@@ -1,4 +1,5 @@
 
+package flj;
 
 import static java.lang.Double.doubleToRawLongBits;
 import static java.lang.Float.floatToRawIntBits;

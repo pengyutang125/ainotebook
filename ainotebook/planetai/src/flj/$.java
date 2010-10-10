@@ -34,6 +34,8 @@
  
  */
 
+package flj;
+
 /**
  * The constant arrow, for attaching a new name to an existing type. For every pair of types A and B, this type
  * is the identity morphism from B to B.

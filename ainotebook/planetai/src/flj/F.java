@@ -34,6 +34,8 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  
  */
 
+package flj;
+
 /**
  * A transformation or function from <code>A</code> to <code>B</code>. This type can be represented
  * using the Java 7 closure syntax.

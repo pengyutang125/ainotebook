@@ -34,6 +34,7 @@
  
  */
 
+package flj;
 
 import static java.lang.Math.round;
 

@@ -35,6 +35,7 @@
  */
 
 
+package flj;
 
 /**
  * Represents a side-effect.

@@ -1,4 +1,5 @@
 
+package flj;
 
 /**
  * Type-safe heterogeneous lists.
