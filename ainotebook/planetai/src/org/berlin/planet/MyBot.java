@@ -1,5 +1,7 @@
 package org.berlin.planet;
 
+import flj.DemoChequeWrite;
+
 public class MyBot {
     
     // The DoTurn function is where your code goes. The PlanetWars object
@@ -51,7 +53,9 @@ public class MyBot {
      * @param args
      */
     public static void main(String[] args) {        
-                        
+        
+        DemoChequeWrite.printTest();
+        
         String line = "";
         String message = "";
         int c;
