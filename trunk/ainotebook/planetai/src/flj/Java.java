@@ -49,7 +49,7 @@ import java.util.TreeSet;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import static java.util.EnumSet.copyOf;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -114,7 +114,7 @@ public final class Java {
   public static <A extends Enum<A>> F<List<A>, EnumSet<A>> List_EnumSet() {
     return new F<List<A>, EnumSet<A>>() {
       public EnumSet<A> f(final List<A> as) {
-        return copyOf(as.toCollection());
+        return EnumSet.copyOf(as.toCollection());
       }
     };
   }
@@ -370,7 +370,7 @@ public final class Java {
   public static <A extends Enum<A>> F<Array<A>, EnumSet<A>> Array_EnumSet() {
     return new F<Array<A>, EnumSet<A>>() {
       public EnumSet<A> f(final Array<A> as) {
-        return copyOf(as.toCollection());
+        return EnumSet.copyOf(as.toCollection());
       }
     };
   }
@@ -662,7 +662,7 @@ public final class Java {
   public static <A extends Enum<A>> F<Stream<A>, EnumSet<A>> Stream_EnumSet() {
     return new F<Stream<A>, EnumSet<A>>() {
       public EnumSet<A> f(final Stream<A> as) {
-        return copyOf(as.toCollection());
+        return EnumSet.copyOf(as.toCollection());
       }
     };
   }
@@ -919,7 +919,7 @@ public final class Java {
   public static <A extends Enum<A>> F<Option<A>, EnumSet<A>> Option_EnumSet() {
     return new F<Option<A>, EnumSet<A>>() {
       public EnumSet<A> f(final Option<A> as) {
-        return copyOf(as.toCollection());
+        return EnumSet.copyOf(as.toCollection());
       }
     };
   }

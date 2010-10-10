@@ -40,7 +40,7 @@ import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import static java.lang.reflect.Modifier.isStatic;
+import java.lang.reflect.Modifier;
 
 /**
  * Functions for checking properties in a class that are found reflectively and according to various
@@ -330,7 +330,7 @@ public final class Check {
             !m.element().isAnnotationPresent(NoCheck.class) &&
             !declaringClass.isAnnotationPresent(NoCheck.class) &&
             (categories.length == 0 || Array.array(categories).exists(p.f(m.element()))) &&
-            (t.isSome() || isStatic(m.modifiers()));
+            (t.isSome() || Modifier.isStatic(m.modifiers()));
       }
     }).map(new F<PropertyMember, P3<Property, String, Option<CheckParams>>>() {
       public P3<Property, String, Option<CheckParams>> f(final PropertyMember m) {

@@ -1,7 +1,5 @@
 package flj;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
 
 /**
  * <p> A generator for values of the type of the given type parameter (<code>A</code>). Generation
@@ -395,8 +393,8 @@ public final class Gen<A> {
    * @return A generator that produces values between the given range (inclusive).
    */
   public static Gen<Integer> choose(final int from, final int to) {
-    final int f = min(from, to);
-    final int t = max(from, to);
+    final int f = Math.min(from, to);
+    final int t = Math.max(from, to);
     return parameterised(Function.curry(new F2<Integer, Rand, Gen<Integer>>() {
       public Gen<Integer> f(final Integer i, final Rand r) {
         return value(r.choose(f, t));
@@ -412,8 +410,8 @@ public final class Gen<A> {
    * @return A generator that produces v
    */
   public static Gen<Double> choose(final double from, final double to) {
-    final double f = min(from, to);
-    final double t = max(from, to);
+    final double f = Math.min(from, to);
+    final double t = Math.max(from, to);
     return parameterised(new F<Integer, F<Rand, Gen<Double>>>() {
       public F<Rand, Gen<Double>> f(final Integer i) {
         return new F<Rand, Gen<Double>>() {

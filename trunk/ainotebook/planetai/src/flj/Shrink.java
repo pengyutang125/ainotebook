@@ -1,6 +1,5 @@
 package flj;
 
-import static java.lang.System.arraycopy;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
@@ -849,7 +848,7 @@ public final class Shrink<A> {
         public P2<Byte, Array<Byte>> f(final BigInteger i) {
           final byte[] b = i.toByteArray();
           final Byte[] x = new Byte[b.length - 1];
-          arraycopy(b, 0, x, 0, b.length - 1);
+          System.arraycopy(b, 0, x, 0, b.length - 1);
           return P.p(b[0], Array.array(x));
         }
       });

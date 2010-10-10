@@ -35,7 +35,7 @@
  */
 package flj;
 
-import static java.lang.Math.abs;
+
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -56,7 +56,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Locale;
-import static java.util.Locale.getAvailableLocales;
+
 import java.util.PriorityQueue;
 import java.util.Properties;
 import java.util.Stack;
@@ -64,7 +64,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.Vector;
 import java.util.WeakHashMap;
-import static java.util.EnumSet.copyOf;
+
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -852,7 +852,7 @@ public final class Arbitrary<A> {
   public static <A extends Enum<A>> Arbitrary<EnumSet<A>> arbEnumSet(final Arbitrary<A> aa) {
     return arbitrary(arbArray(aa).gen.map(new F<Array<A>, EnumSet<A>>() {
       public EnumSet<A> f(final Array<A> a) {
-        return copyOf(a.toCollection());
+        return EnumSet.copyOf(a.toCollection());
       }
     }));
   }
@@ -1128,7 +1128,7 @@ public final class Arbitrary<A> {
                                                  public F<Boolean, ArrayBlockingQueue<A>> f(final Integer capacity) {
                                                    return new F<Boolean, ArrayBlockingQueue<A>>() {
                                                      public ArrayBlockingQueue<A> f(final Boolean fair) {
-                                                       return new ArrayBlockingQueue<A>(a.length() + abs(capacity),
+                                                       return new ArrayBlockingQueue<A>(a.length() + Math.abs(capacity),
                                                                                         fair, a.toCollection());
                                                      }
                                                    };
@@ -1339,7 +1339,7 @@ public final class Arbitrary<A> {
   /**
    * An arbitrary implementation for locales.
    */
-  public static final Arbitrary<Locale> arbLocale = arbitrary(Gen.elements(getAvailableLocales()));
+  public static final Arbitrary<Locale> arbLocale = arbitrary(Gen.elements(Locale.getAvailableLocales()));
 
   /**
    * Returns an arbitrary implementation for product-1 values.
