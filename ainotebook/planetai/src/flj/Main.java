@@ -1,8 +1,5 @@
 package flj;
 
-import static java.lang.Class.forName;
-import static java.lang.System.exit;
-import static java.lang.System.out;
 
 /**
  * Checks the properties of a class using a standard random generator, standard check parameters and
@@ -29,18 +26,18 @@ public final class Main {
   public static void main(final String... args) {
     if(args.length == 0) {
       System.err.println("<class> [category]*");
-      exit(441);
+      System.exit(441);
     } else {
       try {
-        Check.check(forName(args[0]), Array.array(args).toList().tail()).foreach(new Effect<P2<String, CheckResult>>() {
+        Check.check(Class.forName(args[0]), Array.array(args).toList().tail()).foreach(new Effect<P2<String, CheckResult>>() {
           public void e(final P2<String, CheckResult> r) {
             CheckResult.summary.print(r._2());
-            out.println(" (" + r._1() + ')');
+            System.out.println(" (" + r._1() + ')');
           }
         });
       } catch(ClassNotFoundException e) {
         System.err.println(e);        
-        exit(144);
+        System.exit(144);
       }
     }
   }

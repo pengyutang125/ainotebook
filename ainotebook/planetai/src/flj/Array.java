@@ -1,9 +1,6 @@
 
 package flj;
 
-
-import static java.lang.Math.min;
-import static java.lang.System.arraycopy;
 import java.util.AbstractCollection;
 import java.util.Arrays;
 import java.util.Collection;
@@ -301,7 +298,7 @@ public final class Array<A> implements Iterable<A> {
       private int i;
 
       public Unit f(final Array<B> x) {
-        arraycopy(x.a, 0, bs, i, x.a.length);
+        System.arraycopy(x.a, 0, bs, i, x.a.length);
         i = i + x.a.length;
         return Unit.unit();
       }
@@ -387,8 +384,8 @@ public final class Array<A> implements Iterable<A> {
   public Array<A> append(final Array<A> aas) {
     final Object[] x = new Object[a.length + aas.a.length];
 
-    arraycopy(a, 0, x, 0, a.length);
-    arraycopy(aas.a, 0, x, a.length, aas.a.length);
+    System.arraycopy(a, 0, x, 0, a.length);
+    System.arraycopy(aas.a, 0, x, a.length, aas.a.length);
 
     return new Array<A>(x);
   }
@@ -565,7 +562,7 @@ public final class Array<A> implements Iterable<A> {
    * @return A new array with a length the same as the shortest of this array and the given array.
    */
   public <B, C> Array<C> zipWith(final Array<B> bs, final F<A, F<B, C>> f) {
-    final int len = min(a.length, bs.length());
+    final int len = Math.min(a.length, bs.length());
     final Array<C> x = new Array<C>(new Object[len]);
 
     for (int i = 0; i < len; i++) {

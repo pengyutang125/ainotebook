@@ -1,7 +1,6 @@
 package flj;
 
-import static java.lang.Math.max;
-import static java.lang.Math.min;
+
 import java.util.Random;
 
 /**
@@ -131,8 +130,8 @@ public final class Rand {
         public F<Integer, Integer> f(final Integer from) {
           return new F<Integer, Integer>() {
             public Integer f(final Integer to) {
-              final int f = min(from, to);
-              final int t = max(from, to);
+              final int f = Math.min(from, to);
+              final int t = Math.max(from, to);
               return f + seed.map(fr).orSome(new Random()).nextInt(t - f + 1);
             }
           };
@@ -145,8 +144,8 @@ public final class Rand {
         public F<Double, Double> f(final Double from) {
           return new F<Double, Double>() {
             public Double f(final Double to) {
-              final double f = min(from, to);
-              final double t = max(from, to);
+              final double f = Math.min(from, to);
+              final double t = Math.max(from, to);
               return seed.map(fr).orSome(new Random()).nextDouble() * (t - f) + f;
             }
           };

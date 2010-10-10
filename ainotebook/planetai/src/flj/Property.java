@@ -36,7 +36,6 @@
 
 package flj;
 
-import static java.lang.Math.round;
 
 /**
  * Represents an algebraic property about a program that may be {@link #check(Rand, int, int, int,
@@ -195,7 +194,7 @@ public final class Property {
     while (true) {
       final float size = s == 0 && d == 0 ? minSize : sz + (maxSize - sz) / (minSuccessful - s);
       try {
-        final Result x = f.f(round(size)).f(r);
+        final Result x = f.f(Math.round(size)).f(r);
         if (x.isNoResult())
           if (d + 1 >= maxDiscarded) {
             res = CheckResult.exhausted(s, d + 1);

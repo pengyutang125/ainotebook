@@ -1,8 +1,6 @@
 
 package flj;
 
-import static java.lang.Double.doubleToRawLongBits;
-import static java.lang.Float.floatToRawIntBits;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Time;
@@ -346,7 +344,7 @@ public abstract class Coarbitrary<A> {
    */
   public static final Coarbitrary<Float> coarbFloat = new Coarbitrary<Float>() {
     public <B> Gen<B> coarbitrary(final Float f, final Gen<B> g) {
-      return coarbInteger.coarbitrary(floatToRawIntBits(f), g);
+      return coarbInteger.coarbitrary(Float.floatToRawIntBits(f), g);
     }
   };
 
@@ -355,7 +353,7 @@ public abstract class Coarbitrary<A> {
    */
   public static final Coarbitrary<Double> coarbDouble = new Coarbitrary<Double>() {
     public <B> Gen<B> coarbitrary(final Double d, final Gen<B> g) {
-      return coarbLong.coarbitrary(doubleToRawLongBits(d), g);
+      return coarbLong.coarbitrary(Double.doubleToRawLongBits(d), g);
     }
   };
 

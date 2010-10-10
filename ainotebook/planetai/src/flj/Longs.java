@@ -1,5 +1,4 @@
 package flj;
-import static java.lang.Math.abs;
 
 /**
  * Curried functions over Longs.
@@ -48,7 +47,7 @@ public final class Longs {
    */
   public static final F<Long, Long> abs = new F<Long, Long>() {
     public Long f(final Long x) {
-      return abs(x);
+      return Math.abs(x);
     }
   };
 

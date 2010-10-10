@@ -132,30 +132,6 @@ public final class IterableW<A> implements Iterable<A> {
     });
   }
 
-  /**
-   * Performs a bind across each element of all iterables of an iterable, collecting the values in an iterable.
-   * This implementation is strict and requires O(n) stack space.
-   *
-   * @param as The iterable of iterables to transform.
-   * @return A iterable of iterables containing the results of the bind operations across all given iterables.
-   */
-  public static <A, T extends Iterable<A>> IterableW<IterableW<A>> sequence(final Iterable<T> as) {
-    final Stream<T> ts = Stream.iterableStream(as);
-    return ts.isEmpty() ? iterable(wrap(Option.<A>none())) : wrap(ts.head()).bind(new F<A, Iterable<IterableW<A>>>() {
-      public Iterable<IterableW<A>> f(final A a) {
-        return sequence(ts.tail().map(IterableW.<T, Stream<T>>wrap())._1())
-            .bind(new F<IterableW<A>, Iterable<IterableW<A>>>() {
-              public Iterable<IterableW<A>> f(final IterableW<A> as) {
-                return iterable(wrap(Stream.cons(a, new P1<Stream<A>>() {
-                  public Stream<A> _1() {
-                    return Stream.iterableStream(as);
-                  }
-                })));
-              }
-            });
-      }
-    });
-  }
 
   /**
    * The first-class bind function over Iterable.

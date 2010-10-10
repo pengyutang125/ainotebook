@@ -2,8 +2,6 @@
 package flj;
 
 
-import static java.lang.Math.abs;
-
 /**
  * Curried functions over Integers.
  *
@@ -51,7 +49,7 @@ public final class Integers {
    */
   public static final F<Integer, Integer> abs = new F<Integer, Integer>() {
     public Integer f(final Integer x) {
-      return abs(x);
+      return Math.abs(x);
     }
   };
 
