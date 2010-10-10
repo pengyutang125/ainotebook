@@ -106,18 +106,16 @@ public final class TreeMap<K, V> implements Iterable<P2<K, V>> {
    *
    * @return A iterator for this map's key-value pairs.
    */
-  public Iterator<P2<K, V>> iterator() {  
-      return null;
-      /*
+  public Iterator<P2<K, V>> iterator() {        
       return IterableW.join(
               tree.toStream()
                 .map(P2.<K, Option<V>, IterableW<V>>map2_(IterableW.<V, Option<V>>wrap()))
                     .map(P2.tuple(Function
-                            .compose
-                            (IterableW.<V, P2<K, V>>map(), 
-                                    P.<K, V>p2()))))
-                                    .iterator();
-                                    */
+                            .compose(
+                                    IterableW.<V, P2<K, V>>map(), 
+                                        P.<K, V>p2()))))
+                                            .iteratorType();
+                                    
                                     
   }
 
