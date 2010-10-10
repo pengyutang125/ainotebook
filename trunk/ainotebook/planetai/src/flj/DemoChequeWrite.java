@@ -199,8 +199,9 @@ public final class DemoChequeWrite {
               "100.45", 
               "100.07",    
       };  
-      for (final String a : testargs)
-          System.out.println(List.asString(write(List.fromString(a))));  
+      for (final String a : testargs) {
+          List.asString(write(List.fromString(a)));
+      }
   }
   
   public static void main(final String[] args) {

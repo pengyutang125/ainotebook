@@ -263,6 +263,17 @@ public final class IterableW<A> implements Iterable<A> {
   public Iterator<A> iterator() {
     return i.iterator();
   }
+  
+
+  /**
+   * Returns an iterator for this iterable.
+   *
+   * @return an iterator for this iterable.
+   */
+  @SuppressWarnings("unchecked")
+  public <K, Z> Iterator<P2<K, Z>> iteratorType() {
+    return (Iterator<P2<K, Z>>) this.iterator();
+  }
 
   /**
    * Zips this iterable with the given iterable of functions, applying each function in turn to the
