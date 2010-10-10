@@ -147,6 +147,24 @@ public final class DemoChequeWrite {
     return x._1().append(List.fromString(" and ")).append(x._2());
   }
 
+  public static void printTest() {
+      final String [] testargs = new String [] {
+              "0",
+              "1", 
+              "1.",
+              "0.", 
+              "0.0", 
+              "1.0", 
+              "a1a", 
+              "a1a.a0.7b",
+              "100", 
+              "100.45", 
+              "100.07",    
+      };  
+      for (final String a : testargs)
+          System.out.println(List.asString(write(List.fromString(a))));  
+  }
+  
   public static void main(final String[] args) {
     if (args.length == 1) {
       tests();
