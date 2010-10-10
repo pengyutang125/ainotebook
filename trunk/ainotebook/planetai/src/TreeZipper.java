@@ -1,19 +1,4 @@
 
-
-import Function.*;
-import F2W.$$;
-import function.Booleans;
-import data.Option.some;
-import data.Option.none;
-import data.Tree.node;
-import data.Tree.unfoldTree;
-import data.Stream.nil;
-import data.Stream.unfold;
-import pre.Equal;
-import pre.Show;
-import pre.Show.*;
-import pre.Equal.*;
-
 import java.util.Iterator;
 
 /**
@@ -72,7 +57,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
   public static <A>
   F<Tree<A>, F<Stream<Tree<A>>, F<Stream<Tree<A>>, F<Stream<P3<Stream<Tree<A>>, A, Stream<Tree<A>>>>, TreeZipper<A>>>>>
   treeZipper() {
-    return curry(
+    return Function.curry(
         new F4<Tree<A>, Stream<Tree<A>>, Stream<Tree<A>>, Stream<P3<Stream<Tree<A>>, A, Stream<Tree<A>>>>, TreeZipper<A>>() {
           public TreeZipper<A> f(final Tree<A> tree,
                                  final Stream<Tree<A>> lefts,
@@ -122,11 +107,11 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    * @return An Equal instance for tree zippers.
    */
   public static <A> Equal<TreeZipper<A>> eq(final Equal<A> e) {
-    return p4Equal(
-        treeEqual(e),
-        streamEqual(treeEqual(e)),
-        streamEqual(treeEqual(e)),
-        streamEqual(p3Equal(streamEqual(treeEqual(e)), e, streamEqual(treeEqual(e))))).comap(TreeZipper.<A>p_());
+    return Equal.p4Equal(
+        Equal.treeEqual(e),
+        Equal.streamEqual(Equal.treeEqual(e)),
+        Equal.streamEqual(Equal.treeEqual(e)),
+        Equal.streamEqual(Equal.p3Equal(Equal.streamEqual(Equal.treeEqual(e)), e, Equal.streamEqual(Equal.treeEqual(e))))).comap(TreeZipper.<A>p_());
   }
 
   /**
@@ -136,17 +121,17 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    * @return A Show instance for tree zippers.
    */
   public static <A> Show<TreeZipper<A>> show(final Show<A> s) {
-    return p4Show(
-        treeShow(s),
-        streamShow(treeShow(s)),
-        streamShow(treeShow(s)),
-        streamShow(p3Show(streamShow(treeShow(s)), s, streamShow(treeShow(s))))).comap(TreeZipper.<A>p_());
+    return Show.p4Show(
+        Show.treeShow(s),
+        Show.streamShow(Show.treeShow(s)),
+        Show.streamShow(Show.treeShow(s)),
+        Show.streamShow(Show.p3Show(Show.streamShow(Show.treeShow(s)), s, Show.streamShow(Show.treeShow(s))))).comap(TreeZipper.<A>p_());
   }
 
   private static <A> Stream<Tree<A>> combChildren(final Stream<Tree<A>> ls,
                                                   final Tree<A> t,
                                                   final Stream<Tree<A>> rs) {
-    return ls.foldLeft(compose(flip(Stream.<Tree<A>>cons()), P.<Stream<Tree<A>>>p1()), Stream.cons(t, P.p(rs)));
+    return ls.foldLeft(Function.compose(Function.flip(Stream.<Tree<A>>cons()), P.<Stream<Tree<A>>>p1()), Stream.cons(t, P.p(rs)));
   }
 
   /**
@@ -157,10 +142,10 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    */
   public Option<TreeZipper<A>> parent() {
     if (parents.isEmpty())
-      return none();
+      return Option.none();
     else {
       final P3<Stream<Tree<A>>, A, Stream<Tree<A>>> p = parents.head();
-      return some(treeZipper(node(p._2(), combChildren(lefts, tree, rights)), p._1(), p._3(), parents.tail()._1()));
+      return Option.some(treeZipper(Tree.node(p._2(), combChildren(lefts, tree, rights)), p._1(), p._3(), parents.tail()._1()));
     }
   }
 
@@ -194,7 +179,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    */
   public Option<TreeZipper<A>> left() {
     return lefts.isEmpty() ? Option.<TreeZipper<A>>none()
-                           : some(treeZipper(lefts.head(), lefts.tail()._1(), rights.cons(tree), parents));
+                           : Option.some(treeZipper(lefts.head(), lefts.tail()._1(), rights.cons(tree), parents));
   }
 
   /**
@@ -205,7 +190,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    */
   public Option<TreeZipper<A>> right() {
     return rights.isEmpty() ? Option.<TreeZipper<A>>none()
-                            : some(treeZipper(rights.head(), lefts.cons(tree), rights.tail()._1(), parents));
+                            : Option.some(treeZipper(rights.head(), lefts.cons(tree), rights.tail()._1(), parents));
   }
 
   /**
@@ -216,7 +201,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
   public Option<TreeZipper<A>> firstChild() {
     final Stream<Tree<A>> ts = tree.subForest()._1();
     return ts.isEmpty() ? Option.<TreeZipper<A>>none()
-                        : some(treeZipper(ts.head(), Stream.<Tree<A>>nil(), ts.tail()._1(), downParents()));
+                        : Option.some(treeZipper(ts.head(), Stream.<Tree<A>>nil(), ts.tail()._1(), downParents()));
   }
 
   /**
@@ -227,7 +212,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
   public Option<TreeZipper<A>> lastChild() {
     final Stream<Tree<A>> ts = tree.subForest()._1().reverse();
     return ts.isEmpty() ? Option.<TreeZipper<A>>none()
-                        : some(treeZipper(ts.head(), ts.tail()._1(), Stream.<Tree<A>>nil(), downParents()));
+                        : Option.some(treeZipper(ts.head(), ts.tail()._1(), Stream.<Tree<A>>nil(), downParents()));
   }
 
   /**
@@ -237,10 +222,10 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    * @return An optional tree zipper focused on the child node at the given index, or none if there is no such child.
    */
   public Option<TreeZipper<A>> getChild(final int n) {
-    Option<TreeZipper<A>> r = none();
+    Option<TreeZipper<A>> r = Option.none();
     for (final P2<Stream<Tree<A>>, Stream<Tree<A>>> lr
         : splitChildren(Stream.<Tree<A>>nil(), tree.subForest()._1(), n)) {
-      r = some(treeZipper(lr._1().head(), lr._1().tail()._1(), lr._2(), downParents()));
+      r = Option.some(treeZipper(lr._1().head(), lr._1().tail()._1(), lr._2(), downParents()));
     }
     return r;
   }
@@ -253,20 +238,20 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    *         or none if there is no such child.
    */
   public Option<TreeZipper<A>> findChild(final F<Tree<A>, Boolean> p) {
-    Option<TreeZipper<A>> r = none();
+    Option<TreeZipper<A>> r = Option.none();
 
     final F2<Stream<Tree<A>>, Stream<Tree<A>>, Option<P3<Stream<Tree<A>>, Tree<A>, Stream<Tree<A>>>>> split =
         new F2<Stream<Tree<A>>, Stream<Tree<A>>, Option<P3<Stream<Tree<A>>, Tree<A>, Stream<Tree<A>>>>>() {
           public Option<P3<Stream<Tree<A>>, Tree<A>, Stream<Tree<A>>>> f(final Stream<Tree<A>> acc,
                                                                          final Stream<Tree<A>> xs) {
-            return p.f(xs.head()) ? some(P.p(acc, xs.head(), xs.tail()._1()))
+            return p.f(xs.head()) ? Option.some(P.p(acc, xs.head(), xs.tail()._1()))
                                   : xs.isNotEmpty() ? f(acc.cons(xs.head()), xs.tail()._1())
                                                     : Option.<P3<Stream<Tree<A>>, Tree<A>, Stream<Tree<A>>>>none();
           }
         };
     for (final P3<Stream<Tree<A>>, Tree<A>, Stream<Tree<A>>> ltr
         : split.f(Stream.<Tree<A>>nil(), tree.subForest()._1())) {
-      r = some(treeZipper(ltr._2(), ltr._1(), ltr._3(), downParents()));
+      r = Option.some(treeZipper(ltr._2(), ltr._1(), ltr._3(), downParents()));
     }
     return r;
   }
@@ -278,13 +263,13 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
   private static <A> Option<P2<Stream<A>, Stream<A>>> splitChildren(final Stream<A> acc,
                                                                     final Stream<A> xs,
                                                                     final int n) {
-    return n == 0 ? some(P.p(acc, xs))
+    return n == 0 ? Option.some(P.p(acc, xs))
                   : xs.isNotEmpty() ? splitChildren(acc.cons(xs.head()), xs.tail()._1(), n - 1)
                                     : Option.<P2<Stream<A>, Stream<A>>>none();
   }
 
   private static <A> Stream<P3<Stream<Tree<A>>, A, Stream<Tree<A>>>> lp3nil() {
-    return nil();
+    return Stream.nil();
   }
 
   /**
@@ -305,7 +290,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    */
   public static <A> Option<TreeZipper<A>> fromForest(final Stream<Tree<A>> ts) {
     return ts.isNotEmpty()
-           ? some(treeZipper(ts.head(), Stream.<Tree<A>>nil(), ts.tail()._1(), TreeZipper.<A>lp3nil()))
+           ? Option.some(treeZipper(ts.head(), Stream.<Tree<A>>nil(), ts.tail()._1(), TreeZipper.<A>lp3nil()))
            : Option.<TreeZipper<A>>none();
   }
 
@@ -512,10 +497,10 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    *         of children, or None if the current node has fewer than <code>n</code> children.
    */
   public Option<TreeZipper<A>> insertDownAt(final int n, final Tree<A> t) {
-    Option<TreeZipper<A>> r = none();
+    Option<TreeZipper<A>> r = Option.none();
     for (final P2<Stream<Tree<A>>, Stream<Tree<A>>> lr
         : splitChildren(Stream.<Tree<A>>nil(), tree.subForest()._1(), n)) {
-      r = some(treeZipper(t, lr._1(), lr._2(), downParents()));
+      r = Option.some(treeZipper(t, lr._1(), lr._2(), downParents()));
     }
     return r;
   }
@@ -527,15 +512,15 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    * @return A new tree zipper with the current node removed.
    */
   public Option<TreeZipper<A>> delete() {
-    Option<TreeZipper<A>> r = none();
+    Option<TreeZipper<A>> r = Option.none();
     if (rights.isNotEmpty())
-      r = some(treeZipper(rights.head(), rights.tail()._1(), lefts, parents));
+      r = Option.some(treeZipper(rights.head(), rights.tail()._1(), lefts, parents));
     else if (lefts.isNotEmpty())
-      r = some(treeZipper(lefts.head(), rights, lefts.tail()._1(), parents));
+      r = Option.some(treeZipper(lefts.head(), rights, lefts.tail()._1(), parents));
     else for (final TreeZipper<A> loc : parent())
-        r = some(loc.modifyTree(new F<Tree<A>, Tree<A>>() {
+        r = Option.some(loc.modifyTree(new F<Tree<A>, Tree<A>>() {
           public Tree<A> f(final Tree<A> t) {
-            return node(t.root(), Stream.<Tree<A>>nil());
+            return Tree.node(t.root(), Stream.<Tree<A>>nil());
           }
         }));
     return r;
@@ -549,7 +534,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    *         node has focus, and false otherwise.
    */
   public TreeZipper<P2<A, Boolean>> zipWithFocus() {
-    final F<A, P2<A, Boolean>> f = flip(P.<A, Boolean>p2()).f(false);
+    final F<A, P2<A, Boolean>> f = Function.flip(P.<A, Boolean>p2()).f(false);
     return map(f).modifyLabel(P2.<A, Boolean, Boolean>map2_(Booleans.not));
   }
 
@@ -616,10 +601,10 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    * @return A tree zipper over the tree of all possible permutations of this tree zipper.
    */
   public TreeZipper<TreeZipper<A>> positions() {
-    final Tree<TreeZipper<A>> t = unfoldTree(TreeZipper.<A>dwn()).f(this);
+    final Tree<TreeZipper<A>> t = Tree.unfoldTree(TreeZipper.<A>dwn()).f(this);
     final Stream<Tree<TreeZipper<A>>> l = uf(TreeZipper.<A>left_());
     final Stream<Tree<TreeZipper<A>>> r = uf(TreeZipper.<A>right_());
-    final Stream<P3<Stream<Tree<TreeZipper<A>>>, TreeZipper<A>, Stream<Tree<TreeZipper<A>>>>> p = unfold(
+    final Stream<P3<Stream<Tree<TreeZipper<A>>>, TreeZipper<A>, Stream<Tree<TreeZipper<A>>>>> p = Stream.unfold(
         new F<Option<TreeZipper<A>>,
             Option<P2<
                 P3<Stream<Tree<TreeZipper<A>>>, TreeZipper<A>, Stream<Tree<TreeZipper<A>>>>,
@@ -629,9 +614,9 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
               Option<TreeZipper<A>>>> f(final Option<TreeZipper<A>> o) {
             Option<P2<
                 P3<Stream<Tree<TreeZipper<A>>>, TreeZipper<A>, Stream<Tree<TreeZipper<A>>>>,
-                Option<TreeZipper<A>>>> r = none();
+                Option<TreeZipper<A>>>> r = Option.none();
             for (final TreeZipper<A> z : o) {
-              r = some(P.p(P.p(z.uf(TreeZipper.<A>left_()), z, z.uf(TreeZipper.<A>right_())), z.parent()));
+              r = Option.some(P.p(P.p(z.uf(TreeZipper.<A>left_()), z, z.uf(TreeZipper.<A>right_())), z.parent()));
             }
             return r;
           }
@@ -640,12 +625,12 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
   }
 
   private Stream<Tree<TreeZipper<A>>> uf(final F<TreeZipper<A>, Option<TreeZipper<A>>> f) {
-    return unfold(
+    return Stream.unfold(
         new F<Option<TreeZipper<A>>, Option<P2<Tree<TreeZipper<A>>, Option<TreeZipper<A>>>>>() {
           public Option<P2<Tree<TreeZipper<A>>, Option<TreeZipper<A>>>> f(final Option<TreeZipper<A>> o) {
-            Option<P2<Tree<TreeZipper<A>>, Option<TreeZipper<A>>>> r = none();
+            Option<P2<Tree<TreeZipper<A>>, Option<TreeZipper<A>>>> r = Option.none();
             for (final TreeZipper<A> c : o) {
-              r = some(P.p(unfoldTree(TreeZipper.<A>dwn()).f(c), f.f(c)));
+              r = Option.some(P.p(Tree.unfoldTree(TreeZipper.<A>dwn()).f(c), f.f(c)));
             }
             return r;
           }
@@ -659,9 +644,9 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
           private F<Option<TreeZipper<A>>, Option<P2<TreeZipper<A>, Option<TreeZipper<A>>>>> fwd() {
             return new F<Option<TreeZipper<A>>, Option<P2<TreeZipper<A>, Option<TreeZipper<A>>>>>() {
               public Option<P2<TreeZipper<A>, Option<TreeZipper<A>>>> f(final Option<TreeZipper<A>> o) {
-                Option<P2<TreeZipper<A>, Option<TreeZipper<A>>>> r = none();
+                Option<P2<TreeZipper<A>, Option<TreeZipper<A>>>> r = Option.none();
                 for (final TreeZipper<A> c : o) {
-                  r = some(P.p(c, c.right()));
+                  r = Option.some(P.p(c, c.right()));
                 }
                 return r;
               }
@@ -669,7 +654,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
           }
 
           public Stream<TreeZipper<A>> _1() {
-            return unfold(fwd(), tz.firstChild());
+            return Stream.unfold(fwd(), tz.firstChild());
           }
         });
       }
@@ -709,7 +694,7 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    * @return The result of applying the given function over this TreeZipper and the given TreeZipper, location-wise.
    */
   public <B, C> TreeZipper<C> zipWith(final TreeZipper<B> bs, final F2<A, B, C> f) {
-    return $$(f).zipTreeZipper().f(this, bs);
+    return F2W.$$(f).zipTreeZipper().f(this, bs);
   }
 
   /**
@@ -721,6 +706,6 @@ public class TreeZipper<A> implements Iterable<TreeZipper<A>> {
    * @return The result of applying the given function over this TreeZipper and the given TreeZipper, location-wise.
    */
   public <B, C> TreeZipper<C> zipWith(final TreeZipper<B> bs, final F<A, F<B, C>> f) {
-    return zipWith(bs, uncurryF2(f));
+    return zipWith(bs, Function.uncurryF2(f));
   }
 }

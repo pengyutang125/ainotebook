@@ -1,13 +1,5 @@
 
 
-import data.Stream.nil;
-import data.Stream.repeat;
-
-import data.Option.some;
-import data.Option.none;
-
-import F2W.$$;
-import Function.*;
 
 import java.util.Iterator;
 
@@ -179,10 +171,10 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    */
   public static <A> Option<Zipper<A>> fromStreamEnd(final Stream<A> a) {
     if (a.isEmpty())
-      return none();
+      return Option.none();
     else {
       final Stream<A> xs = a.reverse();
-      return some(zipper(xs.tail()._1(), xs.head(), Stream.<A>nil()));
+      return Option.some(zipper(xs.tail()._1(), xs.head(), Stream.<A>nil()));
     }
   }
 
@@ -202,7 +194,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    *         focus, otherwise None.
    */
   public Option<Zipper<A>> next() {
-    return right.isEmpty() ? Option.<Zipper<A>>none() : some(tryNext());
+    return right.isEmpty() ? Option.<Zipper<A>>none() : Option.some(tryNext());
   }
 
   /**
@@ -225,7 +217,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    *         focus, otherwise None.
    */
   public Option<Zipper<A>> previous() {
-    return left.isEmpty() ? Option.<Zipper<A>>none() : some(tryPrevious());
+    return left.isEmpty() ? Option.<Zipper<A>>none() : Option.some(tryPrevious());
   }
 
   /**
@@ -298,7 +290,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
   public Option<Zipper<A>> deleteLeft() {
     return left.isEmpty() && right.isEmpty()
            ? Option.<Zipper<A>>none()
-           : some(zipper(left.isEmpty() ? left : left.tail()._1(),
+           : Option.some(zipper(left.isEmpty() ? left : left.tail()._1(),
                          left.isEmpty() ? right.head() : left.head(),
                          left.isEmpty() ? right.tail()._1() : right));
   }
@@ -314,7 +306,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
   public Option<Zipper<A>> deleteRight() {
     return left.isEmpty() && right.isEmpty()
            ? Option.<Zipper<A>>none()
-           : some(zipper(right.isEmpty() ? left.tail()._1() : left,
+           : Option.some(zipper(right.isEmpty() ? left.tail()._1() : left,
                          right.isEmpty() ? left.head() : right.head(),
                          right.isEmpty() ? right : right.tail()._1()));
   }
@@ -325,7 +317,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    * @return A new zipper with the focus element as the only element.
    */
   public Zipper<A> deleteOthers() {
-    final Stream<A> nil = nil();
+    final Stream<A> nil = Stream.nil();
     return zipper(nil, focus, nil);
   }
 
@@ -367,13 +359,13 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
     final Stream<Zipper<A>> left = Stream.unfold(
         new F<Zipper<A>, Option<P2<Zipper<A>, Zipper<A>>>>() {
           public Option<P2<Zipper<A>, Zipper<A>>> f(final Zipper<A> p) {
-            return p.previous().map(join(P.<Zipper<A>, Zipper<A>>p2()));
+            return p.previous().map(Function.join(P.<Zipper<A>, Zipper<A>>p2()));
           }
         }, this);
     final Stream<Zipper<A>> right = Stream.unfold(
         new F<Zipper<A>, Option<P2<Zipper<A>, Zipper<A>>>>() {
           public Option<P2<Zipper<A>, Zipper<A>>> f(final Zipper<A> p) {
-            return p.next().map(join(P.<Zipper<A>, Zipper<A>>p2()));
+            return p.next().map(Function.join(P.<Zipper<A>, Zipper<A>>p2()));
           }
         }, this);
 
@@ -398,7 +390,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    *         element has focus, and false otherwise.
    */
   public Zipper<P2<A, Boolean>> zipWithFocus() {
-    return zipper(left.zip(repeat(false)), P.p(focus, true), right.zip(repeat(false)));
+    return zipper(left.zip(Stream.repeat(false)), P.p(focus, true), right.zip(Stream.repeat(false)));
   }
 
   /**
@@ -410,9 +402,9 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
   public Option<Zipper<A>> move(final int n) {
     final int ll = left.length();
     final int rl = right.length();
-    Option<Zipper<A>> p = some(this);
+    Option<Zipper<A>> p = Option.some(this);
     if (n < 0 || n >= length())
-      return none();
+      return Option.none();
     else if (ll >= n)
       for (int i = ll - n; i > 0; i--)
         p = p.bind(Zipper.<A>previous_());
@@ -428,7 +420,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    * @return A function that moves the focus of the given zipper to the given index.
    */
   public static <A> F<Integer, F<Zipper<A>, Option<Zipper<A>>>> move() {
-    return curry(new F2<Integer, Zipper<A>, Option<Zipper<A>>>() {
+    return Function.curry(new F2<Integer, Zipper<A>, Option<Zipper<A>>>() {
       public Option<Zipper<A>> f(final Integer i, final Zipper<A> a) {
         return a.move(i);
       }
@@ -443,7 +435,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    */
   public Option<Zipper<A>> find(final F<A, Boolean> p) {
     if (p.f(focus()))
-      return some(this);
+      return Option.some(this);
     else {
       final Zipper<Zipper<A>> ps = positions();
       return ps.lefts().interleave(ps.rights()).find(new F<Zipper<A>, Boolean>() {
@@ -504,12 +496,12 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    */
   public Option<Zipper<A>> deleteLeftCycle() {
     if (left.isEmpty() && right.isEmpty())
-      return none();
+      return Option.none();
     else if (left.isNotEmpty())
-      return some(zipper(left.tail()._1(), left.head(), right));
+      return Option.some(zipper(left.tail()._1(), left.head(), right));
     else {
       final Stream<A> xs = right.reverse();
-      return some(zipper(xs.tail()._1(), xs.head(), Stream.<A>nil()));
+      return Option.some(zipper(xs.tail()._1(), xs.head(), Stream.<A>nil()));
     }
   }
 
@@ -577,7 +569,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    * @return The result of applying the given function over this Zipper and the given Zipper, location-wise.
    */
   public <B, C> Zipper<C> zipWith(final Zipper<B> bs, final F2<A, B, C> f) {
-    return $$(f).zipZipper().f(this, bs);
+    return F2W.$$(f).zipZipper().f(this, bs);
   }
 
 
@@ -590,7 +582,7 @@ public class Zipper<A> implements Iterable<Zipper<A>> {
    * @return The result of applying the given function over this Zipper and the given Zipper, location-wise.
    */
   public <B, C> Zipper<C> zipWith(final Zipper<B> bs, final F<A, F<B, C>> f) {
-    return zipWith(bs, uncurryF2(f));
+    return zipWith(bs, Function.uncurryF2(f));
   }
 
   /**
