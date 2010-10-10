@@ -62,10 +62,11 @@
 	
 	<target name="clean">
 	    <delete dir="${build.dir}"/>	    
+		<delete dir="${basedir}/target"/>
 	</target>
 	
-	<target name="fullclean">
-	    <delete dir="${build.dir}"/>        
+	<target name="fullclean">		
+	    <delete dir="${build.dir}"/>		
 		<delete dir="${upload.dir}"/>
     </target>
 		
