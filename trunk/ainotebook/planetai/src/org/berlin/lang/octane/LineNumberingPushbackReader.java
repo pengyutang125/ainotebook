@@ -37,6 +37,9 @@ public class LineNumberingPushbackReader extends PushbackReader {
         return ((LineNumberReader) in).getLineNumber() + 1;
     }
 
+    /**
+     * Read
+     */
     public int read() throws IOException {
         int c = super.read();
         _prev = _atLineStart;
@@ -44,11 +47,19 @@ public class LineNumberingPushbackReader extends PushbackReader {
         return c;
     }
 
+    /**
+     * Unread
+     */
     public void unread(int c) throws IOException {
         super.unread(c);
         _atLineStart = _prev;
     }
 
+    /**
+     * 
+     * @return
+     * @throws IOException
+     */
     public String readLine() throws IOException {
         int c = read();
         String line;
@@ -69,7 +80,11 @@ public class LineNumberingPushbackReader extends PushbackReader {
         }
         return line;
     }
-
+    
+    /**
+     * 
+     * @return
+     */
     public boolean atLineStart() {
         return _atLineStart;
     }
