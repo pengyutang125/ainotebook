@@ -227,70 +227,6 @@ def generateIncoherentBitwormData():
     testData.createDataNoTemporalCorrelation()    
     return [trainingData['inputSize'], len(trainingData.inputs), len(testData.inputs)]
 
-#####################################################################
-# Run Application
-#####################################################################
-def runApp():
-    
-    print "Running Test Program"
-        
-     # Generate and write bitworm data into the default files train_* and test_*
-    if useCoherentData:
-        dataParameters = generateBitwormData(
-                            additiveNoiseTraining      = additiveNoiseTraining,
-                            bitFlipProbabilityTraining = bitFlipProbabilityTraining,
-                            additiveNoiseTesting       = additiveNoiseTesting,
-                            bitFlipProbabilityTesting  = bitFlipProbabilityTesting,
-                            numSequencesPerBitwormType = numSequencesPerBitwormType,
-                            sequenceLength             = sequenceLength,
-                            inputSize                  = inputSize,
-                            trainingMinLength          = trainingMinLength,
-                            trainingMaxLength          = trainingMaxLength,
-                            testMinLength              = testMinLength,
-                            testMaxLength              = testMaxLength)
-    else:
-        dataParameters = generateIncoherentBitwormData()
-    
-    # Create the bitworm network.
-    bitNet = Network()
-    AddSensor(bitNet, featureVectorLength = inputSize)
-    AddZeta1Level(bitNet, numNodes = 1)
-    AddClassifierNode(bitNet, numCategories = 2)
-    
-    # Set some of the parameters we are interested in tuning
-    bitNet['level1'].setParameter('topNeighbors',topNeighbors)
-    bitNet['level1'].setParameter('maxDistance',maxDistance)
-    bitNet['level1'].setParameter('transitionMemory', transitionMemory)
-    bitNet['topNode'].setParameter('spatialPoolerAlgorithm','dot')
-
-    # Train the network
-    bitNet = TrainBasicNetwork(bitNet,
-                dataFiles     = [trainingFile],
-                categoryFiles = [trainingCategories])
-
-    # Ensure the network learned the training set
-    accuracy = RunBasicNetwork(bitNet,
-                dataFiles     = [trainingFile],
-                categoryFiles = [trainingCategories],
-                resultsFile   = trainingResults)
-    print "Training set accuracy with HTM = ", accuracy*100.0
-
-    # Run inference on test set to check generalization
-    accuracy = RunBasicNetwork(bitNet,
-                dataFiles     = [testFile],
-                categoryFiles = [testCategories],
-                resultsFile   = testResults)
-    print "Test set accuracy with HTM = ", accuracy*100.0
-    
-    # Save the trained network
-    bitNet.save(trainedNetwork)
-
-    # Write out a report of the overall network progress
-    generateReport(trainedNetwork, trainingResults, trainingCategories,
-                   testResults, testCategories, reportFile)
-    
-    print "Bitworm run complete. Detailed results are in 'report.txt'"
-
 def generateReport(trainedNetwork, trainingResults, trainingCategories, testResults, testCategories, reportFile):
 
     # Open report file
@@ -377,6 +313,7 @@ def computePerformance(resultsFile, categoriesFile, skipLines = 1):
     Returns a list of the number correct, the total number of vectors, and a list
     of all results lines that did not match. Ignore the first line of the
     results file."""
+    
     resultLines = file(resultsFile).readlines()
     report = InferenceAnalysis(
       resultsFilename=resultsFile,
@@ -385,6 +322,74 @@ def computePerformance(resultsFile, categoriesFile, skipLines = 1):
       resultColumns=2, skipLines=skipLines)
     mismatches = [resultLines[i+1] for i in report.errors]
     return [report.nCorrect, report.nKnown, mismatches]
+
+
+#####################################################################
+# Run Application
+#####################################################################
+def runApp():
+    
+    print "Running Test Program"
+        
+     # Generate and write bitworm data into the default files train_* and test_*
+    if useCoherentData:
+        dataParameters = generateBitwormData(
+                            additiveNoiseTraining      = additiveNoiseTraining,
+                            bitFlipProbabilityTraining = bitFlipProbabilityTraining,
+                            additiveNoiseTesting       = additiveNoiseTesting,
+                            bitFlipProbabilityTesting  = bitFlipProbabilityTesting,
+                            numSequencesPerBitwormType = numSequencesPerBitwormType,
+                            sequenceLength             = sequenceLength,
+                            inputSize                  = inputSize,
+                            trainingMinLength          = trainingMinLength,
+                            trainingMaxLength          = trainingMaxLength,
+                            testMinLength              = testMinLength,
+                            testMaxLength              = testMaxLength)
+    else:
+        dataParameters = generateIncoherentBitwormData()
+    
+    print "Data Parameters:"
+    print dataParameters
+    
+    # Create the bitworm network.
+    bitNet = Network()
+    AddSensor(bitNet, featureVectorLength = inputSize)
+    AddZeta1Level(bitNet, numNodes = 1)
+    AddClassifierNode(bitNet, numCategories = 2)
+    
+    # Set some of the parameters we are interested in tuning
+    bitNet['level1'].setParameter('topNeighbors',topNeighbors)
+    bitNet['level1'].setParameter('maxDistance',maxDistance)
+    bitNet['level1'].setParameter('transitionMemory', transitionMemory)
+    bitNet['topNode'].setParameter('spatialPoolerAlgorithm','dot')
+
+    # Train the network
+    bitNet = TrainBasicNetwork(bitNet,
+                dataFiles     = [trainingFile],
+                categoryFiles = [trainingCategories])
+
+    # Ensure the network learned the training set
+    accuracy = RunBasicNetwork(bitNet,
+                dataFiles     = [trainingFile],
+                categoryFiles = [trainingCategories],
+                resultsFile   = trainingResults)
+    print "Training set accuracy with HTM = ", accuracy*100.0
+
+    # Run inference on test set to check generalization
+    accuracy = RunBasicNetwork(bitNet,
+                dataFiles     = [testFile],
+                categoryFiles = [testCategories],
+                resultsFile   = testResults)
+    print "Test set accuracy with HTM = ", accuracy*100.0
+    
+    # Save the trained network
+    bitNet.save(trainedNetwork)
+
+    # Write out a report of the overall network progress
+    generateReport(trainedNetwork, trainingResults, trainingCategories,
+                   testResults, testCategories, reportFile)
+    
+    print "Bitworm run complete. Detailed results are in 'report.txt'"
             
 #####################################################################
 # Main 
