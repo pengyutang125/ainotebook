@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+#
+# Modified by Berlin Brown from Numenta example
 
 #####################################################################
 # Test Run Once 
@@ -106,10 +108,10 @@ class BitwormData(netexplorer.DataInterface):
         size = self['inputSize']
         random.seed(self['randomSeed'])
         for _ in range(0, self['numSequencesPerBitwormType']):
-          for wormType in ['solid','textured']:
-            length = random.randint(self['minLength'], self['maxLength'])
-            pos = random.randint(0, size-length-1)
-            self.createBitworm(wormType, pos, length, size)
+            for wormType in ['solid','textured']:
+              length = random.randint(self['minLength'], self['maxLength'])
+              pos = random.randint(0, size-length-1)
+              self.createBitworm(wormType, pos, length, size)
         self.writeFiles()
       
     def createData(self):
@@ -141,20 +143,19 @@ class BitwormData(netexplorer.DataInterface):
         """Write the generated data into files."""
         # Ensure vector data and category data have the same length
         if len(self.inputs) != len(self.categories):
-          raise "Data and category vectors don't match"
+            raise "Data and category vectors don't match"
         
         # write out data vectors    
         dataFile = open(self['prefix']+'data.txt', 'w')
         for input in self.inputs:
-          for x in input: print >>dataFile, x,
-          print >> dataFile
+            for x in input: print >>dataFile, x,
+            print >> dataFile
     
         # write out category file
         catFile = open(self['prefix']+'categories.txt', 'w')
         for c in self.categories: print >> catFile, c
         catFile.close()
-        dataFile.close()
-        
+        dataFile.close()        
         print len(self.inputs), "data vectors written to ",self['prefix']+'data.txt'
 
     def getBit(self, originalBit):
@@ -166,9 +167,9 @@ class BitwormData(netexplorer.DataInterface):
         if bit==0 or bit==1: return int(bit)
         else: return bit
                 
-#########
+###################
 # End of class
-#########    
+###################    
 
 def generateBitwormData(additiveNoiseTraining = 0.0, bitFlipProbabilityTraining= 0.0,
                         additiveNoiseTesting = 0.0, bitFlipProbabilityTesting= 0.0,
@@ -287,14 +288,14 @@ def generateReport(trainedNetwork, trainingResults, trainingCategories, testResu
     groups = responses.GetGroups(level1)
     # Get each group
     for gindx, gg in enumerate(groups):
-      print >>file, "\n====> Group = ", gindx
-      # For each group, get each coincidence index
-      for cd in sorted(gg):
-        # For each coincidence, print out each element
-        for e in Wd[cd]:
-          if e==0 or e==1: print >>file, int(e),
-          else: print >>file, e,
-        print >>file, ""
+        print >>file, "\n====> Group = ", gindx
+        # For each group, get each coincidence index
+        for cd in sorted(gg):
+          # For each coincidence, print out each element
+          for e in Wd[cd]:
+            if e==0 or e==1: print >>file, int(e),
+            else: print >>file, e,
+          print >>file, ""
       
     #--------------------------------------------------------
     # Report coincidence matrix for top node
@@ -302,7 +303,7 @@ def generateReport(trainedNetwork, trainingResults, trainingCategories, testResu
     activeOutputs = level1['activeOutputCount']
     print >>file, "\nFull set of Level 2 coincidences: "
     for i, cd in enumerate(Wd):
-      print >>file, i, "->", cd[0:activeOutputs]
+        print >>file, i, "->", cd[0:activeOutputs]
     
     #--------------------------------------------------------
     # Cleanup bundle
@@ -331,7 +332,7 @@ def runApp():
     
     print "Running Test Program"
         
-     # Generate and write bitworm data into the default files train_* and test_*
+    # Generate and write bitworm data into the default files train_* and test_*
     if useCoherentData:
         dataParameters = generateBitwormData(
                             additiveNoiseTraining      = additiveNoiseTraining,
@@ -387,8 +388,7 @@ def runApp():
 
     # Write out a report of the overall network progress
     generateReport(trainedNetwork, trainingResults, trainingCategories,
-                   testResults, testCategories, reportFile)
-    
+                   testResults, testCategories, reportFile)    
     print "Bitworm run complete. Detailed results are in 'report.txt'"
             
 #####################################################################
@@ -397,7 +397,8 @@ def runApp():
 if __name__ == '__main__':
     runApp()
 
-#########
+###################
 # End of Class
-#########
+###################
+
     
