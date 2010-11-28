@@ -51,13 +51,17 @@ class BitwormData(netexplorer.DataInterface):
     def createBitworm(self, wormType, pos, length, inputSize):
         """ Create a single bitworm of the given type, position, and length.
         Stores the data in self.inputs and the category in self.categories."""
+        
+        print "CREATING BIT WORM: wormType==", wormType, " POS==", pos, " LENGTH==", length, " INPUTSIZE=", inputSize
+        
         input = []
         for _ in range(0, pos):
             input.append(self.getBit(0))
         
         if wormType == 'solid':
             self.categories.append(0)
-            for _ in range (pos, pos+length): input.append(self.getBit(1))                    
+            for _ in range (pos, pos+length):
+                input.append(self.getBit(1))                    
         elif wormType == 'textured':
             self.categories.append(1)
             bit = 1
@@ -68,7 +72,7 @@ class BitwormData(netexplorer.DataInterface):
         for _ in range (pos+length, inputSize):
             input.append(self.getBit(0))
                     
-        self.inputs.append(input)
+        self.inputs.append(input)        
 
     def createData(self):
         """ Generate the data using the current set of parameters
@@ -121,19 +125,21 @@ class BitwormData(netexplorer.DataInterface):
         """ Write the generated data into files."""
         # Ensure vector data and category data have the same length
         if len(self.inputs) != len(self.categories):
-            raise "Data and category vectors don't match"        
+            raise "Data and category vectors don't match" 
+               
         # write out data vectors    
-        dataFile = open(self['prefix']+'data.txt', 'w')
+        dataFile = open(self['prefix'] + 'data.txt', 'w')
         for input in self.inputs:
             for x in input: print >>dataFile, x,
             print >> dataFile
+            
         # write out category file
         catFile = open(self['prefix']+'categories.txt', 'w')
-        for c in self.categories: print >> catFile, c
+        for c in self.categories:
+            print >> catFile, c
         catFile.close()
         dataFile.close()        
         print len(self.inputs), "data vectors written to ", (self['prefix'] + 'data.txt')
-
 
 def generateBitwormData(additiveNoiseTraining = 0.0, 
                         bitFlipProbabilityTraining = 0.0,
