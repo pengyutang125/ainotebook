@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Modified by Berlin Brown from Numenta example
+# Modified by Berlin Brown from the Numenta example
 
 #####################################################################
 # Test Run Once 
@@ -32,7 +32,7 @@ additiveNoiseTraining      = 0.0        # Range of noise added or subtracted
 bitFlipProbabilityTraining = 0.0        # Prob. of switching a bit in training data
 trainingMinLength          = 9          # Shortest bitworm used for training
 trainingMaxLength          = 12         # Longest bitworm used for training
-additiveNoiseTesting       = 0.0        # Range of noise added or subtracted
+additiveNoiseTesting       = 0.1        # Range of noise added or subtracted
                                         # from test data
 bitFlipProbabilityTesting  = 0.0        # Prob. of switching a bit in test data
 testMinLength              = 5          # Shortest bitworm used for testing
@@ -83,7 +83,7 @@ class BitwormData(netexplorer.DataInterface):
         for _ in range(0, pos): input.append(self.getBit(0))
         if wormType == 'solid':
             self.categories.append(0)
-            for _ in range (pos, pos+length): input.append(self.getBit(1))        
+            for _ in range (pos, pos+length): input.append(self.getBit(1))    
         elif wormType == 'textured':
             self.categories.append(1)
             bit = 1
@@ -109,9 +109,9 @@ class BitwormData(netexplorer.DataInterface):
         random.seed(self['randomSeed'])
         for _ in range(0, self['numSequencesPerBitwormType']):
             for wormType in ['solid','textured']:
-              length = random.randint(self['minLength'], self['maxLength'])
-              pos = random.randint(0, size-length-1)
-              self.createBitworm(wormType, pos, length, size)
+                length = random.randint(self['minLength'], self['maxLength'])
+                pos = random.randint(0, size-length-1)
+                self.createBitworm(wormType, pos, length, size)
         self.writeFiles()
       
     def createData(self):
@@ -140,7 +140,7 @@ class BitwormData(netexplorer.DataInterface):
         self.writeFiles()
 
     def writeFiles(self):
-        """Write the generated data into files."""
+        """ Write the generated data into files."""
         # Ensure vector data and category data have the same length
         if len(self.inputs) != len(self.categories):
             raise "Data and category vectors don't match"
@@ -162,8 +162,7 @@ class BitwormData(netexplorer.DataInterface):
         """ Adds noise to originalBit (additive or bitFlip) and returns it."""
         bit = originalBit
         if random.uniform(0,1) < self['bitFlipProbability']: bit = 1 - bit
-        bit += random.uniform(-self['additiveNoise'], self['additiveNoise'])
-        
+        bit += random.uniform(-self['additiveNoise'], self['additiveNoise'])        
         if bit==0 or bit==1: return int(bit)
         else: return bit
                 
@@ -171,12 +170,17 @@ class BitwormData(netexplorer.DataInterface):
 # End of class
 ###################    
 
-def generateBitwormData(additiveNoiseTraining = 0.0, bitFlipProbabilityTraining= 0.0,
-                        additiveNoiseTesting = 0.0, bitFlipProbabilityTesting= 0.0,
-                        numSequencesPerBitwormType = 10, sequenceLength = 20,
+def generateBitwormData(additiveNoiseTraining=0.0, 
+                        bitFlipProbabilityTraining=0.0,
+                        additiveNoiseTesting=0.0, 
+                        bitFlipProbabilityTesting= 0.0,
+                        numSequencesPerBitwormType = 10, 
+                        sequenceLength = 20,
                         inputSize = 16,
-                        trainingMinLength = 9, trainingMaxLength = 12,
-                        testMinLength = 5, testMaxLength = 8):
+                        trainingMinLength = 9, 
+                        trainingMaxLength = 12,
+                        testMinLength = 5, 
+                        testMaxLength = 8):
     """ Generate bitworm training and test data files. Return the input size,
     the number of training vectors, and the number of test vectors."""
     
@@ -291,11 +295,11 @@ def generateReport(trainedNetwork, trainingResults, trainingCategories, testResu
         print >>file, "\n====> Group = ", gindx
         # For each group, get each coincidence index
         for cd in sorted(gg):
-          # For each coincidence, print out each element
-          for e in Wd[cd]:
-            if e==0 or e==1: print >>file, int(e),
-            else: print >>file, e,
-          print >>file, ""
+            # For each coincidence, print out each element
+            for e in Wd[cd]:
+                if e==0 or e==1: print >>file, int(e),
+                else: print >>file, e,
+            print >>file, ""
       
     #--------------------------------------------------------
     # Report coincidence matrix for top node
@@ -318,9 +322,10 @@ def computePerformance(resultsFile, categoriesFile, skipLines = 1):
     resultLines = file(resultsFile).readlines()
     report = InferenceAnalysis(
       resultsFilename=resultsFile,
-      categoryFileFormat = 2,
+      categoryFileFormat=2,
       categoryFilename=categoriesFile,
-      resultColumns=2, skipLines=skipLines)
+      resultColumns=2, 
+      skipLines=skipLines)
     mismatches = [resultLines[i+1] for i in report.errors]
     return [report.nCorrect, report.nKnown, mismatches]
 
@@ -359,8 +364,8 @@ def runApp():
     AddClassifierNode(bitNet, numCategories = 2)
     
     # Set some of the parameters we are interested in tuning
-    bitNet['level1'].setParameter('topNeighbors',topNeighbors)
-    bitNet['level1'].setParameter('maxDistance',maxDistance)
+    bitNet['level1'].setParameter('topNeighbors', topNeighbors)
+    bitNet['level1'].setParameter('maxDistance', maxDistance)
     bitNet['level1'].setParameter('transitionMemory', transitionMemory)
     bitNet['topNode'].setParameter('spatialPoolerAlgorithm','dot')
 
@@ -368,12 +373,14 @@ def runApp():
     bitNet = TrainBasicNetwork(bitNet,
                 dataFiles     = [trainingFile],
                 categoryFiles = [trainingCategories])
+    print "Bit Net [1]: ", bitNet
 
     # Ensure the network learned the training set
     accuracy = RunBasicNetwork(bitNet,
                 dataFiles     = [trainingFile],
                 categoryFiles = [trainingCategories],
                 resultsFile   = trainingResults)
+    print "Bit Net [2]: ", bitNet
     print "Training set accuracy with HTM = ", accuracy*100.0
 
     # Run inference on test set to check generalization
@@ -381,6 +388,7 @@ def runApp():
                 dataFiles     = [testFile],
                 categoryFiles = [testCategories],
                 resultsFile   = testResults)
+    print "Bit Net [3]: ", bitNet
     print "Test set accuracy with HTM = ", accuracy*100.0
     
     # Save the trained network
@@ -398,7 +406,7 @@ if __name__ == '__main__':
     runApp()
 
 ###################
-# End of Class
+# End of File
 ###################
 
     
