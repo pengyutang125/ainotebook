@@ -2,6 +2,10 @@
 #
 # Modified by Berlin Brown from Numenta example
 
+# In the example below
+# The default configuration includes 20 rows, each row represents a 16 bit vector
+# Input size represents the input vector, the max size for a bitworm?
+
 from nupic.network.helpers import  \
     AddSensor, AddClassifierNode,  \
     AddZeta1Level, TrainBasicNetwork, RunBasicNetwork
@@ -21,8 +25,8 @@ maxDistance        = 0.0
 topNeighbors       = 3
 transitionMemory   = 4
 
-numSequencesPerBitwormType = 10     # No. of sequences for each bitworm type
-sequenceLength     = 20             # No. of patterns in each temporal sequence
+numSequencesPerBitwormType = 10  # No. of sequences for each bitworm type
+sequenceLength             = 20  # No. of patterns in each temporal sequence
 
 trainingFile       = "training_data.txt"        # Location of training data
 trainingCategories = "training_categories.txt"  # Location of training categories
