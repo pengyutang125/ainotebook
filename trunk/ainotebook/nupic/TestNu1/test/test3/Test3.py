@@ -98,7 +98,9 @@ class BitwormData(netexplorer.DataInterface):
         """ Append a blank vector."""
         size = self['inputSize']
         blank = []
-        for _ in range(0,size): blank.append(0)
+        for _ in range(0,size):
+            blank.append(0)
+            
         self.inputs.append(blank)
         self.categories.append(0)
       
