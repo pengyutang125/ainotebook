@@ -100,9 +100,6 @@ if __name__ == '__main__':
         sleep(0.7)
         canvas.delete(tk.ALL)
 
-    # Inoke the turtle.
-    demo()    
-    
     canvas.mainloop()
     print "Done"
 
