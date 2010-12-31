@@ -1,6 +1,5 @@
 /**
- *
- * Copyright (c) 2006-2007 Berlin Brown and botnode.com/Berlin Research  All Rights Reserved
+ * Copyright (c) 2006-2011 Berlin Brown.  All Rights Reserved
  *
  * http://www.opensource.org/licenses/bsd-license.php
 
@@ -32,7 +31,7 @@
  *
  * Date: 12/15/2009 
  *   
- * Home Page: http://botnode.com/
+ * Home Page: http://code.google.com/u/berlin.brown/
  * 
  * Contact: Berlin Brown <berlin dot brown at gmail.com>
  */
