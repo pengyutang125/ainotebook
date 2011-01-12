@@ -6,4 +6,4 @@ Basic applet.
 
 = Details =
 
-<wiki:gadget url="https://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/applet_gadget2.xml" width="600" height="600" border="0" />
+<wiki:gadget url="https://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/applet_gadget2.xml" width="900" height="900" border="0" />
