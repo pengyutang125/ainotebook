@@ -1,5 +1,11 @@
 #summary Bottom-Up Basic Artificial Life Simulation.
 
+===Download===
+
+http://ainotebook.googlecode.com/files/bottom-alife-demo.zip
+
+===Screenshots===
+
 http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/Edit1ClassSimpleLifeDiagram.png
 
 http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/Edit1PackageFullDiagram.png
@@ -11,5 +17,3 @@ http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/
 http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/screenshotLifeMoreReplication.png
 
 http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/withScreenshotMutation.png
-
-===Download===
