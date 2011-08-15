@@ -1,0 +1,3 @@
+#summary Bottom-Up Basic Artificial Life Simulation.
+
+http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/Edit1ClassSimpleLifeDiagram.png
