@@ -4,6 +4,11 @@
 
 http://ainotebook.googlecode.com/files/bottom-alife-demo.zip
 
+
+Simple Cell Demo.  The system is slightly interesting.  You can monitor the balance with the number of live cells. You may notice a shift in mutations as cells grow away from the center. With only a few mutations, the color of cells tend to shift in color over time.  It takes many iterations for emergent behavior to emerge. (Written in Scala/Java)
+    
+keywords: gameoflife, dna, java, scala
+
 ===Screenshots===
 
 http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/Edit1ClassSimpleLifeDiagram.png
