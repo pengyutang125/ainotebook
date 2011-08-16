@@ -1,4 +1,5 @@
 #summary Bottom-Up Basic Artificial Life Simulation.
+#labels Featured
 
 ===Download===
 
@@ -43,7 +44,8 @@ clean-room created software that we create today.
 With this artificial life approach, but we also want to study the simple life
 forms first before moving too fast forward like human behavior.
     
-keywords: gameoflife, dna, java, scala
+
+*keywords:* gameoflife, dna, java, scala
 
 ===Screenshots===
 
