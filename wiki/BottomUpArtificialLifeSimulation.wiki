@@ -16,18 +16,6 @@ particular task, but we are interested in observing the adaptive nature of the
 entities in our simulation. We also wanted to introduce those more familiar with
 software engineering to biological systems and evolutionary theory concepts.
 
-Life is all around us. Even with inorganic material it is possible that
-microscopic organisms are covering that surface. Moving forward if we want to
-study, analyze and work with artificial agents, we might consider systems that
-have evolved behavior over a series of steps. We should not necessarily build a
-specific tool with a specific purpose but the creature that is built from the
-system may produce interesting properties which are unlike the clean-room
-created software that we create today. Most software and hardware today is
-written to specification, line for line, most code written for today's systems
-are created by man. That software is designed, coded and tested. It would be
-interesting if we could start a biological like system and interesting behavior
-from the system evolves over time.
-
 Conway's Game of Life cellular automaton is one of the most prominent examples
 of cellular automata theory. The one dimensional program consists of a cell grid
 typically with several dozen or more rows and similar number of columns. Each
