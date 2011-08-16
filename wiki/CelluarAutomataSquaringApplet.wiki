@@ -1,4 +1,5 @@
 #summary Wolfram Cellular Automata With Squaring Rules.
+#labels Featured
 
 = Introduction =
 
