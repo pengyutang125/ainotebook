@@ -7,6 +7,9 @@ Squaring Rule from Wolfram's New Kind of Science, given an input N, after so man
 
 This is an example of emergent behavior forming from a simple set of input rules.
 
+Also see:
+http://mathworld.wolfram.com/CellularAutomaton.html
+
 = Details =
 
 <wiki:gadget url="https://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/applet_gadget4.xml" width="840" height="840" border="0" />
