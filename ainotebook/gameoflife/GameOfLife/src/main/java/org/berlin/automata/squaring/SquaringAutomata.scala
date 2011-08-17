@@ -143,8 +143,7 @@ class SquaringAutomata(rowCount:Int, colCount:Int, inputN:Int, initialValueCell:
                     countInputCode = countInputCode + 1
                 }
               } 
-            } // End of if next gen
-                     
+            } // End of if next gen                     
             nextGenerationRow = nextGenerationRow + 1            
             newGrid
         }
