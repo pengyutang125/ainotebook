@@ -60,3 +60,5 @@ http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/
 http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/screenshotLifeMoreReplication.png
 
 http://doingitwrongnotebook.googlecode.com/svn/trunk/doingitwrong_phase2/scala2/GameOfLife/docs/media/withScreenshotMutation.png
+
+http://doingitwrongnotebook.googlecode.com/svn/trunk/media/render_artificial_life.png
