@@ -75,11 +75,8 @@ public class Statistics {
       for (final SquirmCell nodeAfterFindMol : visited) {
         buf.append(nodeAfterFindMol.getStringType());
       }   
-      LOGGER.info("     After visiting : molecule string=" + buf.toString());
-      final char[] chars = buf.toString().toCharArray();
-      Arrays.sort(chars);
-      final String sorted = new String(chars);
-      touchMapEntry(sorted, this.moleculeSet);
+      LOGGER.info("     After visiting : molecule string=" + buf.toString());      
+      touchMapEntry(buf.toString(), this.moleculeSet);
     } // End of the for //
            
     final StringBuffer statsBuf = new StringBuffer();
