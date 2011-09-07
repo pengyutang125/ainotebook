@@ -70,8 +70,8 @@ public class Squirm extends JFrame implements Runnable {
 
     // When the mouse is moved around the pointed-at cell can be inspected by
     // the user (esp when paused)
-    private String inspect_msg = "x";
-    private int inspect_msg_x = 20, inspect_msg_y = 20;
+    private String inspect_msg = "{Msg}";
+    private int inspect_msg_x = 40, inspect_msg_y = 40;
 
     private String current_cell;
     private long counter = 0;
@@ -81,7 +81,7 @@ public class Squirm extends JFrame implements Runnable {
      */
     public Squirm() {
         try {
-            squirmGrid = new SquirmGrid(grid_size_x, grid_size_y);
+            squirmGrid = new SquirmGrid(this, grid_size_x, grid_size_y);
             chemistry = new SquirmChemistry();
         } catch (Error e) {
             error_thrown = true;
@@ -122,7 +122,6 @@ public class Squirm extends JFrame implements Runnable {
                 them_type.toCharArray()[0], them_state, future_us_state, future_bond, future_them_state);
         chemistry.addReaction(r);
 
-        // DEBUG: show each received reaction
         final String msg = us_type + us_state + (current_bond ? "-" : " ") + them_type + them_state + " => " + us_type
         + future_us_state + (future_bond ? "-" : " ") + them_type + future_them_state + "; ";
         error_msg += msg;
@@ -304,24 +303,31 @@ public class Squirm extends JFrame implements Runnable {
         if (off_g == null) {
             return;
         }
+        if (inspect_msg == null) {
+          inspect_msg = "";
+        }
         // Clear the background
         off_g.setColor(Color.white);
         off_g.fillRect(0, 0, drawing_size_x, drawing_size_y);
 
-        // Draw the cells
-        squirmGrid.draw(off_g, scale, delay <= FAST);
-
+        /********************
+         * Draw the cells
+         ********************/
+        squirmGrid.draw(off_g, scale, delay <= FAST);        
+        off_g.drawString(inspect_msg, inspect_msg_x, inspect_msg_y);        
+        
         // Show the result.
         g.drawImage(offscreenImage, 0, 0, this);
         counter++;
         if ((counter % 100) == 0) {
             LOGGER.info("Counter update : value=" + counter);
-        }
+        } // End of if on interval //
     }
 
     /**
      * Override the default update method to call paint rather than clear and
      * paint.
+     * @Deprecated
      */
     public void update(Graphics g) {
         paint(g);
@@ -373,11 +379,11 @@ public class Squirm extends JFrame implements Runnable {
                 } catch (Error e) {
                     error_msg = e.getMessage();
                     error_thrown = true;
+                    e.printStackTrace();
                 }
-
-                if (squirmGrid.getCount() % draw_every == 0)
+                if (squirmGrid.getCount() % draw_every == 0) {
                     repaint();
-
+                }
                 Thread.sleep(delay);
             } catch (final InterruptedException e) {
                 // TODO: Place exception-handling code here in case an
@@ -401,6 +407,13 @@ public class Squirm extends JFrame implements Runnable {
         inspect_msg_x = x;
         inspect_msg_y = y - 3;
         return true;
+    }
+
+    /**
+     * @return the counter
+     */
+    public long getCounter() {
+      return counter;
     }
 
 } // End of the class //

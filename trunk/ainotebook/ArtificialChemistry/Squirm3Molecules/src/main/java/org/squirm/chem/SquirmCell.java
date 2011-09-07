@@ -28,37 +28,43 @@ package org.squirm.chem;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Enumeration;
+import java.util.Random;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
-
+/**
+ * Squirm Grid Cell.
+ */
 public class SquirmCell extends SquirmCellProperties {
 
     private static final Logger LOGGER = Logger.getLogger(SquirmCell.class);
+   
+    private final boolean hasRenderStateOnCell = false;
     
-    // / the cell's current location
-    private int x, y;
-
-    // / bonds is a list of all the cells currently bonded with
-    private Vector<SquirmCell> bonds;
-
-    // / which direction did we move in previously?
-    private int last_x, last_y; // for momentum-style physics
-
-    /*
+    /**
      * encoding of an 8-neighbourhood: 1 2 3 0 8 4 7 6 5
      */
     private static final int EIGHT_x[] = { -1, -1, 0, 1, 1, 1, 0, -1, 0 };
     private static final int EIGHT_y[] = { 0, -1, -1, -1, 0, 1, 1, 1, 0 };
 
     private static final boolean momentum_style_physics = false;
+    
+    // / the cell's current location
+    private int x, y;
 
+    // / which direction did we move in previously?
+    private int last_x, last_y; // for momentum-style physics
+    
+    // / bonds is a list of all the cells currently bonded with
+    private Vector<SquirmCell> bonds;
+    
+    private String id = "none";
+    
     /**
      * Default constructor
      */
-    public SquirmCell(int x_loc, int y_loc, int cell_type, int cell_state, Vector<SquirmCell> cell_list,
-            SquirmCellSlot cell_grid[][]) {
+    public SquirmCell(int x_loc, int y_loc, int cell_type, int cell_state, Vector<SquirmCell> cell_list, SquirmCellSlot cell_grid[][]) {
         // initialize the superclass (SquirmCellProperties)
         super(cell_type, cell_state);
         if (cell_grid[x_loc][y_loc].queryEmpty()) {
@@ -67,7 +73,6 @@ public class SquirmCell extends SquirmCellProperties {
             cell_list.addElement(this);
             cell_grid[x][y].makeOccupied(this);
             bonds = new Vector<SquirmCell>();
-
             if (momentum_style_physics) {
                 // pick a movement direction at random
                 last_x = EIGHT_x[(int) Math.floor(Math.random() * 8)];
@@ -77,10 +82,13 @@ public class SquirmCell extends SquirmCellProperties {
             // couldn't create! (square was occupied)
             throw new Error("SquirmCell::SquirmCell : couldn't create, square is occupied!");
         }
+        final int rand = new Random(System.currentTimeMillis()).nextInt(100000);
+        final int rand2 = new Random(System.currentTimeMillis()).nextInt(1000);
+        id = String.format("%d-%d%d-%d-%d", rand, x_loc, y_loc, cell_type, rand2);
     }
     
     public String toString() {
-        return super.toString();
+        return id + super.toString();
     }
 
     /**
@@ -133,9 +141,8 @@ public class SquirmCell extends SquirmCellProperties {
         // draw our state (if enough room)
         if (scale >= 12) {
             final Integer i = new Integer(getState());
-            final String type = this.getStringType();
-            final String str = type + i.toString();
-            //g.drawString(i.toString(), (int) ((x * scale) + 2), (int) ((y * scale) + scale - 2));
+            final String type = this.getStringType();            
+            final String str = type + (hasRenderStateOnCell ? i.toString() : "");
             g.drawString(str, (int) ((x * scale) + 2), (int) ((y * scale) + scale - 2));
         }
     }
@@ -182,9 +189,6 @@ public class SquirmCell extends SquirmCellProperties {
         while (!bonds.isEmpty())
             breakBondWith((SquirmCell) bonds.firstElement());
     }
-
-    // ----------------------------------------------------------
-
     /**
      * move to an 8-neighbourhood empty square subject to all bonds being
      * maintained (8-connectivity)
@@ -228,9 +232,11 @@ public class SquirmCell extends SquirmCellProperties {
                 // thing)
                 int choices[] = new int[n_valid_moves];
                 int j = 0;
-                for (int i = 0; i < 8; i++)
-                    if (valid_move[i])
+                for (int i = 0; i < 8; i++) {
+                    if (valid_move[i]) {
                         choices[j++] = i;
+                    }
+                }
                 int which = (int) Math.floor(Math.random() * (float) n_valid_moves);
                 int move = choices[which];
 
@@ -245,18 +251,6 @@ public class SquirmCell extends SquirmCellProperties {
      * state
      */
     public void ageSelf() {
-        /*
-         * time_since_last_reaction++;
-         * 
-         * if(time_since_last_reaction>MAX_AGE) { // we've got too old with
-         * nothing happening, break our bonds and return to state 0 SquirmCell
-         * cell; while(!bonds.isEmpty()) { cell =
-         * (SquirmCell)bonds.firstElement(); // make them old too so the effect
-         * propagates cell.time_since_last_reaction = time_since_last_reaction;
-         * // break the bond we have with them breakBondWith(cell); // apply
-         * ageSelf to them too cell.ageSelf(); } setState(0);
-         * time_since_last_reaction=0; }
-         */
     }
 
     /**
@@ -313,4 +307,64 @@ public class SquirmCell extends SquirmCellProperties {
         cell_grid[x][y].makeOccupied(this);
     }
 
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+      final int prime = 31;
+      int result = 1;      
+      result = prime * result + (hasRenderStateOnCell ? 1231 : 1237);
+      result = prime * result + this.id.hashCode();
+      result = prime * result + last_x;
+      result = prime * result + last_y;
+      result = prime * result + x;
+      result = prime * result + y;
+      return result;
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+      if (this == obj) {
+        return true;
+      }     
+      if (obj == null) {
+        return false;
+      }
+      if (getClass() != obj.getClass()) {
+        return false;
+      }
+      
+      final SquirmCell other = (SquirmCell) obj;
+      if (bonds == null) {
+        if (other.bonds != null) {
+          return false;
+        }
+      } 
+      
+      if (last_x != other.last_x)
+        return false;
+      if (last_y != other.last_y)
+        return false;
+      if (x != other.x) {
+        return false;
+      }
+      
+      if (y != other.y) {
+        return false;
+      }
+      
+      return true;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+      this.id = id;
+    }    
+    
 } // End of the class //
