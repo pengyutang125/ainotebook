@@ -29,8 +29,7 @@ import org.apache.log4j.Logger;
 
 /**
  * Main entry point.
- * @author bbrown
- *
+ * @author bbrown 
  */
 public class Main {
 
