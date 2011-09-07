@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -67,12 +68,14 @@ public class Statistics {
     // Iterate through the bonds that have connections    
     for (final SquirmCell cellWithBond : atomsWithBondsSet) {
       final Set<SquirmCell> visited = new HashSet<SquirmCell>();
-      findMoleculeString(cellWithBond, 0, visited);
-      
+      final Mutable<Integer> visits = new Mutable<Integer>(0);
+      findMoleculeString(cellWithBond, 0, visited, visits);
+      System.out.println("    Visits : " + visits);
       final StringBuffer buf = new StringBuffer();
       for (final SquirmCell nodeAfterFindMol : visited) {
         buf.append(nodeAfterFindMol.getStringType());
-      }      
+      }   
+      LOGGER.info("     After visiting : molecule string=" + buf.toString());
       final char[] chars = buf.toString().toCharArray();
       Arrays.sort(chars);
       final String sorted = new String(chars);
@@ -90,21 +93,30 @@ public class Statistics {
     for (final Map.Entry<String, Integer> e: this.moleculeSet.entrySet()) {
       statsBuf.append("  molecule=").append(e).append(NL);
     } // End of for through molecule map //
+    statsBuf.append("  molecules=").append(this.moleculeSet.size()).append(NL);
     statsBuf.append("</ArtificialChemistryStatistics>");
     LOGGER.info(statsBuf.toString());
   }
   
-  protected void findMoleculeString(final SquirmCell cell, final int level, final Set<SquirmCell> visited) {
+  protected void findMoleculeString(final SquirmCell cell, final int level, final Set<SquirmCell> visited, final Mutable<Integer> visits) {
       if (cell.getBonds().size() == 0) {
         return;
       }
-      if (level > 1) {
+      if (level >= 30) {
         return;
       }
-      visited.add(cell);
-      for (final SquirmCell node : cell.getBonds()) {        
+      visited.add(cell);   
+      final Random rand = new Random();
+      for (final SquirmCell node : cell.getBonds()) {
+        final double rv = rand.nextDouble();
+        if (rv >= 0.2) {
+          if (visited.contains(node)) {         
+            continue;
+          }
+        }
         visited.add(node);
-        findMoleculeString(node, level+1, visited);
+        visits.set(visits.get()+1);
+        findMoleculeString(node, level+1, visited, visits);
       }
   }
   
