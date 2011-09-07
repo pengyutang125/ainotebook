@@ -49,6 +49,7 @@ public class Statistics {
 
   int numberOfAtoms = 0;
   final Total totalAtomsWithBonds = new Total();
+  final Total totalAtomsNoBonds = new Total();
 
   private final Map<String, Integer> moleculeSet = new HashMap<String, Integer>();
   private final Set<SquirmCell> atomsWithBondsSet = new HashSet<SquirmCell>();
@@ -68,24 +69,24 @@ public class Statistics {
     numberOfAtoms = this.bidirectionalGridObjectRef.getCellList().size();
 
     for (final SquirmCell cell : bidirectionalGridObjectRef.getCellList()) {
-      delegateTotalAtomsWithBonds(cell, totalAtomsWithBonds, numberOfAtoms);
+      delegateTotalAtomsWithBonds(cell, totalAtomsWithBonds, totalAtomsNoBonds, numberOfAtoms);
       delegateFindMoleculeString(cell);
     } // End of for //
 
     // Iterate through the bonds that have connections
+    int totalVisitsNotForConnections = 0;
     for (final SquirmCell cellWithBond : atomsWithBondsSet) {
       final Set<SquirmCell> visited = new HashSet<SquirmCell>();
       final Mutable<Integer> visits = new Mutable<Integer>(0);
       findMoleculeString(cellWithBond, 0, visited, visits);
-      System.out.println("    Visits : " + visits);
+      totalVisitsNotForConnections += visits.get();      
       final StringBuffer buf = new StringBuffer();
       for (final SquirmCell nodeAfterFindMol : visited) {
         buf.append(nodeAfterFindMol.getStringType());
-      }
-      LOGGER.info("     After visiting : molecule string=" + buf.toString());
+      }      
       touchMapEntry(buf.toString(), this.moleculeSet);
     } // End of the for //
-
+    LOGGER.info("    totalVisitsNotForConnections=" + totalVisitsNotForConnections);    
     final StringBuffer statsBuf = new StringBuffer();
     statsBuf.append("<ArtificialChemistryStatistics>");
     statsBuf.append(NL);
@@ -93,7 +94,8 @@ public class Statistics {
     statsBuf.append(" counter=").append(bidirectionalGridObjectRef.getCount()).append(NL);
     statsBuf.append(" numberOfAtoms=").append(numberOfAtoms).append(NL);
     statsBuf.append(" totalAtomsWithBonds=").append(totalAtomsWithBonds).append(NL);
-
+    statsBuf.append(" totalAtomsWithoutBonds=").append(totalAtomsNoBonds).append(NL);    
+    
     int icountForMolecules = 0;
     final int tailMaxMolecules = 8;
     final List<Map.Entry<String, Integer>> listForSort = sortMap(this.moleculeSet);
@@ -137,13 +139,19 @@ public class Statistics {
    * 
    * @return
    */
-  public void delegateTotalAtomsWithBonds(final SquirmCell cell, final Total totals, final int outOfTotal) {
+  public void delegateTotalAtomsWithBonds(final SquirmCell cell, final Total totals, final Total totalsWithout, final int outOfTotal) {
     if (cell.getBonds().size() > 0) {
       atomsWithBondsSet.add(cell);
       totals.total++;
+    } else {
+      totalsWithout.total++;
     }
     totals.dtotal = 100.0 * (totals.total / (double) outOfTotal);
     totals.stotal = String.format("%d/%.3f%%", totals.total, totals.dtotal);
+    
+    totalsWithout.dtotal = 100.0 * (totalsWithout.total / (double) outOfTotal);
+    totalsWithout.stotal = String.format("%d/%.3f%%", totalsWithout.total, totalsWithout.dtotal);
+    
   }
 
   /**
