@@ -45,28 +45,27 @@ class SquirmChemistry {
 
     public void addReaction(final SquirmReaction r) {
         reactions.addElement(r);
+        r.setId(String.valueOf(reactions.size()));
     }
 
-    public void react(SquirmCellSlot cell_grid[][], SquirmCell cell, Vector<SquirmCell> neighbours) {
+    public void react(final SquirmCellSlot cell_grid[][], final SquirmCell cell, final Vector<SquirmCell> neighbours) {
         // try all the reactions in turn
         for (Enumeration<SquirmReaction> e = reactions.elements(); e.hasMoreElements();) {
             tryReaction(cell_grid, cell, neighbours, (SquirmReaction) e.nextElement());
-        }
+        } // End of for //
     }
 
-    protected void tryReaction(SquirmCellSlot cell_grid[][], SquirmCell cell, Vector<SquirmCell> neighbours,
-            SquirmReaction r) {
+    protected void tryReaction(final SquirmCellSlot cell_grid[][], final SquirmCell cell, final Vector<SquirmCell> neighbours, final SquirmReaction r) {
         tryReaction(cell_grid, cell, neighbours, r.us_type, r.us_state, r.current_bond, r.them_type, r.them_state,
-                r.future_us_state, r.future_bond, r.future_them_state);
+                r.future_us_state, r.future_bond, r.future_them_state, r);
     }
 
-    protected void tryReaction(final SquirmCellSlot cell_grid[][], SquirmCell cell, Vector<SquirmCell> neighbours,
+    protected void tryReaction(final SquirmCellSlot cell_grid[][], final SquirmCell cell, final Vector<SquirmCell> neighbours,
             char us_type, int us_state, boolean current_bond, char them_type, int them_state, int future_us_state,
-            boolean future_bond, int future_them_state) {
+            boolean future_bond, int future_them_state, final SquirmReaction reaction) {
 
         // us_type is one of {e,f,a,b,c,d,x}
-        if (us_type != 'e' && us_type != 'f' && us_type != 'a' && us_type != 'b' && us_type != 'c' && us_type != 'd'
-                && us_type != 'x')
+        if (us_type != 'e' && us_type != 'f' && us_type != 'a' && us_type != 'b' && us_type != 'c' && us_type != 'd' && us_type != 'x')
             throw new Error("SquirmChemistry::Reaction() : invalid us_type");
 
         // them_type is one of {e,f,a,b,c,d,x,y}
@@ -78,11 +77,11 @@ class SquirmChemistry {
         if (us_state < 0 || them_state < 0 || future_us_state < 0 || future_them_state < 0)
             throw new Error("SquirmChemistry::tryReaction() : states less than zero not permitted");
 
-        // are we the right kind of cell for this reaction?
+        // Are we the right kind of cell for this reaction?
         if ((us_type != 'x' && cell.isTypeAndState(us_type, us_state)) || (us_type == 'x' && cell.isState(us_state))) {
             // do we have a neighbour (bonded/not) that is the right kind for
             // this reaction?
-            Vector<SquirmCell> search_from = current_bond ? cell.getBonds() : neighbours;
+            final Vector<SquirmCell> search_from = current_bond ? cell.getBonds() : neighbours;
             Vector<SquirmCell> ns;
             // if them_type specified then search for it
             if (them_type != 'x' && them_type != 'y')
@@ -96,8 +95,8 @@ class SquirmChemistry {
             else
                 throw new Error("SquirmChemistry::tryReaction() : unexpected case statement");
             // try the reaction on each of the possibles
-            for (Enumeration<SquirmCell> e = ns.elements(); e.hasMoreElements();) {
-                SquirmCell n = (SquirmCell) e.nextElement();
+            for (final Enumeration<SquirmCell> e = ns.elements(); e.hasMoreElements();) {
+                final SquirmCell n = (SquirmCell) e.nextElement();
                 // reactions can happen if the two cells are right next to each
                 // other (share a face) or over a diagonal (share a corner) if
                 // the other diagonal
@@ -113,21 +112,21 @@ class SquirmChemistry {
                     else {
                         // otherwise, if there is no bond between diagonals then
                         // still OK
-                        SquirmCell cellA = cell_grid[cell.getX()][n.getY()].getOccupant();
-                        SquirmCell cellB = cell_grid[n.getX()][cell.getY()].getOccupant();
-                        if (!cellA.getBonds().contains(cellB))
+                        final SquirmCell cellA = cell_grid[cell.getX()][n.getY()].getOccupant();
+                        final SquirmCell cellB = cell_grid[n.getX()][cell.getY()].getOccupant();
+                        if (!cellA.getBonds().contains(cellB)) {
                             can_react = true;
+                        } // End of if
                     }
-                }
-
+                } // End of if - else //
                 if (can_react) {
                     // make or break bonds as specified
                     if (current_bond && !future_bond) {
                         LOGGER.info("Breaking bond : UsType=" + us_type + " UsState=" + us_state + " ThemType=" + them_type + " ThemState=" + them_state);
                         cell.breakBondWith(n);
-                    } else if (!current_bond && future_bond) {
-                        LOGGER.info("Making bond : UsType=" + us_type + " UsState=" + us_state + " ThemType=" + them_type + " ThemState=" + them_state);                                               
-                        cell.makeBondWith(n);
+                    } else if (!current_bond && future_bond) {                        
+                        LOGGER.info("Making bond for reaction : UsType=" + us_type + " UsState=" + us_state + " ThemType=" + them_type + " ThemState=" + them_state + " reaction=" + reaction);                                               
+                        cell.makeBondWith(n, reaction);
                     }
                     // set our states to their new values
                     cell.setState(future_us_state);

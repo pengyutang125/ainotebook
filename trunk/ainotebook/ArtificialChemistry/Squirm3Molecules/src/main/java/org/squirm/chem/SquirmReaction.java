@@ -21,6 +21,8 @@
  */
 package org.squirm.chem;
 
+import java.util.Random;
+
 import org.apache.log4j.Logger;
 
 // SquirmReaction.java
@@ -37,7 +39,10 @@ class SquirmReaction {
     public int future_us_state;
     public boolean future_bond;
     public int future_them_state;
-
+    
+    private String id = "none";
+    private String reaction = "";
+    
     public SquirmReaction(char us_type, int us_state, boolean current_bond, char them_type, int them_state,
             int future_us_state, boolean future_bond, int future_them_state) {
         this.us_type = us_type;
@@ -49,4 +54,33 @@ class SquirmReaction {
         this.future_bond = future_bond;
         this.future_them_state = future_them_state;        
     }
-};
+        
+    public String toString() {
+      return String.format("[Reaction id=%s {allowReact: %s%d -> %s%d}]", id, us_type, us_state, them_type, them_state);
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(final String id) {
+      final Random r = new Random();
+      final String info = String.format("{%s%d->%s%d}", us_type, us_state, them_type, them_state);
+      this.reaction = String.format("%s%d->%s%d", us_type, us_state, them_type, them_state);
+      this.id = id + "-" + r.nextInt(100000) + "-" + info;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+      return id;
+    }
+
+    /**
+     * @return the reaction
+     */
+    public String getReaction() {
+      return reaction;
+    }
+    
+} // End of the class //

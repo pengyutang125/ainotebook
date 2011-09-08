@@ -53,13 +53,9 @@ class SquirmCellProperties {
     }
 
     public SquirmCellProperties(int t, int s) {
-        if (t < 0 || t >= MAX_TYPES)
+        if (t < 0 || t >= MAX_TYPES) {
             throw new Error("SquirmCellProperties::SquirmCellProperties : type not in valid range");
-
-        // if(s<0 || s>=MAX_STATES)
-        // throw new
-        // Error("SquirmCellProperties::SquirmCellProperties : state not in valid range");
-
+        }
         type = t;
         state = s;
     }
@@ -127,6 +123,13 @@ class SquirmCellProperties {
         // (else actually no change...)
     }
 
+    /**
+     * Atom type, e, f, a, b, c, d
+     * 
+     * But not 'x' or 'y'
+     * @param t
+     * @return
+     */
     public static int getType(char t) {
         switch (t) {
         case 'e':

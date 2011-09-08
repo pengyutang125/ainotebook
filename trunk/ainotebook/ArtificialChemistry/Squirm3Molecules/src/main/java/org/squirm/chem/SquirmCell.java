@@ -39,8 +39,11 @@ import org.apache.log4j.Logger;
 public class SquirmCell extends SquirmCellProperties {
 
     private static final Logger LOGGER = Logger.getLogger(SquirmCell.class);
-   
-    private final boolean hasRenderStateOnCell = false;
+    
+    /**
+     * Render state along with atom type.
+     */
+    private final boolean hasRenderStateOnCell = true;
     
     /**
      * encoding of an 8-neighbourhood: 1 2 3 0 8 4 7 6 5
@@ -60,7 +63,8 @@ public class SquirmCell extends SquirmCellProperties {
     private Vector<SquirmCell> bonds;
     
     private String id = "none";
-    
+            
+    private String lastReaction = "";
     /**
      * Default constructor
      */
@@ -171,7 +175,6 @@ public class SquirmCell extends SquirmCellProperties {
                 }
             }
         }
-
         // see if this situation causes a reaction in the current chemistry
         chemistry.react(cell_grid, this, neighbours);
     }
@@ -274,9 +277,12 @@ public class SquirmCell extends SquirmCellProperties {
     /**
      * Link this cell to the other
      */
-    public void makeBondWith(final SquirmCell other) {
+    public void makeBondWith(final SquirmCell other, final SquirmReaction reaction) {
+        if (reaction != null) {
+          this.setLastReaction(reaction.getReaction());
+        }
         bonds.addElement(other);
-        other.bonds.addElement(this);
+        other.bonds.addElement(this);        
         LOGGER.info("Making bond : us=" + this + " -> withThem=" + other  + " numberBondsUs=" + bonds.size());        
         
     }
@@ -284,12 +290,12 @@ public class SquirmCell extends SquirmCellProperties {
     /**
      * Break the specified link
      */
-    public void breakBondWith(SquirmCell other) {
+    public void breakBondWith(final SquirmCell other) {
+        this.setLastReaction("");
         if (!bonds.contains(other))
             throw new Error("SquirmCell::breakBondWith : we have no such bond with them!");
 
         bonds.removeElement(other);
-
         if (!other.bonds.contains(this))
             throw new Error("SquirmCell::breakBondWith : they have no such bond with us!");
 
@@ -365,6 +371,20 @@ public class SquirmCell extends SquirmCellProperties {
      */
     public void setId(String id) {
       this.id = id;
+    }
+
+    /**
+     * @return the lastReaction
+     */
+    public String getLastReaction() {
+      return lastReaction;
+    }
+
+    /**
+     * @param lastReaction the lastReaction to set
+     */
+    public void setLastReaction(String lastReaction) {
+      this.lastReaction = lastReaction;
     }    
     
 } // End of the class //
