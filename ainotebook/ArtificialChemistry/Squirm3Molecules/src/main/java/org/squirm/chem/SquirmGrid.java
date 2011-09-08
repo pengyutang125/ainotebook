@@ -133,11 +133,10 @@ public class SquirmGrid {
             // SquirmCell(10,n_y/2+4,5,1,cell_list,cell_grid);
             final SquirmCell f = new SquirmCell(10, n_y / 2 + 4, 1, 1, cell_list, cell_grid);
             
-            e.makeBondWith(a);
-            a.makeBondWith(b);
-            b.makeBondWith(c);
-            // c.makeBondWith(d);
-            c.makeBondWith(f);
+            e.makeBondWith(a, null);
+            a.makeBondWith(b, null);
+            b.makeBondWith(c, null);
+            c.makeBondWith(f, null);
         }
 
         // initialize the world with some raw material (unconnected molecules)

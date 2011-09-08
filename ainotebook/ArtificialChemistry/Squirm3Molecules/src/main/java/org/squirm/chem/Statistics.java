@@ -53,7 +53,18 @@ public class Statistics {
 
   private final Map<String, Integer> moleculeSet = new HashMap<String, Integer>();
   private final Set<SquirmCell> atomsWithBondsSet = new HashSet<SquirmCell>();
+  private final Map<String, Integer> atomStateSet = new HashMap<String, Integer>();
+  private final Map<String, Integer> reactionSet = new HashMap<String, Integer>();
+  private final Map<String, Integer> simpleBondSet = new HashMap<String, Integer>();
+  
+  private final static String plotSpacer = "    ";
+  
+  private String [] investigateAtomTypes = { "e", "f", "a", "b", "c", "d" };
+  private String [] investigateStates = { "0", "3", "8", "9", "2" };
 
+  private final static String PLOT_FOR_BOUND_COUNT = "plotBondCount";
+  private final static String PLOT_FOR_ATOM_STATE_LINE = "plotAtomStateLine";
+  
   /**
    * Constructor.
    * 
@@ -69,8 +80,10 @@ public class Statistics {
     numberOfAtoms = this.bidirectionalGridObjectRef.getCellList().size();
 
     for (final SquirmCell cell : bidirectionalGridObjectRef.getCellList()) {
-      delegateTotalAtomsWithBonds(cell, totalAtomsWithBonds, totalAtomsNoBonds, numberOfAtoms);
-      delegateFindMoleculeString(cell);
+      this.delegateTotalAtomsWithBonds(cell, totalAtomsWithBonds, totalAtomsNoBonds, numberOfAtoms);
+      this.delegateFindMoleculeString(cell);
+      this.delegateReactions(cell);
+      this.touchAtomState(cell);
     } // End of for //
 
     // Iterate through the bonds that have connections
@@ -91,24 +104,68 @@ public class Statistics {
     statsBuf.append("<ArtificialChemistryStatistics>");
     statsBuf.append(NL);
 
+    final int simCounter = bidirectionalGridObjectRef.getCount();
     statsBuf.append(" counter=").append(bidirectionalGridObjectRef.getCount()).append(NL);
     statsBuf.append(" numberOfAtoms=").append(numberOfAtoms).append(NL);
     statsBuf.append(" totalAtomsWithBonds=").append(totalAtomsWithBonds).append(NL);
-    statsBuf.append(" totalAtomsWithoutBonds=").append(totalAtomsNoBonds).append(NL);    
+    statsBuf.append(" totalAtomsWithoutBonds=").append(totalAtomsNoBonds).append(NL);          
+    {
+      int icountForMolecules = 0; final int tailMaxMolecules = 8;
+      final List<Map.Entry<String, Integer>> listForSort = sortMap(this.moleculeSet);
+      for (final Map.Entry<String, Integer> e : listForSort) {
+        statsBuf.append("  molecule=").append(e).append(NL);
+        icountForMolecules++;
+        if (icountForMolecules >= tailMaxMolecules) {
+          break;
+        }
+      } // End of for through molecule map //
+    } // End of section for molecule set    
+    {
+      int icount = 0; final int tailMax = 6;
+      final List<Map.Entry<String, Integer>> listForSort = sortMap(this.atomStateSet);
+      for (final Map.Entry<String, Integer> e : listForSort) {
+        statsBuf.append("  atomStateSet=").append(e).append(NL);
+        icount++;
+        if (icount >= tailMax) {
+          break;
+        }
+      } // End of for through molecule map //
+    } // End of section for atom state set
     
-    int icountForMolecules = 0;
-    final int tailMaxMolecules = 8;
-    final List<Map.Entry<String, Integer>> listForSort = sortMap(this.moleculeSet);
-    for (final Map.Entry<String, Integer> e : listForSort) {
-      statsBuf.append("  molecule=").append(e).append(NL);
-      icountForMolecules++;
-      if (icountForMolecules >= tailMaxMolecules) {
-        break;
-      }
-    } // End of for through molecule map //
+    {
+      int icount = 0; final int tailMax = 6;
+      final List<Map.Entry<String, Integer>> listForSort = sortMap(this.reactionSet);
+      for (final Map.Entry<String, Integer> e : listForSort) {
+        statsBuf.append("  reactionSet=").append(e).append(NL);
+        icount++;
+        if (icount >= tailMax) {
+          break;
+        }
+      } // End of for through molecule map //
+    } // End of section for reaction set
+    
+    {
+      int icount = 0; final int tailMax = 10;
+      final List<Map.Entry<String, Integer>> listForSort = sortMap(this.simpleBondSet);
+      for (final Map.Entry<String, Integer> e : listForSort) {
+        statsBuf.append("  simpleBondSet=").append(e).append(NL);
+        icount++;
+        if (icount >= tailMax) {
+          break;
+        }
+      } // End of for through molecule map //
+    } // End of section for bond set
+    
     statsBuf.append("  numberMoleculesSet=").append(this.moleculeSet.size()).append(NL);
+    statsBuf.append("  numberAtomStates=").append(this.atomStateSet.size()).append(NL);
+    statsBuf.append("  numberReactions=").append(this.reactionSet.size()).append(NL);
     statsBuf.append("</ArtificialChemistryStatistics>");
+    
     LOGGER.info(statsBuf.toString());
+    LOGGER.info(NL);        
+    LOGGER.info(NL + PLOT_FOR_BOUND_COUNT + plotSpacer + simCounter + plotSpacer + totalAtomsWithBonds.total + plotSpacer + totalAtomsNoBonds.total);
+    LOGGER.info(NL);      
+    LOGGER.info(NL+this.logAtomState());    
   }
 
   protected void findMoleculeString(final SquirmCell cell, final int level, final Set<SquirmCell> visited,
@@ -116,7 +173,8 @@ public class Statistics {
     if (cell.getBonds().size() == 0) {
       return;
     }
-    if (level >= 30) {
+    final int recurseLoopLevel = 30;
+    if (level >= recurseLoopLevel) {
       return;
     }
     visited.add(cell);
@@ -133,7 +191,14 @@ public class Statistics {
       findMoleculeString(node, level + 1, visited, visits);
     }
   }
-
+  public void delegateReactions(final SquirmCell cell) {
+    if (cell.getBonds().size() > 0) {
+      if (cell.getLastReaction() != null && cell.getLastReaction().length() > 0) {
+        this.touchMapEntry(cell.getLastReaction(), this.reactionSet);    
+      }
+    }    
+  }
+  
   /**
    * Total all of the atoms that have bonds greater zero.
    * 
@@ -147,11 +212,9 @@ public class Statistics {
       totalsWithout.total++;
     }
     totals.dtotal = 100.0 * (totals.total / (double) outOfTotal);
-    totals.stotal = String.format("%d/%.3f%%", totals.total, totals.dtotal);
-    
+    totals.stotal = String.format("%d/%.3f%%", totals.total, totals.dtotal);    
     totalsWithout.dtotal = 100.0 * (totalsWithout.total / (double) outOfTotal);
-    totalsWithout.stotal = String.format("%d/%.3f%%", totalsWithout.total, totalsWithout.dtotal);
-    
+    totalsWithout.stotal = String.format("%d/%.3f%%", totalsWithout.total, totalsWithout.dtotal);    
   }
 
   /**
@@ -164,11 +227,18 @@ public class Statistics {
     final StringBuffer buf = new StringBuffer();
     buf.append(cell.getStringType());
 
+    String simpleBondKey = cell.getStringType()+cell.getState();
     for (final SquirmCell node : cell.getBonds()) {
       buf.append(node.getStringType());
+      simpleBondKey += node.getStringType()+node.getState();
+            
+      this.touchMapEntry(simpleBondKey, this.simpleBondSet);
+      
+      // Reset the bond key:
+      simpleBondKey = cell.getStringType()+cell.getState();
     } // End of the for //
   }
-
+  
   public void touchMapEntry(final String key, final Map<String, Integer> map) {
     if (map.get(key) == null) {
       map.put(key, 1);
@@ -176,7 +246,50 @@ public class Statistics {
       map.put(key, map.get(key) + 1);
     }
   }
-
+  
+  /**
+   * Determine count of atom states.
+   * 
+   * @param cell
+   */
+  public void touchAtomState(final SquirmCell cell) {
+    final String type = cell.getStringType() + cell.getState();
+    for (final String atomType : investigateAtomTypes) {
+      for (final String state : investigateStates) {
+        final String chk = atomType + state;
+        if (chk.equalsIgnoreCase(type)) {
+          this.touchMapEntry(chk, atomStateSet);
+        }
+      }
+    } // End of the for //
+  }
+  
+  protected String logAtomState() {
+    final StringBuffer buf = new StringBuffer();    
+    buf.append("##" + plotSpacer + plotSpacer + plotSpacer + "counter" + plotSpacer);
+    for (final String atomType : investigateAtomTypes) {      
+      for (final String state : investigateStates) {
+        final String chk = atomType + state;
+        buf.append(chk + plotSpacer);        
+      }
+    } // End of the for //
+    final int simCounter = bidirectionalGridObjectRef.getCount();
+    buf.append(NL + PLOT_FOR_ATOM_STATE_LINE + plotSpacer);
+    buf.append(simCounter + plotSpacer);
+    
+    for (final String atomType : investigateAtomTypes) {
+      for (final String state : investigateStates) {
+        final String chk = atomType + state;
+        if (atomStateSet.get(chk) == null) {
+          buf.append("0" + plotSpacer);
+        } else {
+          buf.append(atomStateSet.get(chk) + plotSpacer);
+        }
+      }
+    } // End of the for //
+    return buf.toString();
+  }
+  
   public class Total implements Serializable {
     private static final long serialVersionUID = 1L;
     private int total = 0;

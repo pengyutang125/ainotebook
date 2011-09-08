@@ -115,7 +115,7 @@ public class Squirm extends JFrame implements Runnable {
         error_msg = "";
     }
 
-    public void addReaction(String us_type, int us_state, boolean current_bond, String them_type, int them_state,
+    public SquirmReaction addReaction(String us_type, int us_state, boolean current_bond, String them_type, int them_state,
             int future_us_state, boolean future_bond, int future_them_state) {
 
         final SquirmReaction r = new SquirmReaction(us_type.toCharArray()[0], us_state, current_bond,
@@ -126,7 +126,8 @@ public class Squirm extends JFrame implements Runnable {
         + future_us_state + (future_bond ? "-" : " ") + them_type + future_them_state + "; ";
         error_msg += msg;
         final String addReaction = msg;
-        LOGGER.info("Adding reaction allowed on the grid (init) : " + addReaction);        
+        LOGGER.info("Adding reaction allowed on the grid (init) : " + addReaction + " / reaction=" + r);  
+        return r;
     }
 
     /**
@@ -171,14 +172,14 @@ public class Squirm extends JFrame implements Runnable {
         switch (typeOfReactionAllowedEditableFromSrc) {
         case 0: {
             // new slimline replication reactions (for: e8-a1-b1-...-f1)
-            addReaction("e", 8, false, "e", 0, 4, true, 3); // R1
-            addReaction("x", 4, true,  "y", 1, 2, true, 5); // R2
-            addReaction("x", 5, false, "x", 0, 7, true, 6); // R3
-            addReaction("x", 3, false, "y", 6, 2, true, 3); // R4
-            addReaction("x", 7, true,  "y", 3, 4, true, 3); // R5
-            addReaction("f", 4, true,  "f", 3, 8, false, 8); // R6
-            addReaction("x", 2, true,  "y", 8, 9, true, 1); // R7
-            addReaction("x", 9, true,  "y", 9, 8, false, 8); // R8
+            addReaction("e", 8, false, "e", 0, 4, true, 3);  // R1
+            addReaction("x", 4, true,  "y", 1, 2, true, 5);  // R2
+            addReaction("x", 5, false, "x", 0, 7, true, 6);  // R3
+            addReaction("x", 3, false, "y", 6, 2, true, 3);  // R4
+            addReaction("x", 7, true,  "y", 3, 4, true, 3);  // R5
+            addReaction("f", 4, true,  "f", 3, 8, false,8); // R6
+            addReaction("x", 2, true,  "y", 8, 9, true, 1);  // R7
+            addReaction("x", 9, true,  "y", 9, 8, false,8); // R8
             break;
         }
         case 1: {
