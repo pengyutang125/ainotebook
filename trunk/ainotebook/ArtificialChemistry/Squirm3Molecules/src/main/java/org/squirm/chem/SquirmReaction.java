@@ -56,7 +56,7 @@ class SquirmReaction {
     }
         
     public String toString() {
-      return String.format("[Reaction id=%s {allowReact: %s%d -> %s%d}]", id, us_type, us_state, them_type, them_state);
+      return String.format("[Reaction id=%s {allowReact: %s%d/%s%d->%s%d}]", id, us_type, us_state, them_type, them_state, us_type, future_us_state);
     }
 
     /**
@@ -64,8 +64,8 @@ class SquirmReaction {
      */
     public void setId(final String id) {
       final Random r = new Random();
-      final String info = String.format("{%s%d->%s%d}", us_type, us_state, them_type, them_state);
-      this.reaction = String.format("%s%d->%s%d", us_type, us_state, them_type, them_state);
+      final String info = String.format("{%s%d/%s%d->%s%d}", us_type, us_state, them_type, them_state, us_type, future_us_state);
+      this.reaction = String.format("%s%d/%s%d->%s%d", us_type, us_state, them_type, them_state, us_type, future_us_state);
       this.id = id + "-" + r.nextInt(100000) + "-" + info;
     }
 
