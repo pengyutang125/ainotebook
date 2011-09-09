@@ -306,12 +306,14 @@ public class Statistics {
   }  
   
   protected String logPlotAtomState() {
+    int id = 3;
     final StringBuffer buf = new StringBuffer();    
     buf.append("##" + plotSpacer + plotSpacer + plotSpacer + "counter" + plotSpacer);
     for (final String atomType : investigateAtomTypes) {      
       for (final String state : investigateStates) {
         final String chk = atomType + state;
-        buf.append(chk + "  ");        
+        buf.append(chk + "_" + id + "  ");
+        id++;
       }
     } // End of the for //
     final int simCounter = bidirectionalGridObjectRef.getCount();
