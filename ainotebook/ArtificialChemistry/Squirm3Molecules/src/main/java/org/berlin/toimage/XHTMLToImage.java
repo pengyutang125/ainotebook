@@ -41,8 +41,8 @@ public class XHTMLToImage {
   private String inputFilename = "source.xhtml";
   private String outputFilename = "output.png";
 
-  private int widthImage = 640;
-  private int heightImage = 480;
+  private int widthImage = 500;
+  private int heightImage = 120;
   
   /**
    * Convert XHTML output to image. 
@@ -79,6 +79,11 @@ public class XHTMLToImage {
     } else {
       renderer.inputFilename = args[0];
       renderer.outputFilename = args[1];
+    }
+    
+    if (args.length == 4) {
+      renderer.widthImage = Integer.parseInt(args[2]);
+      renderer.heightImage = Integer.parseInt(args[3]);
     }
     renderer.convertToImage();
   }
