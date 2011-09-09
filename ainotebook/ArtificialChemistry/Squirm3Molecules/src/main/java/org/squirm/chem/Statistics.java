@@ -61,9 +61,13 @@ public class Statistics {
   
   private String [] investigateAtomTypes = { "e", "f", "a", "b", "c", "d" };
   private String [] investigateStates = { "0", "3", "8", "9", "2" };
-
-  private final static String PLOT_FOR_BOUND_COUNT = "plotBondCount";
+  private String [] investigateSimpleBonds = { "e2e2", "c1f1", "b1c1", "a2e2", "e2e3", "a1b1", "e2a5", "e8a1", "b9c1" };
+  private String [] investigateReactions = { "x3/y6->x2", "x5/x0->x7", "e8/e0->e4" }; 
+     
+  private final static String PLOT_FOR_TOT_BOND_COUNT = "plotBondCount";
   private final static String PLOT_FOR_ATOM_STATE_LINE = "plotAtomStateLine";
+  private final static String PLOT_FOR_SIMPLE_BONDS = "plotSimpleBonds";
+  private final static String PLOT_FOR_REACTIONS = "plotReactions";  
   
   /**
    * Constructor.
@@ -110,7 +114,7 @@ public class Statistics {
     statsBuf.append(" totalAtomsWithBonds=").append(totalAtomsWithBonds).append(NL);
     statsBuf.append(" totalAtomsWithoutBonds=").append(totalAtomsNoBonds).append(NL);          
     {
-      int icountForMolecules = 0; final int tailMaxMolecules = 8;
+      int icountForMolecules = 0; final int tailMaxMolecules = 12;
       final List<Map.Entry<String, Integer>> listForSort = sortMap(this.moleculeSet);
       for (final Map.Entry<String, Integer> e : listForSort) {
         statsBuf.append("  molecule=").append(e).append(NL);
@@ -121,7 +125,7 @@ public class Statistics {
       } // End of for through molecule map //
     } // End of section for molecule set    
     {
-      int icount = 0; final int tailMax = 6;
+      int icount = 0; final int tailMax = 12;
       final List<Map.Entry<String, Integer>> listForSort = sortMap(this.atomStateSet);
       for (final Map.Entry<String, Integer> e : listForSort) {
         statsBuf.append("  atomStateSet=").append(e).append(NL);
@@ -133,7 +137,7 @@ public class Statistics {
     } // End of section for atom state set
     
     {
-      int icount = 0; final int tailMax = 6;
+      int icount = 0; final int tailMax = 10;
       final List<Map.Entry<String, Integer>> listForSort = sortMap(this.reactionSet);
       for (final Map.Entry<String, Integer> e : listForSort) {
         statsBuf.append("  reactionSet=").append(e).append(NL);
@@ -145,7 +149,7 @@ public class Statistics {
     } // End of section for reaction set
     
     {
-      int icount = 0; final int tailMax = 10;
+      int icount = 0; final int tailMax = 14;
       final List<Map.Entry<String, Integer>> listForSort = sortMap(this.simpleBondSet);
       for (final Map.Entry<String, Integer> e : listForSort) {
         statsBuf.append("  simpleBondSet=").append(e).append(NL);
@@ -163,9 +167,12 @@ public class Statistics {
     
     LOGGER.info(statsBuf.toString());
     LOGGER.info(NL);        
-    LOGGER.info(NL + PLOT_FOR_BOUND_COUNT + plotSpacer + simCounter + plotSpacer + totalAtomsWithBonds.total + plotSpacer + totalAtomsNoBonds.total);
+    LOGGER.info(NL + PLOT_FOR_TOT_BOND_COUNT + plotSpacer + simCounter + plotSpacer + totalAtomsWithBonds.total + plotSpacer + totalAtomsNoBonds.total);
     LOGGER.info(NL);      
-    LOGGER.info(NL+this.logAtomState());    
+    
+    LOGGER.info(NL+this.logPlotAtomState());    
+    LOGGER.info(NL+this.logPlotSimpleBonds());
+    LOGGER.info(NL+this.logPlotReactions());
   }
 
   protected void findMoleculeString(final SquirmCell cell, final int level, final Set<SquirmCell> visited,
@@ -264,13 +271,47 @@ public class Statistics {
     } // End of the for //
   }
   
-  protected String logAtomState() {
+  protected String logPlotSimpleBonds() {
+    final StringBuffer buf = new StringBuffer();   
+    buf.append("##" + plotSpacer + plotSpacer + plotSpacer + "counter" + plotSpacer);
+    for (final String bondName : investigateSimpleBonds) {
+      buf.append(bondName+"  ");
+    }    
+    final int simCounter = bidirectionalGridObjectRef.getCount();
+    buf.append(NL + PLOT_FOR_SIMPLE_BONDS + plotSpacer);
+    buf.append(simCounter + plotSpacer);
+        
+    for (final String bondName : investigateSimpleBonds) {
+      buf.append(( simpleBondSet.get(bondName) == null ? 0 : simpleBondSet.get(bondName)  ) +plotSpacer);
+    }
+    
+    return buf.toString();
+  }  
+  
+  protected String logPlotReactions() {
+    final StringBuffer buf = new StringBuffer();   
+    buf.append("##" + plotSpacer + plotSpacer + plotSpacer + "counter" + plotSpacer);
+    for (final String name : investigateReactions) {
+      buf.append(name+"  ");
+    }    
+    final int simCounter = bidirectionalGridObjectRef.getCount();
+    buf.append(NL + PLOT_FOR_REACTIONS + plotSpacer);
+    buf.append(simCounter + plotSpacer);
+        
+    for (final String name : investigateReactions) {
+      buf.append(( reactionSet.get(name) == null ? 0 : reactionSet.get(name)  ) +plotSpacer);
+    }
+    
+    return buf.toString();
+  }  
+  
+  protected String logPlotAtomState() {
     final StringBuffer buf = new StringBuffer();    
     buf.append("##" + plotSpacer + plotSpacer + plotSpacer + "counter" + plotSpacer);
     for (final String atomType : investigateAtomTypes) {      
       for (final String state : investigateStates) {
         final String chk = atomType + state;
-        buf.append(chk + plotSpacer);        
+        buf.append(chk + "  ");        
       }
     } // End of the for //
     final int simCounter = bidirectionalGridObjectRef.getCount();
