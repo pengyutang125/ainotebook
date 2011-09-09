@@ -8,7 +8,7 @@ grep 'plotBondCount' 'logs/cell_simulation.log' > data_plotBondCount.dat
 
 echo "set terminal pngcairo size 1024,768
 set output '${OUTPUT_IMG_FILE}'
-set title 'Plot Bond Count By Iterations'
+set title 'Plot Bond Count By Iterations (# bonds incr over time)'
 set size 1,1
 set key left top
 set autoscale
