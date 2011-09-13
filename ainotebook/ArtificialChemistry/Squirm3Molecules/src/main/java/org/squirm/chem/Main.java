@@ -43,7 +43,7 @@ public class Main {
         final Squirm frame = new Squirm();
         frame.setTitle("Squirm Artificial Chemistry");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocation(0, 1140);    
+        frame.setLocation(0, 600);    
         frame.setPreferredSize(new Dimension(800, 600));
         frame.setResizable(false);
         frame.setFocusable(true);        
