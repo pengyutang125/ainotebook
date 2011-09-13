@@ -172,14 +172,14 @@ public class Squirm extends JFrame implements Runnable {
         switch (typeOfReactionAllowedEditableFromSrc) {
         case 0: {
             // new slimline replication reactions (for: e8-a1-b1-...-f1)
-            addReaction("e", 8, false, "e", 0, 4, true, 3);  // R1
-            addReaction("x", 4, true,  "y", 1, 2, true, 5);  // R2
+            addReaction("e", 8, false, "e", 0, 4, true, 3);  // R1 (check e8_e0 -> e0_e4)
+            addReaction("x", 4, true,  "y", 1, 2, true, 5);  // R2 (check x_var?4/y_var?1 -> x_var?1_y_var?2)
             addReaction("x", 5, false, "x", 0, 7, true, 6);  // R3
             addReaction("x", 3, false, "y", 6, 2, true, 3);  // R4
             addReaction("x", 7, true,  "y", 3, 4, true, 3);  // R5
-            addReaction("f", 4, true,  "f", 3, 8, false,8); // R6
+            addReaction("f", 4, true,  "f", 3, 8, false,8);  // R6
             addReaction("x", 2, true,  "y", 8, 9, true, 1);  // R7
-            addReaction("x", 9, true,  "y", 9, 8, false,8); // R8
+            addReaction("x", 9, true,  "y", 9, 8, false,8);  // R8
             break;
         }
         case 1: {

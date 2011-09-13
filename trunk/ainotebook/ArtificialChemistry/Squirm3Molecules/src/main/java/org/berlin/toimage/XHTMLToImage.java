@@ -75,7 +75,8 @@ public class XHTMLToImage {
     final XHTMLToImage renderer = new XHTMLToImage();
     if (args.length != 2) {
       renderer.inputFilename = "source.xhtml";
-      renderer.outputFilename = "output.png";     
+      renderer.outputFilename = "output.png";
+      System.out.println("Usage : XHTMLToImage INPUTFILE.xhtml OUTPUTFILE.png <width> <height>");
     } else {
       renderer.inputFilename = args[0];
       renderer.outputFilename = args[1];
